@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>QUIZ GAME</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <link rel="shortcut icon" type="x-icon" href="/icons/titlelogo.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="styles/general.css">
+  <link rel="stylesheet" href="styles/home.css">
+  <link rel="stylesheet" href="styles/header.css">
+  <link rel="stylesheet" href="styles/profile.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.0.1/introjs.min.css" />
+  <link rel="stylesheet" href="styles/onboarding_home.css">
+  <!-- Demo styles -->
+  <style>
+
+    .swiper {
+    position: absolute;
+    visibility: hidden;
+    top: 18%;
+    width: 78%;
+    display: flex;
+    height: 240px;
+    align-items: center;
+    border-radius: 10px;
+    border: 2px solid white;
+    z-index: 1;
+    backdrop-filter: blur(7px);
+    color: white;
+    box-shadow: inset 5px 5px 10px rgb(70, 124, 147), inset -5px -5px 10px rgb(68, 133, 160);
+    }
+
+
+    .swiper-slide {
+      display: flex;
+      flex-direction: column;
+      padding: 25px;
+    }
+    .title{
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+    }
+
+    @media (min-width: 570px) and (max-width: 764.999px){
+
+    .swiper{
+        width: 88%;
+        visibility: visible;
+        overflow: hidden;
+    }
+
+    }
+
+    @media (min-width: 488px) and (max-width: 569.999px){
+
+    .swiper {
+        width: 90%;
+        visibility: visible;
+        overflow: hidden;
+    }
+
+    }
+
+    @media (max-width: 487.999px){
+
+    .swiper {
+        width: 93%;
+        visibility: visible;
+    }
+
+
+    }
+
+    
+  </style>
+
+</head>
+
+<body>
+
+  <div class="background-image"></div>
+  <div class="header">
+      <div class="logo-box">
+          <img class="logo" src="icons/quizlogo99.svg" alt="Logo">
+          <div class="logo-name">
+              <span class="quiz">QUIZ</span>
+              <span class="game">GAME</span>
+          </div>
+      </div>
+      <div class="profile-box">
+          <span class="pf-lvl">Lvl - 01</span>
+          <div >
+              <img class="profile" id="profile" src="images/space man.jpg" alt="Logo">
+          </div>
+      </div>
+  </div>
+  <div class="profile-container" id="profile-container">
+      <div class="top-box">
+          <div class="top-lf">Profile</div>
+          <div class="top-rg">
+              <img class="speaker-icon" src="icons/speaker.png" alt="Seapker icon">
+              <a href="/update_profile.html">
+                  <img class="edit-icon" src="icons/lucide_edit.png" alt="Edit icon">
+              </a>
+          </div>
+      </div>
+      <div class="bottom-box">
+          <div class="pf-picture"><img src="images/space man.jpg" alt="Profile"></div>
+          <div class="pf-name">
+              Space Man
+              <img src="/images/Level-2.png" alt="Badge">
+          </div>
+          <span class="lvl">Level - 01</span>
+          <span class="pf-email">spaceman@gmail.com</span>
+          <button class="sign-out-btn">Sign out</button>
+      </div>
+  </div>
+  <div id="overlay" class="overlay"></div>
+
+  <div class="container">
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="profile-info-box">
+                    <div class="user-pf"><img src="images/space man.jpg" alt="profile picture"></div>
+                    <div class="profile-info">
+                        <span class="name">John Snow
+                            <img class="badge-lvl" src="/images/Level-1.png" alt="badge-level">
+                        </span>
+                        <span class="level-no">Lvl - 01</span>
+                        <div class="exp-prograss-bar">
+                            <div class="exp-bar-fill"></div>
+                            <span class="exp">900/1200EXP</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="record-box">
+                    <div class="quiz-set-box">
+                        <div class="badge-icon"><img src="icons/check-mark (1).svg" alt="Quiz set"></div>
+                        <div class="badge-info">
+                            <span class="record">07</span>
+                            <span class="record-name">Quiz Sets</span>
+                        </div>
+                    </div>
+                    <div class="high-score-box">
+                        <div class="badge-icon"><img src="icons/trophy-cup (2).svg" alt="High score"></div>
+                        <div class="badge-info">
+                            <span class="record">2100</span>
+                            <span class="record-name">Highest Score</span>
+                        </div>
+                    </div>
+                    <div class="time-spent-box">
+                        <div class="badge-icon"><img src="icons/stopwatch.svg" alt="Time-spent"></div>
+                        <div class="badge-info">
+                            <span class="record">01h 15m</span>
+                            <span class="record-name">Time Spent</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          <div class="swiper-slide">
+            <h2 class="title">Achievement</h2>
+            <div class="achievement-1">
+                <div class="achieve-box" >
+                    <img class="achieve-logo" src="/images/L1.png" alt="Phase 1">
+                    <span>Level 1</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/L2.png" alt="Phase 1">
+                    <span>Level 2</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/L3.png" alt="Phase 1">
+                    <span>Level 3</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/L4.png" alt="Phase 1">
+                    <span>Level 4</span>
+                </div>
+            </div>
+            <div class="achievement-1">
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/First-Achiever.png" alt="Phase 1">
+                    <span>1st Achiever</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/Starter.png" alt="Phase 1">
+                    <span>Starter</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/Expert.png" alt="Phase 1">
+                    <span>Expert</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/Legend.png" alt="Phase 1">
+                    <span>Legend</span>
+                </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div> -->
+        <div class="swiper-pagination"></div>
+      </div>
+    <!-- <h1>Master the Basics: Learning & Practice Zone</h1> -->
+    <div class="info-container">
+        <div class="bg-color"></div>
+        <div class="left-div">
+            <div class="profile-info-box2">
+                <div class="user-pf"><img src="images/space man.jpg" alt="profile picture"></div>
+                <div class="profile-info">
+                    <span class="name">John Snow
+                        <img class="badge-lvl" src="/images/Level-1.png" alt="badge-level">
+                    </span>
+                    <span class="level-no">Lvl - 01</span>
+                    <div class="exp-prograss-bar">
+                        <div class="exp-bar-fill"></div>
+                        <span class="exp">900/1200 XP</span>
+                    </div>
+                </div>
+            </div>
+            <div class="record-box">
+                <div class="quiz-set-box">
+                    <div class="badge-icon"><img src="icons/check-mark (1).svg" alt="Quiz set"></div>
+                    <div class="badge-info">
+                        <span class="record">07</span>
+                        <span class="record-name">Quiz Sets</span>
+                    </div>
+                </div>
+                <div class="high-score-box">
+                    <div class="badge-icon"><img src="icons/trophy-cup (2).svg" alt="High score"></div>
+                    <div class="badge-info">
+                        <span class="record">2100</span>
+                        <span class="record-name">Highest Score</span>
+                    </div>
+                </div>
+                <div class="time-spent-box">
+                    <div class="badge-icon"><img src="icons/stopwatch.svg" alt="Time-spent"></div>
+                    <div class="badge-info">
+                        <span class="record">01h 15m</span>
+                        <span class="record-name">Time Spent</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-div">
+            <h2 class="title1">Achievement</h2>
+            <div class="achievement-1">
+                <div class="achieve-box" >
+                    <img class="achieve-logo" src="/images/L1.png" alt="Phase 1">
+                    <span>Level 1</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/L2.png" alt="Phase 1">
+                    <span>Level 2</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/L3.png" alt="Phase 1">
+                    <span>Level 3</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/L4.png" alt="Phase 1">
+                    <span>Level 4</span>
+                </div>
+            </div>
+            <div class="achievement-1">
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/First-Achiever.png" alt="Phase 1">
+                    <span>1st Achiever</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/Starter.png" alt="Phase 1">
+                    <span>Starter</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/Expert.png" alt="Phase 1">
+                    <span>Expert</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/Legend.png" alt="Phase 1">
+                    <span>Legend</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="activty-box">
+        <div class="learning-zone-box">
+            <img class="game-img" src="icons/learning-zone-img.png" alt="Learning zone">
+            <span class="game-name">Learning Zone</span>
+            <span class="desc-text">Expend you knowledge and understanding with<br>practicing with flashcards</span>
+            <!-- <a th:href="@{'/learning-zone'}" id="learn-link">
+                <button class="btn" onclick="audio.play();">Learn</button>
+            </a> -->
+            <a th:href="@{'/learning-zone'}">
+                <button class="btn" >Learn</button>
+            </a>
+        </div>
+        <div class="game-zone-box">
+            <img  class="game-img" src="icons/game-zone-img.png" alt="Learning zone">
+            <span class="game-name">Gaming Zone</span>
+            <span class="desc-text">Expend you knowledge and understanding with <br>practicing with flashcards</span>
+            <!-- <a href="game_zone.html" id="play-link">
+                <button class="btn" onclick="audio.play();">Play</button>
+            </a> -->
+            <a href="game_zone.html">
+                <button class="btn" >Play</button>
+            </a>
+
+        </div>
+    </div>
+    <button class="onboarding-btn" onclick="startOnboarding()">
+        <img src="icons/icons8-question-mark-30.png" alt="??">
+    </button>
+</div>
+
+<!-- Audio for Click a button -->
+    <script type="text/javascript">
+
+    const audio = new Audio();
+    audio.src = "./audio/click.mp3";
+    audio.playbackRate = 3;
+
+    const playLink = document.getElementById("play-link");
+    playLink.addEventListener("click",function(event){
+        event.preventDefault();
+        audio.play();
+        
+        document.body.classList.add("fade-out");
+        setTimeout(() => {
+            window.location.href = "game_zone.html";
+        }, 300);
+
+    });
+
+    const learnLink = document.getElementById("learn-link");
+    learnLink.addEventListener("click",function(event){
+        event.preventDefault();
+        audio.play();
+        
+        document.body.classList.add("fade-out");
+        setTimeout(() => {
+            window.location.href = "/learning-zone";
+        }, 300);
+
+    });
+
+
+  </script>
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+    var swiper = new Swiper(".mySwiper", {
+      slidesPerView: 1,
+      spaceBetween: 30,
+      keyboard: {
+        enabled: true,
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+  </script>
+
+<script>
+    const profile = document.getElementById("profile");
+    const profileContainer = document.getElementById("profile-container");
+    const overlay = document.getElementById("overlay");
+    const body = document.body; // Select the body for blurring
+
+    profile.addEventListener("click", () => {
+        profileContainer.classList.toggle("show");
+        overlay.style.display = profileContainer.classList.contains("show") ? "block" : "none";
+    });
+
+    // Close profile container and remove blur when clicking outside
+    document.addEventListener("click", (event) => {
+        if (
+            !profile.contains(event.target) &&
+            !profileContainer.contains(event.target)
+        ) {
+            profileContainer.classList.remove("show");
+            overlay.style.display = "none";
+        }
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.0.1/intro.min.js"></script>
+<script src="scripts/onboarding/home.js"></script>
+</body>
+
+</html>

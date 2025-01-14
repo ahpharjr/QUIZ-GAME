@@ -1,0 +1,110 @@
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="x-icon" href="/icons/quizlogo99.svg">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/card.css">
+    <link rel="stylesheet" href="/styles/header.css">
+    <link rel="stylesheet" href="/styles/profile.css">
+    <title>QUIZ GAME - Cards</title>
+</head>
+
+
+<body>
+    <div class="background-image"></div>
+    <div class="header">
+        <div class="logo-box">
+            <a th:href="@{${'/home'}}">
+                <img class="logo" src="/icons/quizlogo99.svg" alt="Logo">
+            </a>
+            <div class="logo-name">
+                <span class="quiz">QUIZ</span>
+                <span class="game">GAME</span>
+            </div>
+        </div>
+        <div class="profile-box">
+            <span class="pf-lvl">Lvl - 01</span>
+            <div >
+                <img class="profile" id="profile" src="/images/space man.jpg" alt="Logo">
+            </div>
+        </div>
+    </div>
+    <div class="profile-container" id="profile-container">
+        <div class="top-box">
+            <div class="top-lf">Profile</div>
+            <div class="top-rg">
+                <img class="speaker-icon" src="/icons/speaker.png" alt="Seapker icon">
+                <a href="/update_profile.html">
+                    <img class="edit-icon" src="/icons/lucide_edit.png" alt="Edit icon">
+                </a>
+            </div>
+        </div>
+        <div class="bottom-box">
+            <div class="pf-picture"><img src="/images/space man.jpg" alt="Profile"></div>
+            <div class="pf-name">
+                Space Man
+                <img src="/icons/ship-wheel (1).svg" alt="Badge">
+            </div>
+            <span class="lvl">Level - 01</span>
+            <span class="pf-email">spaceman@gmail.com</span>
+            <!-- <button class="sign-out-btn">Sign out</button> -->
+        </div>
+    </div>
+    <div id="overlay" class="overlay"></div>
+    <a th:href="@{${'/learning-zone'}}">
+        <div class="back-arr">
+            <img class="back-arrow" src="/icons/back-arrow.png" alt="back"> Back
+        </div>
+    </a>
+    <div class="search-box">
+        <div class="search-input">
+            <input type="text" placeholder="Search card...">
+        </div>
+        <a th:href="@{${'/search-card'}}">
+            <div class="search-icon">
+                <img src="/icons/icons8-search-50 (3).png" alt="search">
+            </div>
+        </a>
+
+
+    </div>
+    <a href="card_collection.html">
+        <div class="favorite">
+            <span class="tooltip-collection">Card Collection</span>
+            <img class="fav-icon" src="/icons/icons8-star-50 (1).png" alt="star">
+        </div>
+    </a>
+    <div class="container">
+        <div class="collection">
+            <div class="flashcard-set-box">
+                <div class="set-title"
+                     th:each="topic : ${topics}"
+                     th:attr="data-topic-id=${topic.topicId}">
+                    <span th:text="${topic.name}">Topic Name</span>
+                </div>
+            </div>
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper" id="flashcards-container">
+                </div>
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="/scripts/profileScript.js"></script>
+    <script src="/scripts/flashcardScript.js"></script>
+
+</body>
+
+
+</html>

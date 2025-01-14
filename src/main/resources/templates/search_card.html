@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="x-icon" href="icons/quizlogo99.svg">
+    <link rel="stylesheet" href="styles/general.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/profile.css">
+    <link rel="stylesheet" href="styles/search_card.css">
+    <title>All Flashcards</title>
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="header">
+        <div class="logo-box">
+            <a th:href="@{${'/home'}}">
+                <img class="logo" src="icons/quizlogo99.svg" alt="Logo">
+            </a>
+            <div class="logo-name">
+                <span class="quiz">QUIZ</span>
+                <span class="game">GAME</span>
+            </div>
+        </div>
+        <div class="profile-box">
+            <span class="pf-lvl">Lvl - 01</span>
+            <div >
+                <img class="profile" id="profile" src="images/space man.jpg" alt="Logo">
+            </div>
+        </div>
+    </div>
+    <div class="profile-container" id="profile-container">
+        <div class="top-box">
+            <div class="top-lf">Profile</div>
+            <div class="top-rg">
+                <img class="speaker-icon" src="icons/speaker.png" alt="Seapker icon">
+                <a href="/update_profile.html">
+                    <img class="edit-icon" src="icons/lucide_edit.png" alt="Edit icon">
+                </a>
+            </div>
+        </div>
+        <div class="bottom-box">
+            <div class="pf-picture"><img src="images/space man.jpg" alt="Profile"></div>
+            <div class="pf-name">
+                Space Man
+                <img src="icons/ship-wheel (1).svg" alt="Badge">
+            </div>
+            <span class="lvl">Level - 01</span>
+            <span class="pf-email">spaceman@gmail.com</span>
+            <!-- <button class="sign-out-btn">Sign out</button> -->
+        </div>
+    </div>
+    <div id="overlay" class="overlay"></div>
+
+    <div class="body-container">
+        <div class="container">
+            <h2>Search Card</h2>
+            <a href="/card.html">
+                <div class="back-arr">
+                    <img class="back-arrow" src="icons/back-arrow.png" alt="back"> Back
+                </div>
+            </a>
+            <div class="card-container">
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-face front">
+                        <div class="content-pic">
+                            <img class="pic"src="images/4k-mercedes-red-zcj47yx9mq7tfjed.webp" alt="image">
+                            <div class="star"><img class="star-icon" src="icons/icons8-star-50 (2).png" alt="star"></div>
+                        </div>
+                        <div class="text-content">
+                          <h3>Soccer</h3>
+                          <p>
+                            Learn how to create a dynamic carousel slider
+                            using Swiper JS in this tutorial! Explore step-by-step
+                            instructions and code examples to enhance your web development skills.
+                          </p>
+                        </div>
+                    </div>
+                    <div class="flashcard-face back">
+                        <div class="content-pic">
+                            <img class="pic" src="images\space man.jpg" alt="image">
+                            <div class="star"><img class="star-icon" src="icons/icons8-star-50 (2).png" alt="star"></div>
+                        </div>
+                        <div class="text-content">
+                          <h3>Soccer</h3>
+                          <p>
+                            Learn how to create a dynamic carousel slider
+                            using Swiper JS in this tutorial! Explore step-by-step
+                            instructions and code examples to enhance your web development skills.
+                          </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const profile = document.getElementById("profile");
+        const profileContainer = document.getElementById("profile-container");
+        const overlay = document.getElementById("overlay");
+        const body = document.body; // Select the body for blurring
+    
+        profile.addEventListener("click", () => {
+            profileContainer.classList.toggle("show");
+            overlay.style.display = profileContainer.classList.contains("show") ? "block" : "none";
+        });
+    
+        // Close profile container and remove blur when clicking outside
+        document.addEventListener("click", (event) => {
+            if (
+                !profile.contains(event.target) &&
+                !profileContainer.contains(event.target)
+            ) {
+                profileContainer.classList.remove("show");
+                overlay.style.display = "none";
+            }
+        });
+    </script>
+    <script>
+        function flipCard(card) {
+        card.classList.toggle('is-flipped');
+        }
+
+    </script>
+</body>
+</html>

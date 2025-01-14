@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="x-icon" href="icons/quizlogo99.svg">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="styles/general.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/profile.css">
+    <link rel="stylesheet" href="styles/learning_zone.css">
+    <title>Learning Zone</title>
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="header">
+        <div class="logo-box">
+            <a th:href="@{'/home'}">
+                <img class="logo" src="icons/quizlogo99.svg" alt="Logo">
+            </a>
+            <div class="logo-name">
+                <span class="quiz">QUIZ</span>
+                <span class="game">GAME</span>
+            </div>
+        </div>
+        <div class="profile-box">
+            <span class="pf-lvl">Lvl - 01</span>
+            <div >
+                <img class="profile" id="profile" src="images/space man.jpg" alt="Logo">
+            </div>
+        </div>
+    </div>
+    <div class="profile-container" id="profile-container">
+        <div class="top-box">
+            <div class="top-lf">Profile</div>
+            <div class="top-rg">
+                <img class="speaker-icon" src="icons/speaker.png" alt="Seapker icon">
+                <a href="/update_profile.html">
+                    <img class="edit-icon" src="icons/lucide_edit.png" alt="Edit icon">
+                </a>
+            </div>
+        </div>
+        <div class="bottom-box">
+            <div class="pf-picture"><img src="images/space man.jpg" alt="Profile"></div>
+            <div class="pf-name">
+                Space Man
+                <img src="icons/ship-wheel (1).svg" alt="Badge">
+            </div>
+            <span class="lvl">Level - 01</span>
+            <span class="pf-email">spaceman@gmail.com</span>
+            <!-- <button class="sign-out-btn">Sign out</button> -->
+        </div>
+    </div>
+    <div id="overlay" class="overlay"></div>
+    <div class="body-div">
+        <a th:href="@{'/home'}">
+            <div class="back">
+                <img class="back-arrow" src="icons/back-arrow.png" alt="back"> Back
+            </div>
+        </a>
+
+        <!-- <h2 class="content-title">Unlock Project Management Skills with Flashcards!</h2> -->
+        <div class="phase-div swiper mySwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" th:each="phase : ${phases}">
+                    <!-- <a th:href="@{'/card'}" id="phase-link"> -->
+                    <a th:href="@{${phase.phaseId} +'/cards'}">
+                        <div class="phase-1">
+                            <div class="pic-box">
+                                <img src="images/space man.jpg" alt="spaceman">
+                                <!-- <img th:src="@{${pahse.image}}" th:alt="${phase.name}"> -->
+                            </div>
+                            <span class="phase-name" th:text="${phase.name}">Phase Name</span>
+                            <span class="phase-desc" th:text="${phase.desc}">Phase Description</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!-- <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div> -->
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+   var swiper = new Swiper(".mySwiper", {
+  slidesPerView: 4, // Default for screens greater than 1200px
+  spaceBetween: 10,
+  keyboard: {
+    enabled: true,
+  },
+  pagination: {
+    el: ".swiper-pagination",
+    clickable: true,
+  },
+  navigation: {
+    nextEl: ".swiper-button-next",
+    prevEl: ".swiper-button-prev",
+  },
+  breakpoints: {
+    1400: {
+      slidesPerView: 4,
+    },
+    // For screens <= 1200px
+    1200: {
+      slidesPerView: 4,
+      spaceBetween: 10,
+    },
+    1000: {
+      slidesPerView: 3,
+      spaceBetween: 10,
+    },
+    // For screens <= 768px
+    600: {
+      slidesPerView: 2,
+      spaceBetween: 10,
+    },
+    // For screens <= 480px
+    150: {
+      slidesPerView: 1,
+      spaceBetween: 10,
+    },
+  },
+});
+
+
+  </script>
+
+    <script>
+        const profile = document.getElementById("profile");
+        const profileContainer = document.getElementById("profile-container");
+        const overlay = document.getElementById("overlay");
+        const body = document.body; // Select the body for blurring
+    
+        profile.addEventListener("click", () => {
+            profileContainer.classList.toggle("show");
+            overlay.style.display = profileContainer.classList.contains("show") ? "block" : "none";
+        });
+    
+        // Close profile container and remove blur when clicking outside
+        document.addEventListener("click", (event) => {
+            if (
+                !profile.contains(event.target) &&
+                !profileContainer.contains(event.target)
+            ) {
+                profileContainer.classList.remove("show");
+                overlay.style.display = "none";
+            }
+        });
+    </script>
+    <!-- <script type="text/javascript">
+        const audio = new Audio();
+        audio.src = "./audio/click.mp3";
+        audio.playbackRate = 3;
+
+        const phaseLink = document.getElementById("phase-link");
+        phaseLink.addEventListener("click", function (event) {
+            event.preventDefault(); 
+            audio.play(); 
+
+
+            document.body.classList.add("fade-out");
+            setTimeout(() => {
+                window.location.href = "card";
+            }, 300);
+        });
+    </script> -->
+</body>
+</html>
