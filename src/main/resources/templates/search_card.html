@@ -54,74 +54,51 @@
 
     <div class="body-container">
         <div class="container">
-            <h2>Search Card</h2>
             <a href="/card.html">
                 <div class="back-arr">
                     <img class="back-arrow" src="icons/back-arrow.png" alt="back"> Back
                 </div>
             </a>
+            <h2>Search Card</h2>
             <div class="card-container">
-                <div class="flashcard" onclick="flipCard(this)">
+                <div th:if="${searchResults.isEmpty()}">
+                    <p>No results found for "<span th:text="${keyword}"></span>".</p>
+                </div>
+                <div th:each="flashcard : ${searchResults}" class="flashcard" onclick="flipCard(this)">
                     <div class="flashcard-face front">
                         <div class="content-pic">
-                            <img class="pic"src="images/4k-mercedes-red-zcj47yx9mq7tfjed.webp" alt="image">
-                            <div class="star"><img class="star-icon" src="icons/icons8-star-50 (2).png" alt="star"></div>
+                            <img class="pic" src="/images/4k-mercedes-red-zcj47yx9mq7tfjed.webp">
+                            <!-- <img class="pic" th:src="@{/images/} + ${flashcard.image}" alt="image"> -->
+                            <div class="star"><img class="star-icon" src="/icons/icons8-star-50 (2).png" alt="star"></div>
                         </div>
                         <div class="text-content">
-                          <h3>Soccer</h3>
-                          <p>
-                            Learn how to create a dynamic carousel slider
-                            using Swiper JS in this tutorial! Explore step-by-step
-                            instructions and code examples to enhance your web development skills.
-                          </p>
+                            <h3 th:text="${flashcard.keyword}"></h3>
+                            <p th:text="${flashcard.definition}"></p>
                         </div>
                     </div>
                     <div class="flashcard-face back">
                         <div class="content-pic">
-                            <img class="pic" src="images\space man.jpg" alt="image">
-                            <div class="star"><img class="star-icon" src="icons/icons8-star-50 (2).png" alt="star"></div>
+                            <img class="pic" src="/images/space man.jpg" alt="image">
+                            <!-- <img class="pic" th:src="@{/images/} + ${flashcard.image}" alt="image"> -->
+                            <div class="star"><img class="star-icon" src="/icons/icons8-star-50 (2).png" alt="star"></div>
                         </div>
                         <div class="text-content">
-                          <h3>Soccer</h3>
-                          <p>
-                            Learn how to create a dynamic carousel slider
-                            using Swiper JS in this tutorial! Explore step-by-step
-                            instructions and code examples to enhance your web development skills.
-                          </p>
+                            <h3 th:text="${flashcard.keyword}"></h3>
+                            <p th:text="${flashcard.definition}"></p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        const profile = document.getElementById("profile");
-        const profileContainer = document.getElementById("profile-container");
-        const overlay = document.getElementById("overlay");
-        const body = document.body; // Select the body for blurring
     
-        profile.addEventListener("click", () => {
-            profileContainer.classList.toggle("show");
-            overlay.style.display = profileContainer.classList.contains("show") ? "block" : "none";
-        });
-    
-        // Close profile container and remove blur when clicking outside
-        document.addEventListener("click", (event) => {
-            if (
-                !profile.contains(event.target) &&
-                !profileContainer.contains(event.target)
-            ) {
-                profileContainer.classList.remove("show");
-                overlay.style.display = "none";
-            }
-        });
-    </script>
+    <script src="/scripts/profileScript.js"></script>
     <script>
         function flipCard(card) {
         card.classList.toggle('is-flipped');
         }
 
     </script>
+    
 </body>
 </html>
