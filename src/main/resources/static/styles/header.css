@@ -1,0 +1,50 @@
+.header{
+    position: fixed;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 65px;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    backdrop-filter: blur(7px);
+}
+.logo-box, .profile-box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 20px;
+    color: white;
+}
+.logo-name{
+    display: flex;
+    flex-direction: column;
+}
+.quiz{
+    font-size: 0.65rem;
+}
+.game{
+    font-size: 0.8rem;
+}
+.logo-box a{
+    display: flex;
+}
+.logo, .profile{
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.pf-lvl{
+    font-size: 0.65rem;
+}
+.profile-box div{
+    display: flex;
+}
+.profile{
+    margin: 0 0 0 10px;
+    border-radius: 50%;
+    border: 2px solid rgb(29, 255, 255);
+}

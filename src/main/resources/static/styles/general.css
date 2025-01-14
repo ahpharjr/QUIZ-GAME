@@ -1,0 +1,28 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Anta&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Montserrat:wght@100&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: "Instrument Sans", sans-serif;
+    /* background: linear-gradient(to right, #2c5364, #203a43, #0f2027); */
+    background-color: rgb(4, 60, 60);
+}
+
+.back-arr{
+    position: fixed;
+    top: 80px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    color: rgb(255, 255, 255);
+    z-index: 1;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+.back-arrow{
+    margin-right: 5px;
+    width: 20px;
+}

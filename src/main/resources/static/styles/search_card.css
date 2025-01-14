@@ -1,0 +1,132 @@
+.background-image {
+    background-image: url('/images/WHG1m7.webp');
+    background-size: cover;
+    background-position: center;
+    height: 100%; 
+    width: 100%; 
+    position: fixed;
+    opacity: 0.3;
+    overflow: hidden;
+}
+.body-container{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+
+}
+.container{
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.container h2{
+    text-align: center;
+}
+
+/* ====================Card Container=========================== */
+.card-container{
+    padding-top: 26px;
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+    row-gap: 20px;
+}
+.flashcard {
+    height: 28rem;
+    width: 22rem;
+    background: radial-gradient(circle, rgb(29, 100, 99) 0%, rgb(81, 104, 131) 90%);
+    border: .1rem solid rgb(255, 255, 255);
+    border-radius: .7rem;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    display: flex;
+    color: white;
+}
+.flashcard.is-flipped {
+    transform: rotateY(180deg); 
+    border-radius: .7rem;
+}
+
+.flashcard-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden; /* Hide back side of the flashcard */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: .7rem;
+}
+.flashcard-face.back {
+    transform: rotateY(180deg);
+}
+.content-pic{
+    position: relative;
+    width: 100%;
+    height: 233px;
+}
+.star, .favorite{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(20, 78, 128);
+    z-index: 10;
+    top: -5px;
+    right: -5px;
+    cursor: pointer;
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+}
+.star{
+    box-shadow: inset 0 0 5px rgba(255, 255, 255, 1);
+    border: 1px solid white;
+}
+.favorite{
+    position: fixed;
+    top: 80px;
+    right: 240px;
+    background-color: white;
+}
+.star:active,
+.favorite:active{
+    transform: scale(1.1);
+}
+.star-icon, .fav-icon{
+    width: 15px;
+    height: 15px;
+}
+.pic {
+    width: 100%;
+    height: 233px;
+    border-radius: .6rem;
+    object-fit: cover;
+    
+}
+.text-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: .4rem;
+    padding: 0 1rem;
+}
+
+.text-content h3 {
+    font-size: 1.7rem;
+    font-weight: 500;
+}
+
+.text-content p {
+    margin-top: 1rem;
+    max-width: 22rem;
+    font-size: 1rem;
+    font-weight: 400;
+    text-align: center;
+}

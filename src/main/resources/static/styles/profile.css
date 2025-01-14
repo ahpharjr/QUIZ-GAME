@@ -1,0 +1,108 @@
+.profile-container{
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    height: 260px;
+    padding: 25px;
+    border-radius: 10px;
+    color: aliceblue;
+    position: absolute;
+    top: 65px;
+    right: 20px;
+    display: none;
+    z-index: 101;
+    /* background: linear-gradient(to right, rgb(65, 125, 151), rgb(88, 154, 176), rgb(32, 95, 122)); */
+    /* background-color: rgb(255, 255, 255); */
+    background-color: #142d24cb;
+    backdrop-filter: blur(7px);
+    border: 2px solid white;
+    /* box-shadow: 0px 2px 5px rgb(254, 255, 239), 0px 2px 5px rgb(235, 235, 231); */
+}
+.show{
+    display: block;
+}
+.top-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.top-lf{
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+.top-rg{
+    display: flex;
+    column-gap: 13px;
+}
+.speaker-icon{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+.edit-icon{
+    width: 21px;
+}
+
+.bottom-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.pf-picture img{
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgb(29, 255, 255);
+}
+.pf-name{
+    position: relative;
+    font-size: 1rem;
+    font-weight: 550;
+    margin-top: 5px;
+}
+.pf-name img{
+    position: absolute;
+    top: -15px;
+    width: 30px;
+    filter: brightness(1.1);
+}
+.lvl{
+    font-size: 0.7rem;
+    /* color: rgb(112, 112, 112); */
+    margin-top: 5px;
+}
+.pf-email{
+    font-size: 0.75rem;
+    margin-top: 4px;
+}
+.sign-out-btn{
+    margin-top: 10px;
+    border: none;
+    background-color: rgba(14, 138, 169, 1);
+    padding: 8px 24px;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgb(0, 0, 0, 0.4);
+    transition: 0.4s;
+}
+.sign-out-btn:hover{
+    box-shadow: 0 2px 5px rgb(0, 0, 0, 0.6);
+}
+.sign-out-btn:active{
+    transform: scale(0.95);
+}
+/* ============for background blur================= */
+
+/* Background overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); 
+    display: none; 
+    z-index: 100;
+}
