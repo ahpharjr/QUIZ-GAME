@@ -1,5 +1,7 @@
 package com.EDTECH.QUIZ.GAME.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -12,10 +14,12 @@ public class Collection {
     
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "card_id", nullable = false)
+    @JsonIgnore
     private Flashcard flashcard;
 
     public Long getCollectionId() {
@@ -28,6 +32,18 @@ public class Collection {
 
     public Flashcard getFlashcard() {
         return flashcard;
+    }
+
+    public void setCollectionId(Long collectionId) {
+        this.collectionId = collectionId;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setFlashcard(Flashcard flashcard) {
+        this.flashcard = flashcard;
     }
 
     

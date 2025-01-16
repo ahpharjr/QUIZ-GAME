@@ -53,66 +53,106 @@
     <div id="overlay" class="overlay"></div>
 
     <div class="body-container">
-        <h2 class="title">My Card Collection</h2>
+        <h2 class="title">Card Collection</h2>
         <div class="back-arr" onclick="navigateBack()">
             <img class="back-arrow" src="icons/back-arrow.png" alt="back"> Back
         </div>
-        <div class="card-container">
-            <div class="flashcard" onclick="flipCard(this)">
-                <div class="flashcard-face front">
-                    <div class="content-pic">
-                        <img class="pic"src="images/4k-mercedes-red-zcj47yx9mq7tfjed.webp" alt="image">
-                        <div class="star">
-                            <img class="star-icon" src="icons/icons8-star-50 (2).png" alt="star">
-                            <img class="star-icon-color" src="icons/icons8-star-50 (1).png" alt="star">
-                            <span class="tooltip">Remove Card</span>
-                        </div>
-                    </div>
-                    <div class="text-content">
-                      <h3>Soccer</h3>
-                      <p>
-                        Learn how to create a dynamic carousel slider
-                        using Swiper JS in this tutorial! Explore step-by-step
-                        instructions and code examples to enhance your web development skills.
-                      </p>
-                    </div>
-                </div>
-                <div class="flashcard-face back">
-                    <div class="content-pic">
-                        <img class="pic" src="images\space man.jpg" alt="image">
-                        <div class="star">
-                            <img class="star-icon" src="icons/icons8-star-50 (2).png" alt="star">
-                            <img class="star-icon-color" src="icons/icons8-star-50 (1).png" alt="star">
-                            <span class="tooltip">Remove Card</span>
-                        </div>
-                    </div>
-                    <div class="text-content">
-                      <h3>Space Man</h3>
-                      <p>
-                        Learn how to create a dynamic carousel slider
-                        using Swiper JS in this tutorial! Explore step-by-step
-                        instructions and code examples to enhance your web development skills.
-                      </p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="card-container"></div>
     </div>
     <script src="scripts/profileScript.js"></script>
     <script>
+        // Function to flip cards
         function flipCard(card) {
-        card.classList.toggle('is-flipped');
+            card.classList.toggle('is-flipped');
         }
 
+        // Function to navigate back
         function navigateBack() {
             if (document.referrer) {
-                // Navigate to the referring page
                 window.history.back();
             } else {
-                // Fallback: navigate to a default page
                 window.location.href = "/card.html";
             }
         }
+
+        // Function to attach event listeners for removing cards
+        function attachRemoveCardListeners() {
+            document.querySelectorAll(".star").forEach(star => {
+                star.addEventListener("click", function (event) {
+                    event.stopPropagation(); // Prevent triggering flipCard()
+                    const cardId = star.closest(".flashcard").getAttribute("data-card-id");
+                    const userId = 1; // Placeholder user ID
+
+                    fetch(`/collections/remove`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                        },
+                        body: new URLSearchParams({ cardId, userId }),
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                console.log("Card removed successfully");
+                                star.closest(".flashcard").remove(); // Remove card from DOM
+                            } else {
+                                return response.text().then(text => {
+                                    console.error("Error removing card:", text);
+                                });
+                            }
+                        })
+                        .catch(error => console.error("Error removing card:", error));
+                });
+            });
+        }
+
+        // Function to load and display cards
+        function loadCards() {
+            const userId = 1; // Placeholder user ID
+            fetch(`/collections?userId=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const cardContainer = document.querySelector(".card-container");
+                    cardContainer.innerHTML = ""; // Clear existing cards
+                    data.forEach(card => {
+                        cardContainer.innerHTML += `
+                            <div class="flashcard" data-card-id="${card.cardId}" onclick="flipCard(this)">
+                                <div class="flashcard-face front">
+                                    <div class="content-pic">
+                                        <img class="pic" src="/images/${card.image}" alt="image">
+                                        <div class="star">
+                                            <img class="star-icon" src="/icons/icons8-star-50 (2).png" alt="star">
+                                            <img class="star-icon-color" src="/icons/icons8-star-50 (1).png" alt="star">
+                                            <span class="tooltip">Remove Card</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-content">
+                                        <h3>${card.keyword}</h3>
+                                        <p>${card.definition}</p>
+                                    </div>
+                                </div>
+                                <div class="flashcard-face back">
+                                    <div class="content-pic">
+                                        <img class="pic" src="/images/${card.image}" alt="image">
+                                        <div class="star">
+                                            <img class="star-icon" src="/icons/icons8-star-50 (2).png" alt="star">
+                                            <img class="star-icon-color" src="/icons/icons8-star-50 (1).png" alt="star">
+                                            <span class="tooltip">Remove Card</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-content">
+                                        <h3>${card.keyword}</h3>
+                                        <p>${card.definition}</p>
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+                    attachRemoveCardListeners(); // Attach event listeners to the stars
+                })
+                .catch(error => console.error("Error fetching collections:", error));
+        }
+
+        // Load cards on DOMContentLoaded
+        document.addEventListener("DOMContentLoaded", loadCards);
 
     </script>
 </body>

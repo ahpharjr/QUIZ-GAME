@@ -1,10 +1,12 @@
 
+// Call the function to ensure the first topic is selected by default
+window.onload = selectFirstTopic;
+
 function flipCard(card) {
     if (card.closest('.swiper-slide').classList.contains('swiper-slide-active')) {
         card.classList.toggle('is-flipped');
     }
 }
-
 
 // Initialize Swiper
 function initializeSwiper() {
@@ -52,69 +54,110 @@ let swiper = initializeSwiper();
         }
     }
 
+    function attachStarListeners() {
+        document.querySelectorAll(".star").forEach(star => {
+            star.addEventListener("click", function (event) {
+                // Prevent the event from propagating to the flashcard
+                event.stopPropagation();
+    
+                console.log("Star clicked!");
+    
+                const cardId = this.closest(".flashcard").getAttribute("data-card-id");
+                const userId = 1; // Placeholder: Replace with the actual user ID once authentication is implemented
+    
+                fetch("/collections/add", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: `cardId=${cardId}&userId=${userId}`,
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log("Card added to collection successfully!");
+                        } else {
+                            console.log("Failed to add card to collection.");
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+            });
+        });
+    }
+    
+
     // Add click event listeners to each topic title
     document.querySelectorAll('.set-title').forEach(topic => {
         topic.addEventListener('click', function() {
             const topicId = this.getAttribute('data-topic-id');
 
 
-            // Highlight the selected topic
-            document.querySelectorAll('.set-title').forEach(t => t.classList.remove('selected'));
-            this.classList.add('selected');
+        // Highlight the selected topic
+        document.querySelectorAll('.set-title').forEach(t => t.classList.remove('selected'));
+        this.classList.add('selected');
 
 
             // Fetch and update flashcards for the selected topic
-            fetch(`/flashcards/${topicId}`)
-                .then(response => response.json())
-                .then(data => {
-                    const flashcardsContainer = document.getElementById('flashcards-container');
-                    flashcardsContainer.innerHTML = ''; // Clear existing flashcards
+        fetch(`/flashcards/${topicId}`)
+        .then(response => response.json())
+        .then(data => {
+            const flashcardsContainer = document.getElementById('flashcards-container');
+            flashcardsContainer.innerHTML = ''; // Clear existing flashcards
 
-                    data.forEach(card => {
-                        flashcardsContainer.innerHTML += `
-                            <div class="swiper-slide">
-                                <div class="flashcard" onclick="flipCard(this)">
-                                    <div class="flashcard-face front">
-                                        <div class="content-pic">
-                                            <img class="pic" src="/images/4k-mercedes-red-zcj47yx9mq7tfjed.webp">
-                                            <div class="star">
-                                                <img class="star-icon" src="/icons/icons8-star-50 (2).png" alt="star">
-                                                <img class="star-icon-color" src="/icons/icons8-star-50 (1).png" alt="star">
-                                                <span class="tooltip">Add to Collection</span>
-                                            </div>
-                                        </div>
-                                        <div class="text-content">
-                                            <h3>${card.keyword}</h3>
-                                            <p>${card.definition}</p>
-                                        </div>
-                                    </div>
-                                    <div class="flashcard-face back">
-                                        <div class="content-pic">
-                                            <img class="pic" src="/images/space man.jpg" alt="image">
-                                            <div class="star">
-                                                <img class="star-icon" src="/icons/icons8-star-50 (2).png" alt="star">
-                                                <img class="star-icon-color" src="/icons/icons8-star-50 (1).png" alt="star">
-                                                <span class="tooltip">Add to Collection</span>
-                                            </div>
-                                        </div>
-                                        <div class="text-content">
-                                            <h3>${card.keyword}</h3>
-                                            <p>${card.definition}</p>
-                                        </div>
+            data.forEach(card => {
+                flashcardsContainer.innerHTML += `
+                    <div class="swiper-slide">
+                        <div class="flashcard" data-card-id="${card.cardId}" onclick="flipCard(this)">
+                            <div class="flashcard-face front">
+                                <div class="content-pic">
+                                    <img class="pic" src="/images/4k-mercedes-red-zcj47yx9mq7tfjed.webp">
+                                    <div class="star">
+                                        <img class="star-icon" src="/icons/icons8-star-50 (2).png" alt="star">
+                                        <img class="star-icon-color" src="/icons/icons8-star-50 (1).png" alt="star">
+                                        <span class="tooltip">Add to Collection</span>
                                     </div>
                                 </div>
-                            </div>`;
-                    });
+                                <div class="text-content">
+                                    <h3>${card.keyword}</h3>
+                                    <p>${card.definition}</p>
+                                </div>
+                            </div>
+                            <div class="flashcard-face back">
+                                <div class="content-pic">
+                                    <img class="pic" src="/images/space man.jpg" alt="image">
+                                    <div class="star">
+                                        <img class="star-icon" src="/icons/icons8-star-50 (2).png" alt="star">
+                                        <img class="star-icon-color" src="/icons/icons8-star-50 (1).png" alt="star">
+                                        <span class="tooltip">Add to Collection</span>
+                                    </div>
+                                </div>
+                                <div class="text-content">
+                                    <h3>${card.keyword}</h3>
+                                    <p>${card.definition}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            });
 
-                    if (swiper) {
-                        swiper.destroy(true, true);
-                    }
-                    swiper = initializeSwiper();
-                });
+            // Reinitialize the Swiper instance
+            if (swiper) {
+                swiper.destroy(true, true);
+            }
+            swiper = initializeSwiper();
+
+            // Reattach event listeners to the new `.star-icon-color` elements
+            attachStarListeners();
+        });
+
 
     });
 });
 
 
-// Call the function to ensure the first topic is selected by default
-window.onload = selectFirstTopic;
+
+
+
+
+
+
+

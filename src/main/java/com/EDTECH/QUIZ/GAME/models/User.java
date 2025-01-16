@@ -2,6 +2,8 @@ package com.EDTECH.QUIZ.GAME.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -16,6 +18,15 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Collection> collections;
+
+    public User() {
+    }
+
+    // @JsonIgnore
+    public User(Long userId) {
+        this.userId = userId;
+    }
+
 
     public Long getUserId() {
         return userId;

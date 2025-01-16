@@ -9,15 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.EDTECH.QUIZ.GAME.models.Flashcard;
 
-// @Repository
-// public interface FlashcardRepository extends JpaRepository<Flashcard, Long>{
-//     List<Flashcard> findAllByTopicTopicId(Long topicId);
-
-//     //method for keyword search
-//     @Query("SELECT f FROM Flashcard f WHERE LOWER(f.keyword) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-//     List<Flashcard> searchByKeyword(@Param("keyword") String keyword);
-// }
-
 @Repository
 public interface FlashcardRepository extends JpaRepository<Flashcard, Long> {
     List<Flashcard> findAllByTopicTopicId(Long topicId);
