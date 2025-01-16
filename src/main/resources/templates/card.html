@@ -63,20 +63,11 @@
             <img class="back-arrow" src="/icons/back-arrow.png" alt="back"> Back
         </div>
     </a>
-    <!-- <div class="search-box">
-        <div class="search-input">
-            <input type="text" placeholder="Search card...">
-        </div>
-        <a th:href="@{${'/search-card'}}">
-            <div class="search-icon">
-                <img src="/icons/icons8-search-50 (3).png" alt="search">
-            </div>
-        </a>
-    </div> -->
     <div class="search-box">
         <form th:action="@{/search-card}" method="get" class="search-form">
             <div class="search-input">
-                <input type="text" name="keyword" placeholder="Search card..." th:value="${keyword}">
+                <input type="text" id="search-input" name="keyword" placeholder="Search card..." autocomplete="off">
+                <div id="suggestions-box" class="suggestions-box"></div>
             </div>
             <button type="submit" class="search-icon">
                 <img src="/icons/icons8-search-50 (3).png" alt="search">
@@ -84,7 +75,7 @@
         </form>
     </div>
     
-    <a href="card_collection.html">
+    <a th:href="@{'/collection'}">
         <div class="favorite">
             <span class="tooltip-collection">Card Collection</span>
             <img class="fav-icon" src="/icons/icons8-star-50 (1).png" alt="star">
@@ -112,38 +103,10 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="/scripts/profileScript.js"></script>
     <script src="/scripts/flashcardScript.js"></script>
+    <script src="/scripts/searchScript.js"></script>
 
-    <script>
-        const searchInput = document.querySelector('input[name="keyword"]');
-        const suggestionsBox = document.createElement('div');
-        suggestionsBox.style.position = 'absolute';
-        suggestionsBox.style.backgroundColor = '#fff';
-        searchInput.parentNode.appendChild(suggestionsBox);
-    
-        searchInput.addEventListener('input', async () => {
-            const keyword = searchInput.value;
-            if (keyword.trim() === '') {
-                suggestionsBox.innerHTML = '';
-                return;
-            }
-    
-            const response = await fetch(`/search-suggestions?keyword=${encodeURIComponent(keyword)}`);
-            const suggestions = await response.json();
-    
-            suggestionsBox.innerHTML = '';
-            suggestions.forEach(suggestion => {
-                const suggestionItem = document.createElement('div');
-                suggestionItem.textContent = suggestion;
-                suggestionItem.style.cursor = 'pointer';
-                suggestionItem.addEventListener('click', () => {
-                    searchInput.value = suggestion;
-                    suggestionsBox.innerHTML = '';
-                });
-                suggestionsBox.appendChild(suggestionItem);
-            });
-        });
-    </script>
-    
+
+
 </body>
 
 

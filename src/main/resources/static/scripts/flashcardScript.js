@@ -106,7 +106,6 @@ let swiper = initializeSwiper();
                             </div>`;
                     });
 
-                    // Destroy and recreate Swiper
                     if (swiper) {
                         swiper.destroy(true, true);
                     }

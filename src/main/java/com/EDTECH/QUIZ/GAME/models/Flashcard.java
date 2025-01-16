@@ -1,5 +1,7 @@
 package com.EDTECH.QUIZ.GAME.models;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -20,6 +22,10 @@ public class Flashcard {
     @JoinColumn (name = "topic_id", nullable = false)
     @JsonIgnore
     private Topic topic;
+
+    @OneToMany(mappedBy = "flashcard", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Collection> collections;
+    
 
     public Long getCardId() {
         return cardId;
@@ -59,6 +65,14 @@ public class Flashcard {
 
     public void setTopic(Topic topic) {
         this.topic = topic;
+    }
+
+    public List<Collection> getCollections() {
+        return collections;
+    }
+
+    public void setCollections(List<Collection> collections) {
+        this.collections = collections;
     }
 
 

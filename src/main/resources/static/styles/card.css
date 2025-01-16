@@ -70,6 +70,49 @@
     width: 20px;
     cursor: pointer;
 }
+.suggestions-box {
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    border: none;
+    max-height: 160px;
+    overflow-y: auto;
+    width: 100%;
+    z-index: 1000;
+    font-size: 0.8rem;
+    display: none;
+    border-radius: 5px;
+    top: calc(100% + 2px);
+}
+
+.suggestion-item {
+    padding: 8px 10px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #e5e5e5;
+}
+
+
+/* Customize the scrollbar for the suggestions box */
+.suggestions-box::-webkit-scrollbar {
+    width: 6px; /* Width of the scrollbar */
+}
+
+.suggestions-box::-webkit-scrollbar-track {
+    background: rgb(240, 240, 240); /* Light background for the track */
+    border-radius: 5px; /* Round corners for the track */
+}
+
+.suggestions-box::-webkit-scrollbar-thumb {
+    background: rgb(180, 180, 180); /* Color of the scrollbar thumb */
+    border-radius: 5px; /* Round corners for the thumb */
+    border: 2px solid rgb(226, 226, 226); /* Match the background for a seamless look */
+}
+
+.suggestions-box::-webkit-scrollbar-thumb:hover {
+    background: rgb(150, 150, 150); /* Darker color on hover */
+}
 .flashcard-set-box{
     position: absolute;
     bottom: -15%;

@@ -1,8 +1,6 @@
 package com.EDTECH.QUIZ.GAME.controllers;
 
-
 import java.util.List;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,11 +29,10 @@ public class CardController {
 
     @GetMapping("{phaseId}/cards")
     public String showCard(@PathVariable Long phaseId, Model model) {
-        System.out.println("Received phaseId::::::::: " + phaseId);
+
         // Fetch topics related to the selected phase
         var topics = topicRepository.findAllByPhasePhaseId(phaseId);
         model.addAttribute("topics", topics);
-
 
         // Load flashcards for the first topic (if any) as default
         if (!topics.isEmpty()) {
@@ -44,7 +41,7 @@ public class CardController {
         } else {
             model.addAttribute("flashcards", List.of());
         }
-        System.out.println("Received phaseId::::::::: " + phaseId);
+
         return "card";
     }
 

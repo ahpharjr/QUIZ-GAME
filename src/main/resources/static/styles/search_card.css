@@ -36,7 +36,7 @@
 .flashcard {
     height: 28rem;
     width: 22rem;
-    background: radial-gradient(circle, rgb(29, 100, 99) 0%, rgb(81, 104, 131) 90%);
+    background: radial-gradient(circle, rgb(24, 78, 77) 30% , transparent);
     border: .1rem solid rgb(255, 255, 255);
     border-radius: .7rem;
     position: relative;

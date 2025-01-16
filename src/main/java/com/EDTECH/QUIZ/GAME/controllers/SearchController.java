@@ -1,7 +1,6 @@
 package com.EDTECH.QUIZ.GAME.controllers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,26 +17,32 @@ public class SearchController {
 
     @Autowired
     private FlashcardRepository flashcardRepository;
-    
+
     @GetMapping("/search-card")
-    public String search(@RequestParam(name= "keyword", required = false) 
-                        String keyword, Model model) {
-        
-        List<Flashcard> searchResults = List.of(); // Default empty list
-        if (keyword != null && !keyword.isBlank()) {
-            searchResults = flashcardRepository.searchByKeyword(keyword);
+    public String search(@RequestParam(required = false, defaultValue = "") String keyword, Model model) {
+        List<Flashcard> searchResults = List.of();
+
+        if (!keyword.isEmpty()) {
+            // Fetch the first matching keyword from the suggestions
+            List<String> suggestions = flashcardRepository.findKeywordsByFlexibleSearch(keyword);
+            if (!suggestions.isEmpty()) {
+                keyword = suggestions.get(0); // Use the first suggestion as the keyword
+                searchResults = flashcardRepository.searchFlashcards(keyword);
+            }
         }
+
         model.addAttribute("searchResults", searchResults);
-        model.addAttribute("keyword", keyword); // Retain the keyword in the input field
-         return "search_card";
+        model.addAttribute("keyword", keyword);
+
+        return "search_card";
     }
 
-    @GetMapping("/search-suggestions")
     @ResponseBody
-    public List<String> getSuggestions(@RequestParam String keyword) {
-        return flashcardRepository.searchByKeyword(keyword).stream()
-                .map(Flashcard::getKeyword)
-                .collect(Collectors.toList());
+    @GetMapping("/suggest-keywords")
+    public List<String> suggestKeywords(@RequestParam String prefix) {
+        return flashcardRepository.findKeywordsByFlexibleSearch(prefix);
     }
+
 
 }
+
