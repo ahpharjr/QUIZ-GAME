@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="x-icon" href="icons/quizlogo99.svg">
+    <link rel="stylesheet" href="styles/general.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/profile.css">
+    <link rel="stylesheet" href="styles/review.css">
+    <title>Review Answer</title>
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="header">
+        <div class="logo-box">
+            <a th:href="@{/home}">
+                <img class="logo" src="icons/quizlogo99.svg" alt="Logo">
+            </a>
+            <div class="logo-name">
+                <span class="quiz">QUIZ</span>
+                <span class="game">GAME</span>
+            </div>
+        </div>
+        <div class="profile-box">
+            <span class="pf-lvl">Lvl - 01</span>
+            <div >
+                <img class="profile" id="profile" src="images/space man.jpg" alt="Logo">
+            </div>
+        </div>
+    </div>
+    <div class="profile-container" id="profile-container">
+        <div class="top-box">
+            <div class="top-lf">Profile</div>
+            <div class="top-rg">
+                <img class="speaker-icon" src="icons/speaker.png" alt="Seapker icon">
+                <a href="/update_profile.html">
+                    <img class="edit-icon" src="icons/lucide_edit.png" alt="Edit icon">
+                </a>
+            </div>
+        </div>
+        <div class="bottom-box">
+            <div class="pf-picture"><img src="images/space man.jpg" alt="Profile"></div>
+            <div class="pf-name">
+                Space Man
+                <img src="icons/ship-wheel (1).svg" alt="Badge">
+            </div>
+            <span class="lvl">Level - 01</span>
+            <span class="pf-email">spaceman@gmail.com</span>
+            <!-- <button class="sign-out-btn">Sign out</button> -->
+        </div>
+    </div>
+    <div id="overlay" class="overlay"></div>
+
+    <div class="container">
+        <div class="back-arr" onclick="navigateBack()">
+            <img class="back-arrow" src="icons/back-arrow.png" alt="back"> Back
+        </div>
+
+        <h2>Review Answer</h2>
+        <div class="review-container">
+            <div class="review-box">
+                <span class="Q-no">1. </span>
+                <div class="question-box">
+                    <span class="question">Question: What is the primary purpose of the project charter?</span>
+                    <span class="ans">
+                        <span class="status correct">Correct </span>: To authorize the project and define initial roles and responsibilities.
+                    </span>
+                </div>
+                <!-- <span class="status">Correct</span> -->
+            </div>
+            <div class="review-box">
+                <span class="Q-no">2. </span>
+                <div class="question-box">
+                    <span class="question">Question: What is the primary purpose of the project charter?</span>
+                    <span class="ans">
+                        <span class="status correct">Correct </span>: To authorize the project and define initial roles and responsibilities.
+                    </span>
+                </div>
+                <!-- <span class="status">Correct</span> -->
+            </div>
+            <div class="review-box wrong-border">
+                <span class="Q-no">3. </span>
+                <div class="question-box">
+                    <span class="question">Question: What is the primary purpose of the project charter?</span>
+                    <span class="ans">
+                        <span class="status wrong">Wrong </span>: To authorize the project and define initial roles and responsibilities.
+                    </span>
+                    <span class="ans">
+                        <span class="status correct">Correct </span>: To authorize the project and define initial roles and responsibilities.
+                    </span>
+                </div>
+                <!-- <span class="status">Correct</span> -->
+            </div>
+            <div class="review-box">
+                <span class="Q-no">4. </span>
+                <div class="question-box">
+                    <span class="question">Question: What is the primary purpose of the project charter?</span>
+                    <span class="ans">
+                        <span class="status correct">Correct </span>: To authorize the project and define initial roles and responsibilities.
+                    </span>
+                </div>
+                <!-- <span class="status">Correct</span> -->
+            </div>
+            <div class="review-box">
+                <span class="Q-no">5. </span>
+                <div class="question-box">
+                    <span class="question">Question: What is the primary purpose of the project charter?</span>
+                    <span class="ans">
+                        <span class="status correct">Correct </span>: To authorize the project and define initial roles and responsibilities.
+                    </span>
+                </div>
+                <!-- <span class="status">Correct</span> -->
+            </div>
+        </div>
+        
+    </div>
+
+    <script src="/scripts/profileScript.js"></script>
+    <script>
+                function navigateBack() {
+            if (document.referrer) {
+                // Navigate to the referring page
+                window.history.back();
+            } else {
+                // Fallback: navigate to a default page
+                window.location.href = "/result";
+            }
+        }
+    </script>
+</body>
+</html>

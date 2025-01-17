@@ -1,0 +1,94 @@
+.background-image {
+    background-image: url('/images/fond-technologie-graphique-faisceaux-lumineux-incurves_1412-652.avif');
+    background-size: cover;
+    background-position: center;
+    height: 100%; 
+    width: 100%; 
+    position: fixed;
+    opacity: 0.3;
+    overflow: hidden;
+    z-index: -1;
+}
+.container{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+.result-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+.result-info-box{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+.player-rank{
+    font-size: 1.05rem;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+.congrat-text{
+    font-size: .9rem;
+}
+.score-info{
+    margin-top: 20px;
+    display: flex;
+    column-gap: 35px;
+    font-size: .9rem;
+}
+.score-info-left, .score-info-right{
+    display: flex;
+    flex-direction: column;
+    row-gap: 3px;
+}
+.score-info-left{
+    align-items: end;
+}
+.review-btn, 
+.finish-btn{
+    width: 100px;
+    padding: 10px 10px;
+    margin-top: 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    border: 1px solid rgb(224, 224, 224);
+    background: linear-gradient(90deg, rgb(16, 98, 118), rgb(18, 203, 187));
+    color: white;
+    box-shadow: 0 0 10px rgba(19, 116, 141, 0.8), 0 0 10px rgba(18, 114, 138, 0.6);
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+    font-weight: 600;
+}
+.review-btn::before,
+.finish-btn::before {
+    content: '';
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: rgba(0, 255, 234, 0.2);
+    filter: blur(10px);
+    transition: all 0.3s ease-in-out;
+}
+
+.review-btn:hover,
+.finish-btn:hover {
+    color: #ffffff;
+    box-shadow: 0 0 10px rgb(19, 229, 212), 0 0 10px rgba(0, 255, 234, 0.8);
+}
+
+.review-btn:hover::before,
+.finish-btn:hover::before{
+    left: 0;
+    background: rgba(0, 255, 234, 0.4);
+    filter: blur(15px);
+}
