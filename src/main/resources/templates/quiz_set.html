@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="x-icon" href="icons/quizlogo99.svg">
+    <link rel="stylesheet" href="styles/general.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/profile.css">
+    <link rel="stylesheet" href="/styles/quiz_set.css">
+    <link rel="stylesheet" href="styles/leaderboard.css">
+    <title>Game Set</title>
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="header">
+        <div class="logo-box">
+            <a th:href="@{${'/home'}}">
+                <img class="logo" src="icons/quizlogo99.svg" alt="Logo">
+            </a>
+            <div class="logo-name">
+                <span class="quiz">QUIZ</span>
+                <span class="game">GAME</span>
+            </div>
+        </div>
+        <div class="profile-box">
+            <span class="pf-lvl">Lvl - 01</span>
+            <div >
+                <img class="profile" id="profile" src="images/space man.jpg" alt="Logo">
+            </div>
+        </div>
+    </div>
+    <div class="profile-container" id="profile-container">
+        <div class="top-box">
+            <div class="top-lf">Profile</div>
+            <div class="top-rg">
+                <img class="speaker-icon" src="icons/speaker.png" alt="Seapker icon">
+                <a href="/update_profile.html">
+                    <img class="edit-icon" src="icons/lucide_edit.png" alt="Edit icon">
+                </a>
+            </div>
+        </div>
+        <div class="bottom-box">
+            <div class="pf-picture"><img src="images/space man.jpg" alt="Profile"></div>
+            <div class="pf-name">
+                Space Man
+                <img src="icons/ship-wheel (1).svg" alt="Badge">
+            </div>
+            <span class="lvl">Level - 02</span>
+            <span class="pf-email">spaceman@gmail.com</span>
+            <!-- <button class="sign-out-btn">Sign out</button> -->
+        </div>
+    </div>
+    <div id="overlay" class="overlay"></div>
+
+    <div class="container">
+        <div class="back-arr" onclick="navigateBack()">
+            <img class="back-arrow" src="icons/back-arrow.png" alt="back"> Back
+        </div>
+        <span class="chapter-name">Phase 1: Initiation </span>
+        <div class="leaderboard-container">
+            <h2>leaderboard</h2>
+
+            <div class="leaderboard-box">
+                <div class="bg-div"></div>
+                <div class="lb-title">
+                    <div class="rank">Rank</div>
+                    <div class="player">Player</div>
+                    <!-- <div class="point">Point</div> -->
+                    <div class="point">XP</div>
+                    <div class="time">Time Taken</div>
+                </div>
+                <div class="lb-body">
+                    <div class="lb-row">
+                        <div class="rank"><span>1</span></div>
+                        <div class="player">
+                            <div class="player-pf">
+                                <img src="images/animal_pic1.webp" alt="">
+                            </div>
+                            <div class="player-name">Solara</div>
+                        </div>
+                        <div class="point">18000</div>
+                        <div class="time">00:35:55</div>
+                    </div>
+                    <div class="lb-row">
+                        <div class="rank">2</div>
+                        <div class="player">
+                            <div class="player-pf">
+                                <img src="images/animal_pic2.jpg" alt="">
+                            </div>
+                            <div class="player-name">Aurelion</div>
+                        </div>
+                        <div class="point">13950</div>
+                        <div class="time">00:43:05</div>
+                    </div>
+                    <div class="lb-row">
+                        <div class="rank">3</div>
+                        <div class="player">
+                            <div class="player-pf">
+                                <img src="images/animal_pic3.webp" alt="">
+                            </div>
+                            <div class="player-name">Lynith</div>
+                        </div>
+                        <div class="point">13801</div>
+                        <div class="time">00:48:55</div>
+                    </div>
+                    <div class="lb-row">
+                        <div class="rank">4</div>
+                        <div class="player">
+                            <div class="player-pf">
+                                <img src="images/animal_pic4.jpg" alt="">
+                            </div>
+                            <div class="player-name">Kaelwyn</div>
+                        </div>
+                        <div class="point">13770</div>
+                        <div class="time">00:49:59</div>
+                    </div>
+                    <div class="lb-row">
+                        <div class="rank">5</div>
+                        <div class="player">
+                            <div class="player-pf">
+                                <img src="images/animal_pic5.avif" alt="">
+                            </div>
+                            <div class="player-name">Erisen</div>
+                        </div>
+                        <div class="point">13509</div>
+                        <div class="time">00:54:15</div>
+                    </div>
+                    <div class="lb-row">
+                        <div class="rank">6</div>
+                        <div class="player">
+                            <div class="player-pf">
+                                <img src="images/animal_pic5.jpg" alt="">
+                            </div>
+                            <div class="player-name">Virella</div>
+                        </div>
+                        <div class="point">13400</div>
+                        <div class="time">00:56:33</div>
+                    </div>
+                    <div class="lb-row">
+                        <div class="rank">7</div>
+                        <div class="player">
+                            <div class="player-pf">
+                                <img src="images/animal_pic7.jpg" alt="">
+                            </div>
+                            <div class="player-name">Thalior</div>
+                        </div>
+                        <div class="point">13316</div>
+                        <div class="time">00:59:55</div>
+                    </div>
+                </div>
+                <div class="lb-user-rank">
+                    <div class="rank">10</div>
+                    <div class="player">
+                        <div class="player-pf"> 
+                            <img src="images/space man.jpg" alt="">
+                        </div>
+                        <div class="player-name">John Snow</div>
+                    </div>
+                    <div class="point">12000</div>
+                    <div class="time">01:15:33</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-set-container">
+            <span class="game-set-title">Ready to boost your rank in Leaderboard</span>
+            <div class="game-set-box">
+                <div class="game-set">
+                    <div class="topic-img">
+                        <img src="images/blog-images-agile3-removebg-preview.png" alt="topic img">
+                    </div>
+                    <span class="topic-name">Project Charter</span>
+                    <a th:href="@{${'/quiz'}}">
+                        <button class="start-btn">START</button>
+                    </a>
+                </div>    
+                <div class="game-set">
+                    <div class="topic-img">
+                        <img src="images/blog-images-agile3-removebg-preview.png" alt="topic img">
+                    </div>
+                    <span class="topic-name">Project Charter</span>
+                    <a th:href="@{${'/quiz'}}">
+                        <button class="start-btn">START</button>
+                    </a>
+                </div> 
+                <div class="game-set">
+                    <div class="topic-img">
+                        <img src="images/blog-images-agile3-removebg-preview.png" alt="topic img">
+                    </div>
+                    <span class="topic-name">Project Charter</span>
+                    <a th:href="@{${'/quiz'}}">
+                        <button class="start-btn">START</button>
+                    </a>
+                </div> 
+                <div class="game-set">
+                    <div class="topic-img">
+                        <img src="images/blog-images-agile3-removebg-preview.png" alt="topic img">
+                    </div>
+                    <span class="topic-name">Project Charter</span>
+                    <a th:href="@{${'/quiz'}}">
+                        <button class="start-btn">START</button>
+                    </a>
+                </div> 
+                <div class="game-set">
+                    <div class="topic-img">
+                        <img src="images/blog-images-agile3-removebg-preview.png" alt="topic img">
+                    </div>
+                    <span class="topic-name">Project Charter</span>
+                    <a th:href="@{${'/quiz'}}">
+                        <button class="start-btn">START</button>
+                    </a>
+                </div> 
+                <div class="game-set">
+                    <div class="topic-img">
+                        <img src="images/blog-images-agile3-removebg-preview.png" alt="topic img">
+                    </div>
+                    <span class="topic-name">Project Charter</span>
+                    <a th:href="@{${'/quiz'}}">
+                        <button class="start-btn">START</button>
+                    </a>
+                </div> 
+                <div class="game-set">
+                    <div class="topic-img">
+                        <img src="images/blog-images-agile3-removebg-preview.png" alt="topic img">
+                    </div>
+                    <span class="topic-name">Project Charter</span>
+                    <a th:href="@{${'/quiz'}}">
+                        <button class="start-btn">START</button>
+                    </a>
+                </div> 
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const profile = document.getElementById("profile");
+        const profileContainer = document.getElementById("profile-container");
+        const overlay = document.getElementById("overlay");
+        const body = document.body; // Select the body for blurring
+    
+        profile.addEventListener("click", () => {
+            profileContainer.classList.toggle("show");
+            overlay.style.display = profileContainer.classList.contains("show") ? "block" : "none";
+        });
+    
+        // Close profile container and remove blur when clicking outside
+        document.addEventListener("click", (event) => {
+            if (
+                !profile.contains(event.target) &&
+                !profileContainer.contains(event.target)
+            ) {
+                profileContainer.classList.remove("show");
+                overlay.style.display = "none";
+            }
+        });
+    </script>
+    <script>
+        function navigateBack() {
+            if (document.referrer) {
+                // Navigate to the referring page
+                window.history.back();
+            } else {
+                // Fallback: navigate to a default page
+                window.location.href = "/gamezone";
+            }
+        }
+    </script>
+</body>
+</html>

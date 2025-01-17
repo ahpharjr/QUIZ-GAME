@@ -38,13 +38,32 @@ public class CollectionController {
             return ResponseEntity.badRequest().body("Invalid card ID");
         }
 
-        // Create and save the collection entry
+        List<Collection> existingCollections = collectionRepository.findByUser_UserId(userId);
+        boolean alreadyExists = existingCollections.stream()
+            .anyMatch(c -> c.getFlashcard().getCardId().equals(cardId));
+
+        if (alreadyExists) {
+            return ResponseEntity.badRequest().body("Card already in collection");
+        }
+
+        // Create and save the new collection entry
         Collection collection = new Collection();
         collection.setUser(new User(userId)); // Assuming userId is passed
         collection.setFlashcard(flashcardOpt.get());
-
         collectionRepository.save(collection);
+
         return ResponseEntity.ok("Card added to collection successfully");
+    }
+
+
+    @GetMapping("/collections/check")
+    @ResponseBody
+    public ResponseEntity<Boolean> isCardInCollection(@RequestParam Long cardId, @RequestParam Long userId) {
+        List<Collection> existingCollections = collectionRepository.findByUser_UserId(userId);
+        boolean isInCollection = existingCollections.stream()
+            .anyMatch(c -> c.getFlashcard().getCardId().equals(cardId));
+
+        return ResponseEntity.ok(isInCollection);
     }
 
     @GetMapping("/collections")

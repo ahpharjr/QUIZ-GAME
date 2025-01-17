@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="x-icon" href="icons/quizlogo99.svg">
+    <link rel="stylesheet" href="styles/general.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/quiz.css">
+    <link rel="stylesheet" href="styles/logo.css">
+    <title>Quiz</title>
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="loading">
+        <div class="logo-container">
+            <div class="logo-div">
+                <div class="top-logo">
+                    <div class="Q-box">Q</div>
+                    <div class="U-box">U</div>
+                </div>
+                <div class="bottom-logo">
+                    <div class="I-box">I</div>
+                    <div class="Z-box">Z</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header hidden">
+            <div class="logo-box">
+                <a th:href="@{/home}">
+                    <img class="logo" src="icons/quizlogo99.svg" alt="Logo">
+                </a>
+                    <div class="logo-name">
+                    <span class="quiz">QUIZ</span>
+                    <span class="game">GAME</span>
+                </div>
+            </div>
+        </a>
+        <div class="profile-box">
+            <span class="pf-lvl">Lvl - 01</span>
+            <div >
+                <img class="profile" id="profile" src="images/space man.jpg" alt="Logo">
+            </div>
+        </div>
+    </div>
+
+    <div class="container hidden">
+        <div class="quiz-container">
+            <div class="timer">
+                <img src="icons/stopwatch (1).svg" alt="timer img">
+                <span id="timer">00:45</span>
+            </div>
+            <a th:href="@{/quizset}">
+                <div id="exit-link" class="exist">
+                    <img src="icons/exit-door.svg" alt="exist icon">
+                    <span>Exist</span>
+                </div>
+            </a>
+            <div id="confirmation-overlay" class="hidden">
+                <div class="overlay-box">
+                    <p>Are you sure you want to exit?</p>
+                    <button id="confirm-exit">Yes</button>
+                    <button id="cancel-exit">No</button>
+                </div>
+            </div>
+            <div class="remain-question"> 1 / 8</div>
+            <div class="question-box">
+                <div class="Q-img">
+                    <img src="images/blog-images-agile3-removebg-preview.png" alt="Question image">
+                </div>
+                <span class="question">
+                    Which of the following is NOT a characteristic of Agile project management?
+                </span>
+            </div>
+            <div class="answer-box">
+                <div class="answer" onclick="selectAnswer(this)">
+                    <span class="ans-A">A.</span>
+                    <span class="ans-text">Iterative development</span>
+                    <div class="ans-bg"></div>
+                </div>
+                <div class="answer" onclick="selectAnswer(this)">
+                    <span class="ans-A">B.</span>
+                    <span class="ans-text">Frequent delivery of working software</span>
+                </div>
+                <div class="answer" onclick="selectAnswer(this)">
+                    <span class="ans-A">C.</span>
+                    <span class="ans-text">Fixed, unchangeable project scope</span>
+                </div>
+                <div class="answer" onclick="selectAnswer(this)">
+                    <span class="ans-A">D.</span>
+                    <span class="ans-text">Collaborative approach with stakeholders</span>
+                </div>
+            </div>
+            <a href="quiz_result.html">
+                <button id="finish-btn" class="next-btn">NEXT</button>
+            </a>
+        </div>
+ </div>
+<!--
+    <script>
+        function selectAnswer(selectedElement) {
+            // Remove 'selected' class from all answers
+            const allAnswers = document.querySelectorAll('.answer');
+            allAnswers.forEach(answer => {
+                answer.classList.remove('selected');
+            });
+    
+            // Add 'selected' class to the clicked answer
+            selectedElement.classList.add('selected');
+        }
+    </script>
+
+    <script>
+
+        /* let timeLeft = 48; // Time in seconds
+        const timerElement = document.getElementById("timer");
+
+        function updateTimer() {
+            const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+            const seconds = String(timeLeft % 60).padStart(2, '0');
+            timerElement.textContent = `${minutes}:${seconds}`;
+            if (timeLeft > 0) {
+                timeLeft--;
+            } else {
+                clearInterval(timerInterval);
+                timerElement.textContent = "Time's up!";
+                // Add logic here if you want to handle the end of the timer
+            }
+        }
+
+        const timerInterval = setInterval(updateTimer, 1000); */ 
+
+            let elapsedTime = -3; 
+            const timerElement = document.getElementById("timer");
+
+            function updateTimer() {
+                const minutes = String(Math.floor(elapsedTime / 60)).padStart(2, '0');
+                const seconds = String(elapsedTime % 60).padStart(2, '0');
+                timerElement.textContent = `${minutes}:${seconds}`;
+                elapsedTime++;
+            }
+            const timerInterval = setInterval(updateTimer, 1000);
+            function stopTimer() {
+                clearInterval(timerInterval);
+                console.log(`Quiz completed in ${Math.floor(elapsedTime / 60)} minutes and ${elapsedTime % 60} seconds.`);
+
+            }
+
+            document.getElementById("finish-btn").addEventListener("click", stopTimer);        
+
+    </script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+
+        // Wait for the DOM to load
+    document.addEventListener("DOMContentLoaded", () => {
+
+        gsap.to(".loading", {
+            opacity: 0,
+            duration: 0.1,
+            delay: 3.8,
+            onComplete: () => {
+                document.querySelector(".loading").style.display = "none";
+
+                document.querySelector(".header").classList.remove("hidden");
+                document.querySelector(".header").classList.add("visible");
+                document.querySelector(".container").classList.remove("hidden");
+                document.querySelector(".container").classList.add("visible");
+            }
+        });
+    });
+
+    const exitLink = document.getElementById("exit-link");
+    const confirmationOverlay = document.getElementById("confirmation-overlay");
+    const confirmExitButton = document.getElementById("confirm-exit");
+    const cancelExitButton = document.getElementById("cancel-exit");
+    
+    exitLink.addEventListener("click", (event) => {
+            event.preventDefault(); 
+            confirmationOverlay.classList.remove("hidden");
+        });
+    
+        confirmExitButton.addEventListener("click", () => {
+            window.location.href = "game_set.html";
+        });
+    
+        cancelExitButton.addEventListener("click", () => {
+            confirmationOverlay.classList.add("hidden");
+        });    
+
+</script> -->
+
+<script>
+    function selectAnswer(selectedElement) {
+        const allAnswers = document.querySelectorAll('.answer');
+        allAnswers.forEach(answer => {
+            answer.classList.remove('selected');
+        });
+
+        selectedElement.classList.add('selected');
+    }
+</script>
+
+<script>
+    let elapsedTime = -1; 
+    let timerInterval = null;
+    const timerElement = document.getElementById("timer");
+
+    function updateTimer() {
+        const minutes = String(Math.floor(elapsedTime / 60)).padStart(2, '0');
+        const seconds = String(elapsedTime % 60).padStart(2, '0');
+        timerElement.textContent = `${minutes}:${seconds}`;
+        elapsedTime++;
+    }
+
+    function startTimer() {
+        if (!timerInterval) {
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+    }
+
+    function pauseTimer() {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+        console.log(`Quiz completed in ${Math.floor(elapsedTime / 60)} minutes and ${elapsedTime % 60} seconds.`);
+    }
+
+    startTimer();
+
+    document.getElementById("finish-btn").addEventListener("click", stopTimer);
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        gsap.to(".loading", {
+            opacity: 0,
+            duration: 0.2,
+            delay: 2.5,
+            onComplete: () => {
+                document.querySelector(".loading").style.display = "none";
+
+                document.querySelector(".header").classList.remove("hidden");
+                document.querySelector(".header").classList.add("visible");
+                document.querySelector(".container").classList.remove("hidden");
+                document.querySelector(".container").classList.add("visible");
+            }
+        });
+    });
+
+    const exitLink = document.getElementById("exit-link");
+    const confirmationOverlay = document.getElementById("confirmation-overlay");
+    const confirmExitButton = document.getElementById("confirm-exit");
+    const cancelExitButton = document.getElementById("cancel-exit");
+
+    exitLink.addEventListener("click", (event) => {
+        event.preventDefault(); 
+        confirmationOverlay.classList.remove("hidden");
+        pauseTimer();
+    });
+
+    confirmExitButton.addEventListener("click", () => {
+        window.location.href = "/quizset";
+    });
+
+    cancelExitButton.addEventListener("click", () => {
+        confirmationOverlay.classList.add("hidden");
+        startTimer(); 
+    });
+</script>
+
+</body>
+</html>

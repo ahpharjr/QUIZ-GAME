@@ -1,0 +1,103 @@
+.loading{
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.712);
+}
+.logo-container{
+    position: absolute;
+    place-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: brightness(1.2);
+}
+.logo-div{
+    background: transparent;
+    color: #00e1ff;
+    display: flex;
+    font-size: 5rem;
+    border-radius: 20px;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgb(7, 102, 133);
+    padding: 20px;
+    width: 180px;
+    height: 180px;
+    overflow: hidden;
+    transform: scale(.8);
+}
+.logo-div::before{
+    content: '';
+    position: absolute;
+    width: 95%;
+    height: 140%;
+    background-color: #3de8ff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    animation: animate 2s reverse;
+}
+.logo-div::after{
+    content: '';
+    position: absolute;
+    inset: 1.5px;
+    border-radius: 16px;
+    background-color: #2c5364;
+    box-shadow: inset 10px 10px 10px #234b5c, inset -5px -5px 5px #163c4c;
+} 
+@keyframes animate{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(180deg);
+    }
+}
+.Q-box, .U-box, .I-box, .Z-box{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border: 5px solid #00e1ff;
+    border-radius: 10px;
+    stroke: white;
+    z-index: 1;
+    font-size: 3.5rem;
+}
+.Q-box{
+    top: 8px;
+    left: 8px;
+}
+.U-box{
+    top: 8px;
+    right: 8px;
+}
+.I-box{
+    bottom: 8px;
+    left: 8px;
+}
+.Z-box{
+    bottom: 8px;
+    right: 8px;
+}
+
+/* .logo-name{
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    white-space: nowrap;
+} */
+
+@media (max-width: 767.9px) {
+    .logo-div{
+        transform: scale(.65);
+    }
+}

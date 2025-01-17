@@ -249,38 +249,38 @@
             <h2 class="title1">Achievement</h2>
             <div class="achievement-1">
                 <div class="achieve-box" >
-                    <img class="achieve-logo" src="/images/L1.png" alt="Phase 1">
-                    <span>Level 1</span>
+                    <img class="phase1-logo" src="/images/phase1-achievement.png" alt="Phase 1">
+                    <span>Phase 1</span>
                 </div>
                 <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/L2.png" alt="Phase 1">
-                    <span>Level 2</span>
+                    <img class="achieve-logo" src="/images/phase2-achievement.png" alt="Phase 2">
+                    <span>Phase 2</span>
                 </div>
                 <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/L3.png" alt="Phase 1">
-                    <span>Level 3</span>
+                    <img class="achieve-logo" src="/images/phase3-achievement.png" alt="Phase 3">
+                    <span>Phase 3</span>
                 </div>
                 <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/L4.png" alt="Phase 1">
-                    <span>Level 4</span>
+                    <img class="achieve-logo" src="/images/phase4-achievement.png" alt="Phase 4">
+                    <span>Phase 4</span>
                 </div>
             </div>
             <div class="achievement-1">
                 <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/First-Achiever.png" alt="Phase 1">
+                    <img class="achieve-logo" src="/images/1st-Achiever.png" alt="First-Achiever">
                     <span>1st Achiever</span>
                 </div>
                 <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/Starter.png" alt="Phase 1">
-                    <span>Starter</span>
+                    <img class="achieve-logo" src="/images/rising-star-achievement.png" alt="Rising Star">
+                    <span>Rising Star</span>
                 </div>
                 <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/Expert.png" alt="Phase 1">
-                    <span>Expert</span>
+                    <img class="achieve-logo" src="/images/rookie-quizzer-achievement.png" alt="Rookie Quizzer">
+                    <span>Rookie Quizzer</span>
                 </div>
                 <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/Legend.png" alt="Phase 1">
-                    <span>Legend</span>
+                    <img class="achieve-logo" src="/images/ultimate-genius-achievement.png" alt="Ultimate Genius">
+                    <span>Genius</span>
                 </div>
             </div>
         </div>
@@ -304,7 +304,7 @@
             <!-- <a href="game_zone.html" id="play-link">
                 <button class="btn" onclick="audio.play();">Play</button>
             </a> -->
-            <a href="game_zone.html">
+            <a th:href="@{'/gamezone'}">
                 <button class="btn" >Play</button>
             </a>
 
@@ -329,7 +329,7 @@
         
         document.body.classList.add("fade-out");
         setTimeout(() => {
-            window.location.href = "game_zone.html";
+            window.location.href = "/gamezone";
         }, 300);
 
     });

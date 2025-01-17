@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles/general.css">
     <link rel="stylesheet" href="styles/header.css">
     <link rel="stylesheet" href="styles/profile.css">
+    <link rel="stylesheet" href="/styles/card.css">
     <link rel="stylesheet" href="styles/search_card.css">
     <title>All Flashcards</title>
 </head>
@@ -67,21 +68,18 @@
                         <div class="content-pic">
                             <img class="pic" src="/images/4k-mercedes-red-zcj47yx9mq7tfjed.webp">
                             <!-- <img class="pic" th:src="@{/images/} + ${flashcard.image}" alt="image"> -->
-                            <div class="star"><img class="star-icon" src="/icons/icons8-star-50 (2).png" alt="star"></div>
+                            <div class="star">
+                                <img class="star-icon" src="/icons/icons8-star-50 (2).png" alt="star">
+                                <img class="star-icon-color" src="/icons/icons8-star-50 (1).png" alt="star">
+                                <span class="tooltip">Add to Collection</span>
+                            </div>
                         </div>
                         <div class="text-content">
                             <h3 th:text="${flashcard.keyword}"></h3>
-                            <p th:text="${flashcard.definition}"></p>
                         </div>
                     </div>
                     <div class="flashcard-face back">
-                        <div class="content-pic">
-                            <img class="pic" src="/images/space man.jpg" alt="image">
-                            <!-- <img class="pic" th:src="@{/images/} + ${flashcard.image}" alt="image"> -->
-                            <div class="star"><img class="star-icon" src="/icons/icons8-star-50 (2).png" alt="star"></div>
-                        </div>
-                        <div class="text-content">
-                            <h3 th:text="${flashcard.keyword}"></h3>
+                        <div class="text-content-back">
                             <p th:text="${flashcard.definition}"></p>
                         </div>
                     </div>
