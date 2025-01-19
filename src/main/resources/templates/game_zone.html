@@ -61,7 +61,7 @@
         <div class="phase-div swiper mySwiper">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" th:each="phase : ${phases}">
-                    <a th:href="@{${phase.phaseId} + '/quizset'}" id="phase-link" >
+                    <a th:href="@{'/' + ${phase.phaseId} + '/quizset'}" id="phase-link" >
                         <div class="phase-1">
                             <div class="pic-box">
                                 <img src="images/space man.jpg" alt="spaceman">
