@@ -64,40 +64,80 @@
                     <button id="cancel-exit">No</button>
                 </div>
             </div>
-            <div class="remain-question"> 1 / 8</div>
+            <div class="remain-question" id="question-number">1 / 8</div>
             <div class="question-box">
-                <div class="Q-img">
+                <div class="Q-img" id="question-image">
                     <img src="/images/project-management (1).png" alt="Question image">
                 </div>
-                <span class="question">
-                    Which of the following is NOT a characteristic of Agile project management?
+                <span 
+                    class="question" 
+                    id="question-text" 
+                    th:text="${currentQuestion.question}" 
+                    th:attr="data-id=${currentQuestion.questionId}">
+                    Question text
                 </span>
             </div>
-            <div class="answer-box">
-                <div class="answer" onclick="selectAnswer(this)">
+            <div class="answer-box" id="answers">
+                <div class="answer" onclick="selectAnswer(this)" th:each="answer : ${answers}">
                     <span class="ans-A">A.</span>
-                    <span class="ans-text">Iterative development</span>
+                    <span class="ans-text" th:text="${answer.answer}">Answer</span>
                     <div class="ans-bg"></div>
                 </div>
-                <div class="answer" onclick="selectAnswer(this)">
-                    <span class="ans-A">B.</span>
-                    <span class="ans-text">Frequent delivery of working software</span>
-                </div>
-                <div class="answer" onclick="selectAnswer(this)">
-                    <span class="ans-A">C.</span>
-                    <span class="ans-text">Fixed, unchangeable project scope</span>
-                </div>
-                <div class="answer" onclick="selectAnswer(this)">
-                    <span class="ans-A">D.</span>
-                    <span class="ans-text">Collaborative approach with stakeholders</span>
-                </div>
             </div>
-            <a th:href="@{/result}">
-                <button id="finish-btn" class="next-btn">NEXT</button>
-            </a>
+            <button id="next-btn" class="next-btn">NEXT</button>
         </div>
- </div>
+    </div>
 
+    <script>
+       document.getElementById("next-btn").addEventListener("click", () => {
+    const currentQuestionId = document.getElementById("question-text").dataset.id; // Correctly fetch the question ID
+    console.log("Current Question ID:", currentQuestionId);
+
+    fetch(`/quiz/next-question?questionId=${currentQuestionId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message); // Quiz completed message
+                window.location.href = "/result"; // Redirect to result page
+                return;
+            }
+
+            const question = data.question;
+            const answers = data.answers;
+
+            // Update question
+            document.getElementById("question-text").textContent = question.question;
+            document.getElementById("question-text").dataset.id = question.questionId; // Update question ID
+            if (question.image) {
+                document.getElementById("question-image").innerHTML = `<img src="${question.image}" alt="Question image">`;
+            } else {
+                document.getElementById("question-image").innerHTML = "";
+            }
+
+            // Update answers
+            const answersContainer = document.getElementById("answers");
+            answersContainer.innerHTML = "";
+            answers.forEach(answer => {
+                const answerElement = document.createElement("div");
+                answerElement.classList.add("answer");
+                answerElement.setAttribute("onclick", "selectAnswer(this)");
+                answerElement.innerHTML = `
+                    <span class="ans-A">${answer.answerId}.</span>
+                    <span class="ans-text">${answer.answer}</span>
+                `;
+                answersContainer.appendChild(answerElement);
+            });
+
+            // Update question counter
+            const questionCounter = document.getElementById("question-number");
+            const currentCount = parseInt(questionCounter.textContent.split(" / ")[0]);
+            questionCounter.textContent = `${currentCount + 1} / 8`; // Update the question number
+        })
+        .catch(error => console.error("Error fetching next question:", error));
+});
+
+
+    </script>
 <script>
     function selectAnswer(selectedElement) {
         const allAnswers = document.querySelectorAll('.answer');
@@ -139,7 +179,7 @@
 
     startTimer();
 
-    document.getElementById("finish-btn").addEventListener("click", stopTimer);
+    //document.getElementById("finish-btn").addEventListener("click", stopTimer);
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -151,7 +191,10 @@
             duration: 0.2,
             delay: 2.5,
             onComplete: () => {
-                document.querySelector(".loading").style.display = "none";
+                const loadingElement = document.querySelector(".loading");
+                if (loadingElement) {
+                    loadingElement.style.display = "none";
+                }
 
                 document.querySelector(".header").classList.remove("hidden");
                 document.querySelector(".header").classList.add("visible");

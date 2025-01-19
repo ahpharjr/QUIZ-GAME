@@ -17,6 +17,7 @@ public class Quiz {
     private Topic topic;
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true)
+    // @JsonIgnoreProperties("quiz")
     private List<Question> questions;
 
     public Topic getTopic() {

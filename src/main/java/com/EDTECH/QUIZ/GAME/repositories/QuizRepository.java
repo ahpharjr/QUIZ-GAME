@@ -6,6 +6,6 @@ import com.EDTECH.QUIZ.GAME.models.Quiz;
 
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
     
-    Long findQuizIdByTopic_TopicId(Long topicId);
+    Quiz findQuizIdByTopic_TopicId(Long topicId);
  
 }

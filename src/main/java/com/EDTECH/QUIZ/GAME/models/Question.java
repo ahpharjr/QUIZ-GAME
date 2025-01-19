@@ -2,8 +2,9 @@ package com.EDTECH.QUIZ.GAME.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
-import jakarta.persistence.Id;
 
 @Entity
 @Table(name = "questions")
@@ -18,9 +19,10 @@ public class Question {
 
     @ManyToOne
     @JoinColumn(name = "quiz_id", nullable = false)
+    @JsonIgnore 
     private Quiz quiz;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)  
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true) 
     private List<Answer> answers;
 
     public List<Answer> getAnswers() {

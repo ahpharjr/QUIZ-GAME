@@ -1,5 +1,7 @@
 package com.EDTECH.QUIZ.GAME.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -15,6 +17,7 @@ public class Answer {
 
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)
+    @JsonIgnore // Prevent recursion
     private Question question;
 
     public Long getAnswerId() {
