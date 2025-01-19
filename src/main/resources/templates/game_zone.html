@@ -60,63 +60,15 @@
         <!-- <h2 class="content-title">Unlock Project Management Skills with Flashcards!</h2> -->
         <div class="phase-div swiper mySwiper">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <a th:href="@{'/quizset'}" id="phase-link">
+                <div class="swiper-slide" th:each="phase : ${phases}">
+                    <a th:href="@{'/quizset'}" id="phase-link" >
                         <div class="phase-1">
                             <div class="pic-box">
                                 <img src="images/space man.jpg" alt="spaceman">
+                                <!-- <img th:src="@{${pahse.image}}" th:alt="${phase.name}"> -->
                             </div>
-                            <span class="phase-name">Initiation</span>
-                            <span class="phase-desc">
-                                Set the foundation for project success by defining objectives, 
-                                identifying key stakeholders, and developing a project charter 
-                                to authorize the project.
-                            </span>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a th:href="@{'/quizset'}" id="phase-link">
-                        <div class="phase-1">
-                            <div class="pic-box">
-                                <img src="images/space man.jpg" alt="spaceman">
-                            </div>
-                            <span class="phase-name">Planning</span>
-                            <span class="phase-desc">
-                                Set the foundation for project success by defining objectives, 
-                                identifying key stakeholders, and developing a project charter 
-                                to authorize the project.
-                            </span>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a th:href="@{'/quizset'}" id="phase-link">
-                        <div class="phase-1">
-                            <div class="pic-box">
-                                <img src="images/space man.jpg" alt="spaceman">
-                            </div>
-                            <span class="phase-name">Executing</span>
-                            <span class="phase-desc">
-                                Set the foundation for project success by defining objectives, 
-                                identifying key stakeholders, and developing a project charter 
-                                to authorize the project.
-                            </span>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a th:href="@{'/quizset'}" id="phase-link">
-                        <div class="phase-1">
-                            <div class="pic-box">
-                                <img src="images/space man.jpg" alt="spaceman">
-                            </div>
-                            <span class="phase-name">Closing</span>
-                            <span class="phase-desc">
-                                Set the foundation for project success by defining objectives, 
-                                identifying key stakeholders, and developing a project charter 
-                                to authorize the project.
-                            </span>
+                            <span class="phase-name" th:text="${phase.name}">Phase Name</span>
+                            <span class="phase-desc" th:text="${phase.desc}">Phase Description</span>   
                         </div>
                     </a>
                 </div>
@@ -217,6 +169,7 @@
 
     <script>
         function navigateBack() {
+            
             if (document.referrer) {
                 // Navigate to the referring page
                 window.history.back();
