@@ -1,6 +1,5 @@
 // Call the function to ensure the first topic is selected by default
 window.onload = selectFirstTopic;
-console.log("Flashcard script loaded");
 
 // Back navigation handling
 window.onpopstate = function () {
@@ -47,7 +46,7 @@ let swiper = initializeSwiper();
 
 // Function to ensure the first topic is selected by default
 function selectFirstTopic() {
-    console.log('test1');
+
     // Check if any topic is already selected
     const selectedTopics = document.querySelectorAll('.set-title.selected');
     if (selectedTopics.length === 0) {
@@ -87,7 +86,6 @@ document.querySelectorAll('.set-title').forEach(topic => {
                                         <img class="pic" src="/images/project-management (1).png" alt="Image">
                                         <div class="star">
                                             <img class="star-icon" src="/icons/icons8-star-50 (2).png" alt="star">
-                                            <img class="star-icon-color" src="/icons/icons8-star-50 (1).png" alt="star">
                                             <span class="tooltip">Add to Collection</span>
                                         </div>
                                     </div>
@@ -115,3 +113,5 @@ document.querySelectorAll('.set-title').forEach(topic => {
             });
     });
 });
+
+//<img class="star-icon-color" src="/icons/icons8-star-50 (1).png" alt="star">

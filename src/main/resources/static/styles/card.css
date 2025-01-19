@@ -234,12 +234,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgb(20, 78, 128);
+    /* background-color: rgb(20, 78, 128);  */
     box-shadow: inset 0 0 5px rgba(255, 255, 255, 1);
     border: 1px solid white;
     z-index: 10;
     top: -5px;
-    right: -5px;
+    right: -42px;
     cursor: pointer;
     width: 27px;
     height: 27px;
@@ -253,8 +253,8 @@
     background-color: white;
 }
 .star:hover{
-    background-color: rgb(255, 255, 255);
-    border: 1px solid rgb(20, 78, 128);
+    background-color: rgb(20, 78, 128);
+    border: 1px solid rgb(255, 255, 255);
 }
 
 .star:active,

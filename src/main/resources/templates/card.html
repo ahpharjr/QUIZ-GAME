@@ -18,16 +18,16 @@
     <style>
         /* Star icon for cards in the collection */
     .star.in-collection {
-        background-color: rgb(255, 255, 255); /* Golden background for collected stars */
+        background-color: rgb(20, 78, 128);  /* Golden background for collected stars */
         border: 1px solid rgb(255, 255, 255); /* Golden border */
     }
 
     .star.in-collection .star-icon-color {
-        visibility: visible; /* Show the colored icon */
+        visibility: hidden; /* Show the colored icon */
     }
 
     .star.in-collection .star-icon {
-        visibility: hidden; /* Hide the default icon */
+        visibility: visible; /* Hide the default icon */
     }
 
     </style>
@@ -119,9 +119,23 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="/scripts/profileScript.js"></script>
+    <script src="/scripts/collection.js"></script>
     <script src="/scripts/flashcardScript.js"></script>
     <script src="/scripts/searchScript.js"></script>
+    <script>
+        function addPopstateListener() {
+            window.onpopstate = function (event) {
+                console.log("Back navigation detected");
+                console.log("State:", event.state); // Log the state object
+                attachStarListeners(); // Re-attach star listeners when coming back
+            };
+        }
 
+        document.addEventListener("DOMContentLoaded", function() {
+            addPopstateListener();
+            attachStarListeners(); // Initial attach
+        });
+    </script>
 
 </body>
 
