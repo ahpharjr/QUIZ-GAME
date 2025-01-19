@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="x-icon" href="icons/quizlogo99.svg">
-    <link rel="stylesheet" href="styles/general.css">
-    <link rel="stylesheet" href="styles/header.css">
-    <link rel="stylesheet" href="styles/profile.css">
+    <link rel="shortcut icon" type="x-icon" href="/icons/quizlogo99.svg">
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/header.css">
+    <link rel="stylesheet" href="/styles/profile.css">
     <link rel="stylesheet" href="/styles/quiz_set.css">
-    <link rel="stylesheet" href="styles/leaderboard.css">
+    <link rel="stylesheet" href="/styles/leaderboard.css">
     <title>Game Set</title>
 </head>
 <body>
@@ -16,7 +16,7 @@
     <div class="header">
         <div class="logo-box">
             <a th:href="@{${'/home'}}">
-                <img class="logo" src="icons/quizlogo99.svg" alt="Logo">
+                <img class="logo" src="/icons/quizlogo99.svg" alt="Logo">
             </a>
             <div class="logo-name">
                 <span class="quiz">QUIZ</span>
@@ -26,7 +26,7 @@
         <div class="profile-box">
             <span class="pf-lvl">Lvl - 01</span>
             <div >
-                <img class="profile" id="profile" src="images/space man.jpg" alt="Logo">
+                <img class="profile" id="profile" src="/images/space man.jpg" alt="Logo">
             </div>
         </div>
     </div>
@@ -34,17 +34,17 @@
         <div class="top-box">
             <div class="top-lf">Profile</div>
             <div class="top-rg">
-                <img class="speaker-icon" src="icons/speaker.png" alt="Seapker icon">
+                <img class="speaker-icon" src="/icons/speaker.png" alt="Speaker icon">
                 <a href="/update_profile.html">
-                    <img class="edit-icon" src="icons/lucide_edit.png" alt="Edit icon">
+                    <img class="edit-icon" src="/icons/lucide_edit.png" alt="Edit icon">
                 </a>
             </div>
         </div>
         <div class="bottom-box">
-            <div class="pf-picture"><img src="images/space man.jpg" alt="Profile"></div>
+            <div class="pf-picture"><img src="/images/space man.jpg" alt="Profile"></div>
             <div class="pf-name">
                 Space Man
-                <img src="icons/ship-wheel (1).svg" alt="Badge">
+                <img src="/icons/ship-wheel (1).svg" alt="Badge">
             </div>
             <span class="lvl">Level - 02</span>
             <span class="pf-email">spaceman@gmail.com</span>
@@ -55,7 +55,7 @@
 
     <div class="container">
         <div class="back-arr" onclick="navigateBack()">
-            <img class="back-arrow" src="icons/back-arrow.png" alt="back"> Back
+            <img class="back-arrow" src="/icons/back-arrow.png" alt="back"> Back
         </div>
         <span class="chapter-name">Phase 1: Initiation </span>
         <div class="leaderboard-container">
@@ -66,8 +66,7 @@
                 <div class="lb-title">
                     <div class="rank">Rank</div>
                     <div class="player">Player</div>
-                    <!-- <div class="point">Point</div> -->
-                    <div class="point">XP</div>
+                    <div class="point">Point</div>
                     <div class="time">Time Taken</div>
                 </div>
                 <div class="lb-body">
@@ -75,7 +74,7 @@
                         <div class="rank"><span>1</span></div>
                         <div class="player">
                             <div class="player-pf">
-                                <img src="images/animal_pic1.webp" alt="">
+                                <img src="/images/animal_pic1.webp" alt="">
                             </div>
                             <div class="player-name">Solara</div>
                         </div>
@@ -86,7 +85,7 @@
                         <div class="rank">2</div>
                         <div class="player">
                             <div class="player-pf">
-                                <img src="images/animal_pic2.jpg" alt="">
+                                <img src="/images/animal_pic2.jpg" alt="">
                             </div>
                             <div class="player-name">Aurelion</div>
                         </div>
@@ -97,7 +96,7 @@
                         <div class="rank">3</div>
                         <div class="player">
                             <div class="player-pf">
-                                <img src="images/animal_pic3.webp" alt="">
+                                <img src="/images/animal_pic3.webp" alt="">
                             </div>
                             <div class="player-name">Lynith</div>
                         </div>
@@ -108,7 +107,7 @@
                         <div class="rank">4</div>
                         <div class="player">
                             <div class="player-pf">
-                                <img src="images/animal_pic4.jpg" alt="">
+                                <img src="/images/animal_pic4.jpg" alt="">
                             </div>
                             <div class="player-name">Kaelwyn</div>
                         </div>
@@ -119,7 +118,7 @@
                         <div class="rank">5</div>
                         <div class="player">
                             <div class="player-pf">
-                                <img src="images/animal_pic5.avif" alt="">
+                                <img src="/images/animal_pic5.avif" alt="">
                             </div>
                             <div class="player-name">Erisen</div>
                         </div>
@@ -130,7 +129,7 @@
                         <div class="rank">6</div>
                         <div class="player">
                             <div class="player-pf">
-                                <img src="images/animal_pic5.jpg" alt="">
+                                <img src="/images/animal_pic5.jpg" alt="">
                             </div>
                             <div class="player-name">Virella</div>
                         </div>
@@ -141,7 +140,7 @@
                         <div class="rank">7</div>
                         <div class="player">
                             <div class="player-pf">
-                                <img src="images/animal_pic7.jpg" alt="">
+                                <img src="/images/animal_pic7.jpg" alt="">
                             </div>
                             <div class="player-name">Thalior</div>
                         </div>
@@ -153,7 +152,7 @@
                     <div class="rank">10</div>
                     <div class="player">
                         <div class="player-pf"> 
-                            <img src="images/space man.jpg" alt="">
+                            <img src="/images/space man.jpg" alt="">
                         </div>
                         <div class="player-name">John Snow</div>
                     </div>
@@ -166,69 +165,15 @@
         <div class="game-set-container">
             <span class="game-set-title">Ready to boost your rank in Leaderboard</span>
             <div class="game-set-box">
-                <div class="game-set">
+                <div class="game-set"  th:each="topic : ${topics}">
                     <div class="topic-img">
-                        <img src="images/blog-images-agile3-removebg-preview.png" alt="topic img">
+                        <img src="/images/blog-images-agile3-removebg-preview.png" alt="topic img">
                     </div>
-                    <span class="topic-name">Project Charter</span>
+                    <span class="topic-name" th:text="${topic.name}">Project Charter</span>
                     <a th:href="@{${'/quiz'}}">
                         <button class="start-btn">START</button>
                     </a>
                 </div>    
-                <div class="game-set">
-                    <div class="topic-img">
-                        <img src="images/blog-images-agile3-removebg-preview.png" alt="topic img">
-                    </div>
-                    <span class="topic-name">Project Charter</span>
-                    <a th:href="@{${'/quiz'}}">
-                        <button class="start-btn">START</button>
-                    </a>
-                </div> 
-                <div class="game-set">
-                    <div class="topic-img">
-                        <img src="images/blog-images-agile3-removebg-preview.png" alt="topic img">
-                    </div>
-                    <span class="topic-name">Project Charter</span>
-                    <a th:href="@{${'/quiz'}}">
-                        <button class="start-btn">START</button>
-                    </a>
-                </div> 
-                <div class="game-set">
-                    <div class="topic-img">
-                        <img src="images/blog-images-agile3-removebg-preview.png" alt="topic img">
-                    </div>
-                    <span class="topic-name">Project Charter</span>
-                    <a th:href="@{${'/quiz'}}">
-                        <button class="start-btn">START</button>
-                    </a>
-                </div> 
-                <div class="game-set">
-                    <div class="topic-img">
-                        <img src="images/blog-images-agile3-removebg-preview.png" alt="topic img">
-                    </div>
-                    <span class="topic-name">Project Charter</span>
-                    <a th:href="@{${'/quiz'}}">
-                        <button class="start-btn">START</button>
-                    </a>
-                </div> 
-                <div class="game-set">
-                    <div class="topic-img">
-                        <img src="images/blog-images-agile3-removebg-preview.png" alt="topic img">
-                    </div>
-                    <span class="topic-name">Project Charter</span>
-                    <a th:href="@{${'/quiz'}}">
-                        <button class="start-btn">START</button>
-                    </a>
-                </div> 
-                <div class="game-set">
-                    <div class="topic-img">
-                        <img src="images/blog-images-agile3-removebg-preview.png" alt="topic img">
-                    </div>
-                    <span class="topic-name">Project Charter</span>
-                    <a th:href="@{${'/quiz'}}">
-                        <button class="start-btn">START</button>
-                    </a>
-                </div> 
             </div>
         </div>
 

@@ -61,7 +61,7 @@
         <div class="phase-div swiper mySwiper">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" th:each="phase : ${phases}">
-                    <a th:href="@{'/quizset'}" id="phase-link" >
+                    <a th:href="@{${phase.phaseId} + '/quizset'}" id="phase-link" >
                         <div class="phase-1">
                             <div class="pic-box">
                                 <img src="images/space man.jpg" alt="spaceman">
@@ -80,6 +80,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="/scripts/profileScript.js"></script>
 
   <!-- Initialize Swiper -->
   <script>
@@ -125,29 +126,6 @@
 
 
   </script>
-
-    <script>
-        const profile = document.getElementById("profile");
-        const profileContainer = document.getElementById("profile-container");
-        const overlay = document.getElementById("overlay");
-        const body = document.body; // Select the body for blurring
-    
-        profile.addEventListener("click", () => {
-            profileContainer.classList.toggle("show");
-            overlay.style.display = profileContainer.classList.contains("show") ? "block" : "none";
-        });
-    
-        // Close profile container and remove blur when clicking outside
-        document.addEventListener("click", (event) => {
-            if (
-                !profile.contains(event.target) &&
-                !profileContainer.contains(event.target)
-            ) {
-                profileContainer.classList.remove("show");
-                overlay.style.display = "none";
-            }
-        });
-    </script>
 
     <!-- <script type="text/javascript">
         const audio = new Audio();

@@ -2,8 +2,6 @@ package com.EDTECH.QUIZ.GAME.models;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.*;
 
 @Entity

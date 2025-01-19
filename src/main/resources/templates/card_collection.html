@@ -60,20 +60,27 @@
         <div class="card-container"></div>
     </div>
     <script src="scripts/profileScript.js"></script>
+    <script src="/scripts/collection.js"></script>
     <script>
         // Function to flip cards
         function flipCard(card) {
             card.classList.toggle('is-flipped');
         }
 
-        // Function to navigate back
-        function navigateBack() {
-            if (document.referrer) {
-                window.history.back();
-            } else {
-                window.location.href = "/card.html";
-            }
-        }
+// Function to navigate back
+function navigateBack() {
+    if (document.referrer) {
+        window.history.back();
+        
+        // Wait until the page is loaded, then attach the event listeners
+        window.addEventListener('load', function() {
+            attachStarListeners(); // Attach listeners when back arrow is clicked
+        });
+    } else {
+        window.location.href = "/card.html"; // Redirect to card page if no referrer
+    }
+}
+
 
         // Function to attach event listeners for removing cards
         function attachRemoveCardListeners() {
@@ -121,7 +128,6 @@
                                         <img class="pic" src="/images/4k-mercedes-red-zcj47yx9mq7tfjed.webp" alt="Image">
                                         <div class="star">
                                             <img class="star-icon" src="icons/icons8-star-50 (2).png" alt="star">
-                                            <img class="star-icon-color" src="icons/icons8-star-50 (1).png" alt="star">
                                             <span class="tooltip">Remove Card</span>
                                         </div>
                                     </div>
@@ -144,6 +150,15 @@
         // Load cards on DOMContentLoaded
         document.addEventListener("DOMContentLoaded", loadCards);
 
+        window.onpopstate = function (event) {
+    console.log("Back navigation detected");
+    if (event.state === null) {
+        console.log("This is a back navigation");
+    } else {
+        console.log("This is not a back navigation");
+    }
+    attachStarListeners(); // Re-attach star listeners when coming back
+};
 
         //<img class="pic" src="/images/${card.image}" alt="image">
     </script>
