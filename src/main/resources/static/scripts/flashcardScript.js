@@ -59,75 +59,6 @@ function selectFirstTopic() {
         }
     }
 }
-
-// Function to handle adding/removing cards from the collection
-function attachStarListeners() {
-    document.querySelectorAll(".star").forEach(star => {
-        const cardElement = star.closest(".flashcard");
-        const cardId = cardElement.getAttribute("data-card-id");
-        const userId = 1; // Placeholder user ID
-
-        // Check if the card is already in the collection
-        fetch(`/collections/check?cardId=${cardId}&userId=${userId}`)
-            .then(response => response.json())
-            .then(isInCollection => {
-                const tooltip = star.querySelector(".tooltip");
-                if (isInCollection) {
-                    tooltip.textContent = "Remove Card";
-                    star.classList.add("in-collection");
-                } else {
-                    tooltip.textContent = "Add to Collection";
-                    star.classList.remove("in-collection");
-                }
-
-                // Attach click event listener to add/remove the card
-                star.addEventListener("click", function (event) {
-                    event.stopPropagation();
-
-                    if (star.classList.contains("in-collection")) {
-                        // Remove card from collection
-                        fetch(`/collections/remove`, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/x-www-form-urlencoded",
-                            },
-                            body: `cardId=${cardId}&userId=${userId}`,
-                        })
-                            .then(response => {
-                                if (response.ok) {
-                                    tooltip.textContent = "Add to Collection";
-                                    star.classList.remove("in-collection");
-                                    console.log("Card removed successfully");
-                                } else {
-                                    console.error("Failed to remove card");
-                                }
-                            })
-                            .catch(error => console.error("Error:", error));
-                    } else {
-                        // Add card to collection
-                        fetch(`/collections/add`, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/x-www-form-urlencoded",
-                            },
-                            body: `cardId=${cardId}&userId=${userId}`,
-                        })
-                            .then(response => {
-                                if (response.ok) {
-                                    tooltip.textContent = "Remove Card";
-                                    star.classList.add("in-collection");
-                                    console.log("Card added successfully");
-                                } else {
-                                    console.error("Failed to add card");
-                                }
-                            })
-                            .catch(error => console.error("Error:", error));
-                    }
-                });
-            });
-    });
-}
-
 // Initialize the listeners when the page is loaded
 document.addEventListener("DOMContentLoaded", attachStarListeners);
 
@@ -153,7 +84,7 @@ document.querySelectorAll('.set-title').forEach(topic => {
                             <div class="flashcard" data-card-id="${card.cardId}" onclick="flipCard(this)">
                                 <div class="flashcard-face front">
                                     <div class="content-pic">
-                                        <img class="pic" src="/images/4k-mercedes-red-zcj47yx9mq7tfjed.webp" alt="Image">
+                                        <img class="pic" src="/images/project-management (1).png" alt="Image">
                                         <div class="star">
                                             <img class="star-icon" src="/icons/icons8-star-50 (2).png" alt="star">
                                             <img class="star-icon-color" src="/icons/icons8-star-50 (1).png" alt="star">

@@ -63,7 +63,7 @@
                 <div th:if="${searchResults.isEmpty()}">
                     <p>No results found for "<span th:text="${keyword}"></span>".</p>
                 </div>
-                <div th:each="flashcard : ${searchResults}" class="flashcard" onclick="flipCard(this)">
+                <div th:each="flashcard : ${searchResults}" class="flashcard" th:attr="data-card-id=${flashcard.cardId}" onclick="flipCard(this)">
                     <div class="flashcard-face front">
                         <div class="content-pic">
                             <img class="pic" src="/images/4k-mercedes-red-zcj47yx9mq7tfjed.webp">
@@ -89,6 +89,7 @@
     </div>
     
     <script src="/scripts/profileScript.js"></script>
+    <script src="/scripts/collection.js"></script>
     <script>
         function flipCard(card) {
         card.classList.toggle('is-flipped');
