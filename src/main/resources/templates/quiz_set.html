@@ -57,7 +57,7 @@
         <div class="back-arr" onclick="navigateBack()">
             <img class="back-arrow" src="/icons/back-arrow.png" alt="back"> Back
         </div>
-        <span class="chapter-name">Phase 1: Initiation </span>
+        <span class="chapter-name" th:text="'Phase ' + ${phase.phaseId} + ': '+ ${phase.name}">Phase</span>
         <div class="leaderboard-container">
             <h2>leaderboard</h2>
 

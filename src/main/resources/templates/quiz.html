@@ -78,11 +78,11 @@
                 </span>
             </div>
             <div class="answer-box" id="answers">
-                <div class="answer" onclick="selectAnswer(this)" th:each="answer : ${answers}">
-                    <span class="ans-A">A.</span>
+                <div class="answer" onclick="selectAnswer(this)" th:each="answer, iterStat : ${answers}">
+                    <span class="ans-A" th:text="${answerLabels[iterStat.index]} + '.'"></span>
                     <span class="ans-text" th:text="${answer.answer}">Answer</span>
                     <div class="ans-bg"></div>
-                </div>
+                </div>              
             </div>
             <button id="next-btn" class="next-btn">NEXT</button>
         </div>
@@ -90,6 +90,15 @@
 
     <script>
        document.getElementById("next-btn").addEventListener("click", () => {
+        const selectedAnswer = document.querySelector(".answer.selected");
+
+        if(!selectedAnswer) {
+            alert("Please select an answer before proceeding to the next question.");
+            return; // Exit the function early
+        }
+
+        console.log("Selected answer:", selectedAnswer.querySelector(".ans-text").textContent);
+
     const currentQuestionId = document.getElementById("question-text").dataset.id; // Correctly fetch the question ID
     console.log("Current Question ID:", currentQuestionId);
 
@@ -117,12 +126,14 @@
             // Update answers
             const answersContainer = document.getElementById("answers");
             answersContainer.innerHTML = "";
-            answers.forEach(answer => {
+            const answerLabels = ["A", "B", "C", "D"]; // Map indices to letters
+
+            answers.forEach((answer, index) => {
                 const answerElement = document.createElement("div");
                 answerElement.classList.add("answer");
                 answerElement.setAttribute("onclick", "selectAnswer(this)");
                 answerElement.innerHTML = `
-                    <span class="ans-A">${answer.answerId}.</span>
+                    <span class="ans-A">${answerLabels[index]}.</span>
                     <span class="ans-text">${answer.answer}</span>
                 `;
                 answersContainer.appendChild(answerElement);

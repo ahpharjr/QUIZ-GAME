@@ -1,5 +1,6 @@
 package com.EDTECH.QUIZ.GAME.controllers;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,26 +34,34 @@ public class QuizController {
 
     @GetMapping("/{phaseId}/{topicId}/quiz")
     public String quiz(@PathVariable("topicId") Long topicId, Model model) {
+
         Quiz quiz = quizRepository.findQuizIdByTopic_TopicId(topicId);
         Long quizId = quiz.getQuizId();
         var questions = questionRepository.findByQuiz_QuizId(quizId);
+
         model.addAttribute("questions", questions); // Pass all questions for context if needed
         model.addAttribute("currentQuestion", questions.get(0)); // Show the first question
+
         var answers = answerRepository.findByQuestion_QuestionId(questions.get(0).getQuestionId());
         model.addAttribute("answers", answers);
+
+        // Add answer labels to model
+        model.addAttribute("answerLabels", Arrays.asList("A", "B", "C", "D"));
+
         return "quiz";
     }
 
     @GetMapping("/quiz/next-question")
     @ResponseBody
     public Map<String, Object> getNextQuestion(@PathParam("questionId") Long questionId) {
+        
         Question currentQuestion = questionRepository.findById(questionId).orElseThrow();
         Quiz quiz = currentQuestion.getQuiz();
         List<Question> questions = questionRepository.findByQuiz_QuizId(quiz.getQuizId());
         int currentIndex = questions.indexOf(currentQuestion);
 
         Map<String, Object> response = new HashMap<>();
-        if (currentIndex + 1 < questions.size()) {
+        if (currentIndex + 1 < 8) {
             Question nextQuestion = questions.get(currentIndex + 1);
             List<Answer> answers = answerRepository.findByQuestion_QuestionId(nextQuestion.getQuestionId());
             response.put("question", nextQuestion);
