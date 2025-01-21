@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.BeanDefinitionDsl.Role;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.EDTECH.QUIZ.GAME.models.Users;
 import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
+import com.EDTECH.QUIZ.GAME.sevices.CustomOAuth2User;
 
 
 @Controller
@@ -55,5 +57,15 @@ public class AuthenticationController {
 
         return "login";
     }
+
+    // @GetMapping("/home")
+    // public String showHomePage(@AuthenticationPrincipal CustomOAuth2User customUser, Model model) {
+
+    //     Users user = userRepository.findByUsername(customUser.getName());
+
+    //     model.addAttribute("user", user);
+
+    //     return "home";
+    // }
     
 }
