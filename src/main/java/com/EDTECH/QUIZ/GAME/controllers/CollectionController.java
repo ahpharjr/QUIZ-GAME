@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.EDTECH.QUIZ.GAME.models.Collection;
 import com.EDTECH.QUIZ.GAME.models.Flashcard;
-import com.EDTECH.QUIZ.GAME.models.User;
+import com.EDTECH.QUIZ.GAME.models.Users;
 import com.EDTECH.QUIZ.GAME.repositories.CollectionRepository;
 import com.EDTECH.QUIZ.GAME.repositories.FlashcardRepository;
 
@@ -48,7 +48,7 @@ public class CollectionController {
 
         // Create and save the new collection entry
         Collection collection = new Collection();
-        collection.setUser(new User(userId)); // Assuming userId is passed
+        collection.setUser(new Users(1)); // Assuming userId is passed
         collection.setFlashcard(flashcardOpt.get());
         collectionRepository.save(collection);
 

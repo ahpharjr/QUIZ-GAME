@@ -63,7 +63,7 @@
             <div class="top-3-box">
 
             </div>
-            <div class="result-info-box">
+            <!-- <div class="result-info-box">
                 <span class="player-rank"> Your Rank: 10</span>
                 <span class="congrat-text"> Congratulation you got 150 points</span>
                 <div class="score-info">
@@ -82,7 +82,28 @@
                         </a>
                     </div>
                 </div>
+            </div> -->
+            <div class="result-info-box">
+                <span class="player-rank">Your Rank: 10</span>
+                <span class="congrat-text">Congratulations, you scored ${score} points!</span>
+                <div class="score-info">
+                    <div class="score-info-left">
+                        <span>Total Questions: ${totalQuestions}</span>
+                        <span>Correct: ${correctAnswers}</span>
+                        <a th:href="@{/review}">
+                            <button class="review-btn">REVIEW</button>
+                        </a>
+                    </div>
+                    <div class="score-info-right">
+                        <span>Time Taken: ${timeTaken}</span>
+                        <span>Wrong: ${incorrectAnswers}</span>
+                        <a th:href="@{/quizset}">
+                            <button class="finish-btn">FINISH</button>
+                        </a>
+                    </div>
+                </div>
             </div>
+            
         </div>
 
         <div class="leaderboard-container">

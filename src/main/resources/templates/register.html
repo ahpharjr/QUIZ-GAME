@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="x-icon" th:href="@{/icons/titlelogo.png}">
+    <link rel="stylesheet" href="styles/general.css">
+    <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/login.css">
+    <title>Register</title>
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="header">
+        <div class="logo-box">
+            <a th:href="@{/landing}">
+                <img class="logo" th:src="@{/icons/quizlogo.svg}" alt="Logo">
+            </a>
+            <div class="logo-name">
+                <span class="quiz">QUIZ</span>
+                <span class="game">GAME</span>
+            </div>
+        </div>
+    </div>
+    <div class="login-box">
+        <h2>Register</h2>
+        
+        <form th:action="@{/register}" th:object="${user}" method="POST">
+            <div class="input-box">
+                <img class="email-icon" th:src="@{/icons/icons8-user-24.png}" alt="user-icon">
+                <input id="username" type="text" th:field="*{username}" placeholder="Enter username">
+            </div>
+            <div class="input-box">
+                <img class="email-icon" th:src="@{/icons/icons8-email-50.png}" alt="email-icon">
+                <input id="email" type="email" th:field="*{email}" placeholder="Enter email">
+            </div>
+            <div class="input-box">
+                <img class="lock-icon" th:src="@{/icons/icons8-lock-50.png}" alt="lock-icon">
+                <input id="password" type="password" th:field="*{password}" placeholder="Create password">
+            </div>
+            <button class="sign-in-btn" type="submit">Register</button>
+        </form>
+        
+<!--
+        <a th:href="@{/home}">
+            <button class="sign-in-btn">Register</button>
+        </a>        
+-->
+
+        <span class="sign-up-text">Already had an account? <a th:href="@{/login}">Sign in here</a></span>
+    </div>
+    
+    <script th:inline="javascript">
+        // Select all input elements in the document
+        const inputs = document.querySelectorAll('input');
+
+        // Add event listeners to each input
+        inputs.forEach(input => {
+            input.addEventListener('input', function () {
+                if (this.value.trim() !== '') {
+                    this.classList.add('filled');
+                } else {
+                    this.classList.remove('filled');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

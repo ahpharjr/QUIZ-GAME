@@ -114,8 +114,10 @@
           </div>
           <span class="lvl">Level - 01</span>
           <span class="pf-email">spaceman@gmail.com</span>
-          <button class="sign-out-btn">Sign out</button>
-      </div>
+          
+          <a th:href="@{/logout}" class="sign-out-btn">Sign out</a>
+        
+        </div>
   </div>
   <div id="overlay" class="overlay"></div>
 
@@ -427,6 +429,19 @@
             overlay.style.display = "none";
         }
     });
+
+   /* function logoutUser() {
+        fetch('/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').content
+            }
+        }).then(() => {
+            window.location.href = '/login?logout';
+        });
+    }*/
+    
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.0.1/intro.min.js"></script>
 <script src="scripts/onboarding/home.js"></script>
