@@ -4,7 +4,7 @@ function attachStarListeners() {
     document.querySelectorAll(".star").forEach(star => {
         const cardElement = star.closest(".flashcard");
         const cardId = cardElement.getAttribute("data-card-id");
-        const userId = 1; // Replace with actual user ID
+        const userId = document.body.getAttribute("data-user-id"); // Replace with actual user ID
 
         fetch(`/collections/check?cardId=${cardId}&userId=${userId}`)
             .then(response => response.json())
@@ -40,12 +40,16 @@ function attachStarListeners() {
                             });
                     } else {
                         // Add card to collection
-                        fetch(`/collections/add`, {
-                            method: "POST",
+                        fetch('/collections/add', {
+                            method: 'POST',
                             headers: {
-                                "Content-Type": "application/x-www-form-urlencoded",
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'X-CSRF-TOKEN': csrfToken
                             },
-                            body: `cardId=${cardId}&userId=${userId}`,
+                            body: new URLSearchParams({
+                                cardId: cardId,
+                                userId: userId
+                            }).toString()
                         })
                             .then(response => {
                                 if (response.ok) {

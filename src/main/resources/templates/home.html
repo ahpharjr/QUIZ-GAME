@@ -101,7 +101,7 @@
           <div class="top-lf">Profile</div>
           <div class="top-rg">
               <img class="speaker-icon" src="icons/speaker.png" alt="Seapker icon">
-              <a href="/update_profile.html">
+              <a th:href="@{/profile}" class="edit-btn">
                   <img class="edit-icon" src="icons/lucide_edit.png" alt="Edit icon">
               </a>
           </div>
@@ -109,11 +109,11 @@
       <div class="bottom-box">
           <div class="pf-picture"><img src="images/space man.jpg" alt="Profile"></div>
           <div class="pf-name">
-              Space Man
+              <span th:text="${user.username}"></span>
               <img src="/images/Level-2.png" alt="Badge">
           </div>
-          <span class="lvl">Level - 01</span>
-          <span class="pf-email">spaceman@gmail.com</span>
+          <span class="lvl">Level - 0<span  th:text="${user.level}"></span></span>
+          <span class="pf-email" th:text="${user.email}"></span>
           
           <a th:href="@{/logout}" class="sign-out-btn">Sign out</a>
         
@@ -125,16 +125,19 @@
     <div class="swiper mySwiper">
         <div class="swiper-wrapper">
             <div class="swiper-slide">
-                <div class="profile-info-box">
+                <div class="profile-info-box" >
                     <div class="user-pf"><img src="images/space man.jpg" alt="profile picture"></div>
                     <div class="profile-info">
-                        <span class="name">John Snow
+                        <span class="name" th:text="${user.username}">
                             <img class="badge-lvl" src="/images/Level-1.png" alt="badge-level">
                         </span>
-                        <span class="level-no">Lvl - 01</span>
+                        <span class="level-no">Lvl - <span th:text="user.level"></span></span>
                         <div class="exp-prograss-bar">
                             <div class="exp-bar-fill"></div>
                             <span class="exp">900/1200EXP</span>
+            <!--
+                            <span class="exp"><span th:text="${user.userXp}"></span>/1200EXP</span>
+-->
                         </div>
                     </div>
                 </div>
@@ -142,14 +145,14 @@
                     <div class="quiz-set-box">
                         <div class="badge-icon"><img src="icons/check-mark (1).svg" alt="Quiz set"></div>
                         <div class="badge-info">
-                            <span class="record">07</span>
+                            <span class="record" th:text="${user.quizSet}"></span>
                             <span class="record-name">Quiz Sets</span>
                         </div>
                     </div>
                     <div class="high-score-box">
                         <div class="badge-icon"><img src="icons/trophy-cup (2).svg" alt="High score"></div>
                         <div class="badge-info">
-                            <span class="record">2100</span>
+                            <span class="record" th:text="${user.highestScore}">2100</span>
                             <span class="record-name">Highest Score</span>
                         </div>
                     </div>
@@ -249,10 +252,10 @@
             <div class="profile-info-box2">
                 <div class="user-pf"><img src="images/space man.jpg" alt="profile picture"></div>
                 <div class="profile-info">
-                    <span class="name">John Snow
+                    <span class="name"><span th:text="${user.username}"></span>
                         <img class="badge-lvl" src="/images/Level-1.png" alt="badge-level">
                     </span>
-                    <span class="level-no">Lvl - 01</span>
+                    <span class="level-no">Lvl - 0<span  th:text="${user.level}"></span></span>
                     <div class="exp-prograss-bar">
                         <div class="exp-bar-fill"></div>
                         <span class="exp">900/1200 XP</span>
@@ -263,14 +266,14 @@
                 <div class="quiz-set-box">
                     <div class="badge-icon"><img src="icons/check-mark (1).svg" alt="Quiz set"></div>
                     <div class="badge-info">
-                        <span class="record">07</span>
+                        <span class="record"  th:text="${user.quizSet}">07</span>
                         <span class="record-name">Quiz Sets</span>
                     </div>
                 </div>
                 <div class="high-score-box">
                     <div class="badge-icon"><img src="icons/trophy-cup (2).svg" alt="High score"></div>
                     <div class="badge-info">
-                        <span class="record">2100</span>
+                        <span class="record"  th:text="${user.highestScore}"></span>
                         <span class="record-name">Highest Score</span>
                     </div>
                 </div>

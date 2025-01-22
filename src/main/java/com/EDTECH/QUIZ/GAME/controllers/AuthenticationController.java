@@ -1,10 +1,14 @@
 package com.EDTECH.QUIZ.GAME.controllers;
 
+import java.security.Principal;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.BeanDefinitionDsl.Role;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,14 +62,58 @@ public class AuthenticationController {
         return "login";
     }
 
-    // @GetMapping("/home")
-    // public String showHomePage(@AuthenticationPrincipal CustomOAuth2User customUser, Model model) {
+    @GetMapping("/home")
+        public String home(Model model) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    //     Users user = userRepository.findByUsername(customUser.getName());
+            if (authentication != null) {
+                Object principal = authentication.getPrincipal();
 
-    //     model.addAttribute("user", user);
+                if (principal instanceof CustomOAuth2User) {
+                    CustomOAuth2User customUser = (CustomOAuth2User) principal;
+                    Users currectUser = userRepository.findByUsername(customUser.getName());
+                    model.addAttribute("user", currectUser);
 
-    //     return "home";
-    // }
-    
+                } else if (principal instanceof UserDetails) {
+                    UserDetails userDetails = (UserDetails) principal;
+                    System.out.println(userDetails.getUsername());
+                    Users currectUser = userRepository.findByUsername(userDetails.getUsername());
+
+                    model.addAttribute("user", currectUser);
+                }
+            }
+
+            return "home";
+        }
+
+        @GetMapping("/profile")
+        public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+            Users currentUser = userRepository.findByUsername(userDetails.getUsername());
+            
+            if (currentUser == null) {
+                return "redirect:/login";  
+            }
+        
+            model.addAttribute("user", currentUser);
+            return "update_profile";  
+        }
+        
+
+    @PostMapping("/edit")
+    public String editProfile(@ModelAttribute("user") Users user, Principal principal, Model model) {
+
+        String username = principal.getName();
+        Users existingUser = userRepository.findByUsername(username);
+
+        existingUser.setUsername(user.getUsername());
+        // existingUser.setEmail(user.getEmail());
+
+        userRepository.save(existingUser);
+        model.addAttribute("user", existingUser);  
+
+        
+        return "/home"; 
+    }
+
+
 }
