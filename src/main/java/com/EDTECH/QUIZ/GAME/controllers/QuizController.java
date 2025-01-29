@@ -4,20 +4,26 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.EDTECH.QUIZ.GAME.models.Answer;
 import com.EDTECH.QUIZ.GAME.models.Question;
 import com.EDTECH.QUIZ.GAME.models.Quiz;
+import com.EDTECH.QUIZ.GAME.models.UserAnswer;
 import com.EDTECH.QUIZ.GAME.repositories.AnswerRepository;
 import com.EDTECH.QUIZ.GAME.repositories.QuestionRepository;
 import com.EDTECH.QUIZ.GAME.repositories.QuizRepository;
+import com.EDTECH.QUIZ.GAME.sevices.UserAnswerService;
 
 import jakarta.websocket.server.PathParam;
 
@@ -31,6 +37,9 @@ public class QuizController {
 
     @Autowired
     private AnswerRepository answerRepository;
+
+    @Autowired
+    private UserAnswerService userAnswerService;
 
     @GetMapping("/{phaseId}/{topicId}/quiz")
     public String quiz(@PathVariable("topicId") Long topicId, Model model) {
@@ -71,4 +80,40 @@ public class QuizController {
         }
         return response;
     }
+
+    @PostMapping("/quiz/submit-answer")
+    @ResponseBody
+    public ResponseEntity<?> submitAnswer(@RequestParam Long questionId, @RequestParam Long answerId) {
+        Optional<Answer> selectedAnswer = answerRepository.findById(answerId);
+        if (selectedAnswer.isPresent()) {
+            boolean isCorrect = selectedAnswer.get().isCorrect();
+            // Store user's answer in session, database, or memory
+            // Example:
+            userAnswerService.storeAnswer(questionId, answerId, isCorrect);
+
+            return ResponseEntity.ok(Map.of("correct", isCorrect));
+        }
+        return ResponseEntity.badRequest().body("Invalid answer.");
+    }
+
+    @GetMapping("/quiz/result")
+    public String getResult(Model model) {
+        // Fetch stored user answers
+        List<UserAnswer> userAnswers = userAnswerService.getUserAnswers();
+
+        int totalQuestions = userAnswers.size();
+        long correctAnswers = userAnswers.stream().filter(UserAnswer::isCorrect).count();
+        long incorrectAnswers = totalQuestions - correctAnswers;
+        int score = (int) correctAnswers * 10; // Example: 10 points per correct answer
+
+        model.addAttribute("totalQuestions", totalQuestions);
+        model.addAttribute("correctAnswers", correctAnswers);
+        model.addAttribute("incorrectAnswers", incorrectAnswers);
+        model.addAttribute("score", score);
+        model.addAttribute("timeTaken", userAnswerService.getTimeTaken());
+
+        return "result";
+    }
+
+
 }
