@@ -1,0 +1,119 @@
+
+.background-image {
+    background-image: url('/images/WHG1m7.webp');
+    background-size: cover;
+    background-position: center;
+    height: 100%; 
+    width: 100%; 
+    position: fixed;
+    opacity: 0.3;
+    overflow: hidden;
+}
+.edit-pf-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    color: white;
+}
+.back{
+    position: absolute;
+    display: flex;
+    top: 80px;
+    left: 20px;
+    align-items: center;
+    color: rgb(255, 255, 255);
+    font-size: .8rem;
+}
+.back img{
+    margin-right: 5px;
+    width: 20px;
+}
+.edit-pf-container h2{
+    margin-bottom: 20px;
+}
+.edit-pf-box{
+    border: 1px solid white;
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    backdrop-filter: blur(8px);
+    box-shadow: inset 5px 5px 8px rgb(70, 124, 147), inset -5px -5px 8px rgb(68, 133, 160);
+}
+.pf-pic{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-top: 20px;
+}
+.badge-icon{
+    width: 30px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+.level{
+    margin-top: 8px;
+    color: rgb(185, 185, 185);
+}
+.email{
+    margin-top: 4px;
+    font-size: 14px;
+}
+.input-box{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin-top: 15px;
+}
+.input-box label{
+    margin-bottom: 5px;
+}
+.input-box input{
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid rgb(222, 222, 222);
+    outline: none;
+    background: transparent;
+}
+.input-box input::placeholder{
+    color: rgb(195, 195, 195);
+}
+.input-box input:focus{
+    color: white;
+}
+.input-box input.filled{
+    color: rgb(255, 255, 255);
+}
+.update-btn{
+    margin: 25px 0;
+    padding: 8px 25px;
+    border: none;
+    border-radius: 5px;
+    border: 1px solid white;
+    font-weight: 550;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.update-btn:hover{
+    color: white;
+    background-color: #225668;
+    border: 1.5px solid white;
+    box-shadow: inset 5px 5px 5px #076b79, inset -5px -5px 5px #088191;
+    font-weight: 700;
+    transform: scale(1.05);
+}
+.update-btn:active{
+    transform: scale(0.95);
+}
+.input-box input{
+    color: white;
+}

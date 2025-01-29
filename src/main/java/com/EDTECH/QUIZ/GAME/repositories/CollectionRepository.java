@@ -9,5 +9,5 @@ import com.EDTECH.QUIZ.GAME.models.Collection;
 
 @Repository
 public interface CollectionRepository extends JpaRepository<Collection, Long> {
-    List<Collection> findByUser_UserId(Long userId);
+    List<Collection> findByUser_UserId(int userId);
 }

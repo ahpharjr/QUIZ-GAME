@@ -15,7 +15,7 @@ public class Collection {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
-    private User user;
+    private Users user;
 
     @ManyToOne
     @JoinColumn(name = "card_id", nullable = false)
@@ -26,7 +26,7 @@ public class Collection {
         return collectionId;
     }
 
-    public User getUser() {
+    public Users getUser() {
         return user;
     }
 
@@ -38,7 +38,7 @@ public class Collection {
         this.collectionId = collectionId;
     }
 
-    public void setUser(User user) {
+    public void setUser(Users user) {
         this.user = user;
     }
 

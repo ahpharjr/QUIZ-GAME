@@ -16,7 +16,9 @@ public class Topic {
 
     private String name;
     private String image;
-    private String desc;
+
+    @Column(name = "`desc`")  
+    private String desc; 
 
     @ManyToOne
     @JoinColumn(name = "phase_id", nullable = false) 
