@@ -1,5 +1,6 @@
 package com.EDTECH.QUIZ.GAME.controllers;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.EDTECH.QUIZ.GAME.models.Flashcard;
 import com.EDTECH.QUIZ.GAME.repositories.FlashcardRepository;
 import com.EDTECH.QUIZ.GAME.repositories.TopicRepository;
+import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 
 
 @Controller
@@ -26,10 +28,17 @@ public class CardController {
     @Autowired
     private FlashcardRepository flashcardRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
 
     @GetMapping("{phaseId}/cards")
-    public String showCard(@PathVariable Long phaseId, Model model) {
+    public String showCard(@PathVariable Long phaseId, Model model, Principal principal) {
 
+        if (principal != null) {
+            var user = userRepository.findByUsername(principal.getName());
+            model.addAttribute("user", user);
+        }
         // Fetch topics related to the selected phase
         var topics = topicRepository.findAllByPhasePhaseId(phaseId);
         model.addAttribute("topics", topics);

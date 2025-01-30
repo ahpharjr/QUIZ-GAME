@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.BeanDefinitionDsl.Role;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -71,15 +70,15 @@ public class AuthenticationController {
 
                 if (principal instanceof CustomOAuth2User) {
                     CustomOAuth2User customUser = (CustomOAuth2User) principal;
-                    Users currectUser = userRepository.findByUsername(customUser.getName());
-                    model.addAttribute("user", currectUser);
+                    Users currentUser = userRepository.findByUsername(customUser.getName());
+                    model.addAttribute("user", currentUser);
 
                 } else if (principal instanceof UserDetails) {
                     UserDetails userDetails = (UserDetails) principal;
                     System.out.println(userDetails.getUsername());
-                    Users currectUser = userRepository.findByUsername(userDetails.getUsername());
+                    Users currentUser = userRepository.findByUsername(userDetails.getUsername());
 
-                    model.addAttribute("user", currectUser);
+                    model.addAttribute("user", currentUser);
                 }
             }
 
@@ -112,7 +111,7 @@ public class AuthenticationController {
         model.addAttribute("user", existingUser);  
 
         
-        return "/home"; 
+        return "redirect:/home"; 
     }
 
 

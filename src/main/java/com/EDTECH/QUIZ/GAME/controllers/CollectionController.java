@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,18 +33,30 @@ public class CollectionController {
     private UserRepository userRepository;
 
     @GetMapping("/collection")
-    public String collection() {
+    public String collection(Model model, Principal principal) {
+        if (principal != null) {
+            Users user = userRepository.findByUsername(principal.getName());
+            model.addAttribute("user", user);
+        }
+
         return "card_collection";
     }
-/*     @PostMapping("/collections/add")
+
+    @PostMapping("/collections/add")
     @ResponseBody
-    public ResponseEntity<String> addCardToCollection(@RequestParam Long cardId, @RequestParam Long userId) {
+    public ResponseEntity<String> addCardToCollection(@RequestParam Long cardId, Principal principal) {
         Optional<Flashcard> flashcardOpt = flashcardRepository.findById(cardId);
         if (flashcardOpt.isEmpty()) {
             return ResponseEntity.badRequest().body("Invalid card ID");
         }
 
-        List<Collection> existingCollections = collectionRepository.findByUser_UserId(userId);
+        // Get currently logged-in user
+        Users currentUser = userRepository.findByUsername(principal.getName());
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+        }
+
+        List<Collection> existingCollections = collectionRepository.findByUser_UserId(currentUser.getUserId());
         boolean alreadyExists = existingCollections.stream()
             .anyMatch(c -> c.getFlashcard().getCardId().equals(cardId));
 
@@ -51,50 +64,23 @@ public class CollectionController {
             return ResponseEntity.badRequest().body("Card already in collection");
         }
 
-        // Create and save the new collection entry
         Collection collection = new Collection();
-        collection.setUser(new Users(1)); 
+        collection.setUser(currentUser);
         collection.setFlashcard(flashcardOpt.get());
         collectionRepository.save(collection);
 
         return ResponseEntity.ok("Card added to collection successfully");
     }
-*/
-@PostMapping("/collections/add")
-@ResponseBody
-public ResponseEntity<String> addCardToCollection(@RequestParam Long cardId, Principal principal) {
-    Optional<Flashcard> flashcardOpt = flashcardRepository.findById(cardId);
-    if (flashcardOpt.isEmpty()) {
-        return ResponseEntity.badRequest().body("Invalid card ID");
-    }
-
-    // Get currently logged-in user
-    Users currentUser = userRepository.findByUsername(principal.getName());
-    if (currentUser == null) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
-    }
-
-    List<Collection> existingCollections = collectionRepository.findByUser_UserId(currentUser.getUserId());
-    boolean alreadyExists = existingCollections.stream()
-        .anyMatch(c -> c.getFlashcard().getCardId().equals(cardId));
-
-    if (alreadyExists) {
-        return ResponseEntity.badRequest().body("Card already in collection");
-    }
-
-    Collection collection = new Collection();
-    collection.setUser(currentUser);
-    collection.setFlashcard(flashcardOpt.get());
-    collectionRepository.save(collection);
-
-    return ResponseEntity.ok("Card added to collection successfully");
-}
-
 
     @GetMapping("/collections/check")
     @ResponseBody
-    public ResponseEntity<Boolean> isCardInCollection(@RequestParam Long cardId, @RequestParam int userId) {
-        List<Collection> existingCollections = collectionRepository.findByUser_UserId(userId);
+    public ResponseEntity<Boolean> isCardInCollection(@RequestParam Long cardId, Principal principal) {
+        Users currentUser = userRepository.findByUsername(principal.getName());
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+        }
+
+        List<Collection> existingCollections = collectionRepository.findByUser_UserId(currentUser.getUserId());
         boolean isInCollection = existingCollections.stream()
             .anyMatch(c -> c.getFlashcard().getCardId().equals(cardId));
 
@@ -103,8 +89,13 @@ public ResponseEntity<String> addCardToCollection(@RequestParam Long cardId, Pri
 
     @GetMapping("/collections")
     @ResponseBody
-    public ResponseEntity<List<Flashcard>> getUserCollections(@RequestParam int userId) {
-        List<Collection> collections = collectionRepository.findByUser_UserId(userId);
+    public ResponseEntity<List<Flashcard>> getUserCollections(Principal principal) {
+        Users currentUser = userRepository.findByUsername(principal.getName());
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        List<Collection> collections = collectionRepository.findByUser_UserId(currentUser.getUserId());
         List<Flashcard> flashcards = collections.stream()
                                                 .map(Collection::getFlashcard)
                                                 .toList();
@@ -113,9 +104,13 @@ public ResponseEntity<String> addCardToCollection(@RequestParam Long cardId, Pri
 
     @PostMapping("/collections/remove")
     @ResponseBody
-    public ResponseEntity<String> removeCardFromCollection(@RequestParam Long cardId, @RequestParam int userId) {
-        List<Collection> collections = collectionRepository.findByUser_UserId(userId);
+    public ResponseEntity<String> removeCardFromCollection(@RequestParam Long cardId, Principal principal) {
+        Users currentUser = userRepository.findByUsername(principal.getName());
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+        }
 
+        List<Collection> collections = collectionRepository.findByUser_UserId(currentUser.getUserId());
         Optional<Collection> collectionOpt = collections.stream()
                                                         .filter(c -> c.getFlashcard().getCardId().equals(cardId))
                                                         .findFirst();
@@ -127,7 +122,6 @@ public ResponseEntity<String> addCardToCollection(@RequestParam Long cardId, Pri
         collectionRepository.delete(collectionOpt.get());
         return ResponseEntity.ok("Card removed from collection successfully");
     }
-
 
 }
 

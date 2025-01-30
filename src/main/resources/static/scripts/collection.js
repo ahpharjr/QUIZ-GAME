@@ -4,9 +4,11 @@ function attachStarListeners() {
     document.querySelectorAll(".star").forEach(star => {
         const cardElement = star.closest(".flashcard");
         const cardId = cardElement.getAttribute("data-card-id");
-        const userId = document.body.getAttribute("data-user-id"); // Replace with actual user ID
+        const userId = document.body.getAttribute("data-user-id"); // Get the correct userId
 
-        fetch(`/collections/check?cardId=${cardId}&userId=${userId}`)
+        console.log(`User ID: ${userId}`);
+
+        fetch(`/collections/check?cardId=${cardId}`)
             .then(response => response.json())
             .then(isInCollection => {
                 const tooltip = star.querySelector(".tooltip");
@@ -27,39 +29,35 @@ function attachStarListeners() {
                             headers: {
                                 "Content-Type": "application/x-www-form-urlencoded",
                             },
-                            body: `cardId=${cardId}&userId=${userId}`,
+                            body: `cardId=${cardId}`
                         })
-                            .then(response => {
-                                if (response.ok) {
-                                    tooltip.textContent = "Add to Collection";
-                                    star.classList.remove("in-collection");
-                                    console.log("Card removed successfully");
-                                } else {
-                                    console.error("Failed to remove card");
-                                }
-                            });
+                        .then(response => {
+                            if (response.ok) {
+                                tooltip.textContent = "Add to Collection";
+                                star.classList.remove("in-collection");
+                                console.log("Card removed successfully");
+                            } else {
+                                console.error("Failed to remove card");
+                            }
+                        });
                     } else {
                         // Add card to collection
                         fetch('/collections/add', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/x-www-form-urlencoded',
-                                'X-CSRF-TOKEN': csrfToken
                             },
-                            body: new URLSearchParams({
-                                cardId: cardId,
-                                userId: userId
-                            }).toString()
+                            body: `cardId=${cardId}`
                         })
-                            .then(response => {
-                                if (response.ok) {
-                                    tooltip.textContent = "Remove Card";
-                                    star.classList.add("in-collection");
-                                    console.log("Card added successfully");
-                                } else {
-                                    console.error("Failed to add card");
-                                }
-                            });
+                        .then(response => {
+                            if (response.ok) {
+                                tooltip.textContent = "Remove Card";
+                                star.classList.add("in-collection");
+                                console.log("Card added successfully");
+                            } else {
+                                console.error("Failed to add card");
+                            }
+                        });
                     }
                 });
             });
