@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="x-icon" href="icons/titlelogo.png">
+    <link rel="stylesheet" href="styles/general.css">
+    <link rel="stylesheet" href="styles/landing.css">
+    <title>Quiz Game</title>
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="login-btns">
+        <a th:href="@{/login}">
+            <div class="login-btn">Log in</div>
+        </a>
+        <a th:href="@{/register}">
+            <div class="signup-btn">Sign Up</div>
+        </a>
+    </div>
+    <div class="container">
+        <div class="logo-container">
+            <div class="logo-box">
+                <div class="top-logo">
+                    <div class="Q-box">Q</div>
+                    <div class="U-box">U</div>
+                </div>
+                <div class="bottom-logo">
+                    <div class="I-box">I</div>
+                    <div class="Z-box">Z</div>
+                </div>
+            </div>
+            <div class="logo-name">
+                QUIZ GAME
+            </div>
+        </div>
+        <div class="content-box">
+            <h2>"Level Up Your<br>
+                Software Project Management Skills"</h2>
+            <span>
+                Master the art of initiating software projects with interactive challenges, flashcards, 
+                and quizzes. Climb the leader-board, unlock achievements, and build real-world 
+                expertise in project management. <br>
+            </span>
+            <div class="explore-btn" id="exploreButton">
+                <a th:href="@{/home}">
+                    Explore
+                    <img src="icons/Vector 36.png" alt="arrow">
+                </a>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        const screenWidth = window.innerWidth;
+        const screen1 = screenWidth <= 1200 && screenWidth >= 1025;
+        const screen2 = screenWidth <= 1024 && screenWidth >= 740;
+        const screen3 = screenWidth <= 739 && screenWidth >= 481;
+        const screen4 = screenWidth <= 480 ;
+        // Create a GSAP timeline
+        const tl = gsap.timeline();
+
+        tl.fromTo(
+            ".Q-box, .U-box, .I-box, .Z-box",
+            { opacity: 0.5 },
+            { opacity: 1, duration: 1, delay: 0.5 }
+        );
+
+        // Step 2: Animate the logo name
+        tl.fromTo(
+            ".logo-name",
+            { y: 10, opacity: 0 },
+            { y: 0, opacity: 1, duration: 2, delay: 0.5 },
+            "<" // Start this animation simultaneously with the previous step
+        );
+
+        tl.to(".logo-container", {
+            left: screen1 ? "15%" : (screen2 ? "12%" : (screen3 ? "50%" : (screen4 ? "50%" : "18%"))),
+            top: screen3 ? "33%" : (screen4 ? "33%" : ""), 
+            right: screen3 ? "50%" : (screen4 ? "50%" : ""), 
+            scale: screen1 ? 1.4 : (screen2 ? 1.2 : (screen3 ? 1.1 :(screen4 ? 1 : 1.6))), 
+            duration: 2,
+            ease: "power2.out",
+        });
+
+        tl.set(".content-box", { visibility: "visible" }) // Set visibility before animation
+        .fromTo(
+            ".content-box",
+            { opacity: 0, x: 50 }, // Start slightly shifted
+            { opacity: 1, x: 0, duration: 1.5, ease: "power2.out" }
+        );
+
+        tl.fromTo(
+            ".login-btns", 
+            { opacity: 0}, // Start slightly shifted
+            { opacity: 1, duration: 0.5, ease: "power2.out" }
+        )
+
+
+    </script>
+</body>
+</html>
