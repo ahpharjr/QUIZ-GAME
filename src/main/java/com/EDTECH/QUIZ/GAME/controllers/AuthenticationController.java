@@ -35,6 +35,11 @@ public class AuthenticationController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @GetMapping("/")
+    public String landing() {
+        return "landing";
+    }
+
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("user", new Users());
@@ -57,7 +62,7 @@ public class AuthenticationController {
         System.out.println("User: " + user);
         userRepository.save(user);
 
-        return "redirect:/login";
+        return "redirect:/home";
     }
 
     @GetMapping("/login")
