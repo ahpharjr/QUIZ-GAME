@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,10 +15,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import jakarta.servlet.http.Cookie;
 
 import com.EDTECH.QUIZ.GAME.models.Users;
 import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 import com.EDTECH.QUIZ.GAME.sevices.CustomOAuth2User;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 
 @Controller
@@ -113,6 +118,44 @@ public class AuthenticationController {
         
         return "redirect:/home"; 
     }
+
+//     @PostMapping("/login")
+// public String login(@RequestParam String username, 
+//                     @RequestParam String password, 
+//                     HttpServletResponse response, 
+//                     Model model) {
+//     Authentication authentication = authenticationManager.authenticate(
+//             new UsernamePasswordAuthenticationToken(username, password)
+//     );
+
+//     SecurityContextHolder.getContext().setAuthentication(authentication);
+//     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+//     String jwtToken = jwtService.generateToken(userDetails);
+
+//     // Store token in an HTTP-only secure cookie
+//     Cookie jwtCookie = new Cookie("JWT_TOKEN", jwtToken);
+//     jwtCookie.setHttpOnly(true); // Prevents JavaScript access
+//     jwtCookie.setSecure(true); // Ensures HTTPS only
+//     jwtCookie.setPath("/"); // Accessible throughout the app
+//     jwtCookie.setMaxAge((int) jwtService.getExpirationTime() / 1000);
+
+//     response.addCookie(jwtCookie);
+
+//     return "redirect:/home";
+// }
+
+//     @GetMapping("/logout")
+//     public String logout(HttpServletResponse response) {
+//         Cookie jwtCookie = new Cookie("JWT_TOKEN", "");
+//         jwtCookie.setHttpOnly(true);
+//         jwtCookie.setSecure(true);
+//         jwtCookie.setPath("/");
+//         jwtCookie.setMaxAge(0); // Expire immediately
+
+//         response.addCookie(jwtCookie);
+//         return "redirect:/login";
+//     }
 
 
 }
