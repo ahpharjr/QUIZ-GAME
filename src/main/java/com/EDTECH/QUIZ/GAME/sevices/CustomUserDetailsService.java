@@ -22,9 +22,15 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users user = userRepository.findByUsername(username);
         System.out.println("This is in the user details service: " + user);
+        String p = "";
+        if(user.getPassword()==null){
+            p = "";
+        }else{
+            p = user.getPassword();
+        }
         return User.builder()
             .username(user.getUsername())
-            .password(user.getPassword()) 
+            .password(p) 
             .build();
     }
 }

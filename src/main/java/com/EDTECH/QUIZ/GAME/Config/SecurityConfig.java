@@ -24,16 +24,19 @@ public class SecurityConfig {
     private final CustomLoginSuccessHandler customLoginSuccessHandler;
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CustomLoginOauthSuccessHandler customLoginOauthSuccessHandler;
 
 
     public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, 
                           CustomLoginSuccessHandler customLoginSuccessHandler, 
                           CustomUserDetailsService customUserDetailsService,
-                          JwtAuthenticationFilter jwtAuthenticationFilter) {
+                          JwtAuthenticationFilter jwtAuthenticationFilter,
+                          CustomLoginOauthSuccessHandler customLoginOauthSuccessHandler) {
         this.customOAuth2UserService = customOAuth2UserService;
         this.customLoginSuccessHandler = customLoginSuccessHandler;
         this.customUserDetailsService = customUserDetailsService;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.customLoginOauthSuccessHandler = customLoginOauthSuccessHandler;
     }
 
     // Password encoder bean
@@ -42,52 +45,13 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // Security filter chain configuration
-//     @Bean
-//     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//         http
-//             .csrf(csrf -> csrf.disable())  
-//             .authorizeHttpRequests(auth -> auth
-//                 .requestMatchers("/register", "/login", "/styles/**", "/images/**", "/icons/**").permitAll()  // Public access
-//                 .anyRequest().authenticated()  
-//             )
-//             .formLogin(form -> form
-//                 .loginPage("/login")  
-//                 .usernameParameter("username")  
-//                 .passwordParameter("password")
-//                 .successHandler(customLoginSuccessHandler)  
-//                 .permitAll()
-//             )
-//             .oauth2Login(oauth2 -> oauth2
-//                 .loginPage("/login")
-//                 .userInfoEndpoint(userInfo -> userInfo
-//                     .userService(customOAuth2UserService)
-//                 )
-//                 .successHandler((request, response, authentication) -> {
-//                     CustomOAuth2User customUser = (CustomOAuth2User) authentication.getPrincipal();
-//                     System.out.println("OAuth2 User: " + customUser);
-//                     request.getSession().setAttribute("user", customUser); 
-//                     response.sendRedirect("/home");
-//                 })
-//             )
-//             .logout(logout -> logout
-//             .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-//             .logoutSuccessUrl("/login?logout")
-//             .invalidateHttpSession(true)
-//             .deleteCookies("JSESSIONID")
-//             .permitAll()
-//         );
-
-
-//         return http.build();
-//     }
 
 @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/register", "/login", "/styles/**", "/images/**").permitAll()
+            .requestMatchers("/register", "/login", "/styles/**", "/images/**","/oauth2/**").permitAll()
             .anyRequest().authenticated()
         )
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless before adding filter
@@ -97,6 +61,13 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
             .passwordParameter("password")
             .successHandler(customLoginSuccessHandler)
             .permitAll()
+        )
+        .oauth2Login( oauth2 -> oauth2
+            .loginPage("/login")
+            .userInfoEndpoint(userInfo -> userInfo
+                .userService(customOAuth2UserService)
+            )
+            .successHandler(customLoginOauthSuccessHandler)
         )
         .logout(logout -> logout
             .logoutUrl("/logout")

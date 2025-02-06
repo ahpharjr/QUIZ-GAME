@@ -16,6 +16,8 @@ public class Users {
 
     private String username;
     private String email;
+    
+    @Column(nullable = true)
     private String password;
     private int level;
     private int userXp;
