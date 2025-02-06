@@ -1,10 +1,20 @@
 package com.EDTECH.QUIZ.GAME.models;
 
+import java.security.AuthProvider;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
@@ -26,6 +36,18 @@ public class Users {
     private int highestScore;
     private String pfPicture;
     private Date createdDate;
+    
+    private boolean enabled = false;
+    private String verificationToken;
+    
+    @Enumerated(EnumType.STRING)
+    private AuthProvider authProvider;
+
+    public enum AuthProvider {
+        LOCAL, GOOGLE
+    }
+
+    
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Collection> collections;
@@ -135,6 +157,28 @@ public class Users {
         this.createdDate = createdDate;
     }
 
-    
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public String getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
+    }
+
+    public AuthProvider getAuthProvider() {
+        return authProvider;
+    }
+
+    public void setAuthProvider(AuthProvider authProvider) {
+        this.authProvider = authProvider;
+    }
 
 }

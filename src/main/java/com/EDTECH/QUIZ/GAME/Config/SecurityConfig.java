@@ -51,8 +51,8 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/register", "/login", "/styles/**", "/images/**","/oauth2/**").permitAll()
-            .anyRequest().authenticated()
+        .requestMatchers("/register", "/login", "/verify-email", "/styles/**", "/images/**", "/oauth2/**").permitAll()
+        .anyRequest().authenticated()
         )
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless before adding filter
         .formLogin(form -> form
@@ -69,6 +69,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
             )
             .successHandler(customLoginOauthSuccessHandler)
         )
+        .userDetailsService(customUserDetailsService) 
         .logout(logout -> logout
             .logoutUrl("/logout")
             .logoutSuccessHandler(new CustomLogoutHandler())
@@ -78,32 +79,6 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
 
     return http.build();
 }
-
-
-    // Authentication manager bean
-    // @Bean
-    // public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-    //     return authenticationConfiguration.getAuthenticationManager();
-    // }
-
-    // // Authentication provider bean
-    // @Bean
-    // public AuthenticationProvider authenticationProvider() {
-    //     DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-    //     provider.setUserDetailsService(customUserDetailsService);
-    //     provider.setPasswordEncoder(passwordEncoder());
-    //     return provider;
-    // }
-
-    // // In-memory user details manager bean
-    // @Bean
-    // public UserDetailsService userDetailsService() {
-    //     UserDetails user = User.withUsername("user")
-    //         .password(passwordEncoder().encode("password"))
-    //         .roles("USER")
-    //         .build();
-    //     return new InMemoryUserDetailsManager(user);
-    // }
 
 
 }

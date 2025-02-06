@@ -74,7 +74,11 @@
 			<artifactId>spring-security-oauth2-client</artifactId>
 			<version>6.4.1</version>
 		</dependency> 
-		
+		<!-- Mail Dependency -->
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
 		<!-- JWT token  -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
