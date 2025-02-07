@@ -47,8 +47,6 @@ public class Users {
         LOCAL, GOOGLE
     }
 
-    
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Collection> collections;
 

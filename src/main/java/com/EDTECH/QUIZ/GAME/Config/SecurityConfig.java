@@ -9,9 +9,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+//import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.EDTECH.QUIZ.GAME.sevices.CustomOAuth2User;
+// import com.EDTECH.QUIZ.GAME.sevices.CustomOAuth2User;
 import com.EDTECH.QUIZ.GAME.sevices.CustomOAuth2UserService;
 import com.EDTECH.QUIZ.GAME.sevices.CustomUserDetailsService;
 
@@ -19,17 +19,22 @@ import com.EDTECH.QUIZ.GAME.sevices.CustomUserDetailsService;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomLoginSuccessHandler customLoginSuccessHandler;
     private final CustomUserDetailsService customUserDetailsService;
+    private final CustomLoginOauthSuccessHandler customLoginOauthSuccessHandler;
 
-    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, 
+    public SecurityConfig(CustomLoginOauthSuccessHandler customLoginOauthSuccessHandler, 
                           CustomLoginSuccessHandler customLoginSuccessHandler, 
-                          CustomUserDetailsService customUserDetailsService) {
-        this.customOAuth2UserService = customOAuth2UserService;
+                          CustomUserDetailsService customUserDetailsService,
+                          JwtAuthenticationFilter jwtAuthenticationFilter,
+                          CustomOAuth2UserService customOAuth2UserService) {
+        this.customLoginOauthSuccessHandler = customLoginOauthSuccessHandler;
         this.customLoginSuccessHandler = customLoginSuccessHandler;
         this.customUserDetailsService = customUserDetailsService;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.customOAuth2UserService = customOAuth2UserService;
     }
 
     // Password encoder bean
