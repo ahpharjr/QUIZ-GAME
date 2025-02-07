@@ -14,7 +14,7 @@
     <div class="header">
         <div class="logo-box">
             <a th:href="@{/}">
-                <img class="logo" src="icons/quizlogo99.svg" alt="Logo">
+                <img class="logo" src="@{/icons/quizlogo99.svg}" alt="Logo">
             </a>
             <div class="logo-name">
                 <span class="quiz">QUIZ</span>
@@ -40,21 +40,13 @@
             </div>
             <button class="sign-in-btn" type="submit">Register</button>
         </form>
-        
-<!--
-        <a th:href="@{/home}">
-            <button class="sign-in-btn">Register</button>
-        </a>        
--->
 
         <span class="sign-up-text">Already had an account? <a th:href="@{/login}">Sign in here</a></span>
     </div>
     
     <script th:inline="javascript">
-        // Select all input elements in the document
         const inputs = document.querySelectorAll('input');
 
-        // Add event listeners to each input
         inputs.forEach(input => {
             input.addEventListener('input', function () {
                 if (this.value.trim() !== '') {

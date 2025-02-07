@@ -35,10 +35,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             user = new Users();
             user.setEmail(email);
             user.setUsername(name);
+
+            user.setEnabled(true);
+            user.setAuthProvider(Users.AuthProvider.GOOGLE);
+
             user.setHighestScore(0);
             user.setQuizSet(0);
             user.setUserXp(0);
             user.setLevel(1);
+            user.setPassword("");
             user.setCreatedDate(new Date());
             userRepository.save(user);
         }
@@ -47,3 +52,4 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
     
 }
+//This is user11@gmail.com

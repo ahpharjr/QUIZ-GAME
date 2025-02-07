@@ -2,8 +2,10 @@ package com.EDTECH.QUIZ.GAME.controllers;
 
 import java.security.Principal;
 import java.util.Date;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,10 +16,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import jakarta.servlet.http.Cookie;
 
 import com.EDTECH.QUIZ.GAME.models.Users;
 import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 import com.EDTECH.QUIZ.GAME.sevices.CustomOAuth2User;
+import com.EDTECH.QUIZ.GAME.sevices.EmailService;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 
 @Controller
@@ -29,6 +36,9 @@ public class AuthenticationController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/")
     public String landing() {
@@ -46,7 +56,9 @@ public class AuthenticationController {
     public String registerUser(@ModelAttribute("user") Users user) {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
+        user.setEnabled(false); 
+        String token  = UUID.randomUUID().toString();
+        user.setVerificationToken(token);
         user.setEmail(user.getEmail());
         user.setUsername(user.getUsername());
         user.setHighestScore(0);
@@ -54,16 +66,52 @@ public class AuthenticationController {
         user.setUserXp(0);
         user.setLevel(1);
         user.setCreatedDate(new Date());
-        System.out.println("User: " + user);
         userRepository.save(user);
 
-        return "redirect:/home";
+        emailService.sendVerificationEmail(user.getEmail(), token);
+
+        return "redirect:/login";
     }
 
-    @GetMapping("/login")
-    public String showLoginForm(){
+    @GetMapping("/verify-email")
+    public String verifyEmail(@RequestParam("token") String token, Model model) {
+        Users user = userRepository.findByVerificationToken(token);
+        
+        if (user == null) {
+            model.addAttribute("message", "Invalid verification link!");
+            return "error";
+        }
 
+        user.setEnabled(true);
+        user.setVerificationToken(null); 
+        userRepository.save(user);
+
+        Users updatedUser = userRepository.findByUsername(user.getUsername());
+        System.out.println("User after verification " + updatedUser.isEnabled());
+
+        model.addAttribute("message", "Your email has been verified. You can now log in.");
+        return "redirect:/login";
+    }
+
+
+    @GetMapping("/login")
+    public String showLoginForm(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+    
+            if (principal instanceof CustomOAuth2User) {
+                System.out.println("This is redirect to home page and the principal is in OAuthUser" );
+                return "redirect:/home";
+            }
+            if(principal instanceof UserDetails){
+                System.out.println("This is redirect to home page and the principal is in Userdetails" );
+                return "redirect:/home";
+            }
+        }
         return "login";
+        
     }
 
     @GetMapping("/home")
@@ -118,6 +166,5 @@ public class AuthenticationController {
         
         return "redirect:/home"; 
     }
-
 
 }
