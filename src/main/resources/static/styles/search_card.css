@@ -67,21 +67,27 @@
 }
 .content-pic{
     position: relative;
-    width: 100%;
+    width: 233px;
     height: 233px;
 }
-.star, .favorite{
+.star, 
+.favorite {
     position: absolute;
+    padding: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
+    /* background-color: rgb(20, 78, 128);  */
+    box-shadow: inset 0 0 5px rgba(255, 255, 255, 1);
+    border: 1px solid white;
     z-index: 10;
     top: -5px;
-    right: -5px;
+    right: -42px;
     cursor: pointer;
     width: 27px;
     height: 27px;
     border-radius: 50%;
+    transition: 0.15s;
 }
 .star{
     box-shadow: inset 0 0 5px rgba(255, 255, 255, 1);
@@ -109,12 +115,10 @@
 .star.in-collection .star-icon {
     visibility: visible; /* Hide the default icon */
 }
-.pic {
-    width: 100%;
+.content-pic{
+    position: relative;
+    width: 233px;
     height: 233px;
-    border-radius: .6rem;
-    object-fit: cover;
-    
 }
 .text-content {
     display: flex;

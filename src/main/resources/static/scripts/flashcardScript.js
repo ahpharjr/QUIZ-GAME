@@ -83,7 +83,7 @@ document.querySelectorAll('.set-title').forEach(topic => {
                             <div class="flashcard" data-card-id="${card.cardId}" onclick="flipCard(this)">
                                 <div class="flashcard-face front">
                                     <div class="content-pic">
-                                        <img class="pic" src="/images/project-management (1).png" alt="Image">
+                                        <img class="pic" src="/images/Project Goals.png" alt="Image">
                                         <div class="star">
                                             <img class="star-icon" src="/icons/icons8-star-50 (2).png" alt="star">
                                             <span class="tooltip">Add to Collection</span>

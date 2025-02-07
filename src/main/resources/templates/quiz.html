@@ -120,7 +120,7 @@
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.message) {
-                        window.location.href = "/quiz/result"; // Redirect to result page
+                        window.location.href = "/result"; // Redirect to result page
                         return;
                     }
 
@@ -155,67 +155,6 @@
 });
 
     </script>
-    <!-- <script>
-       document.getElementById("next-btn").addEventListener("click", () => {
-        const selectedAnswer = document.querySelector(".answer.selected");
-
-        if(!selectedAnswer) {
-            alert("Please select an answer before proceeding to the next question.");
-            return; // Exit the function early
-        }
-
-        console.log("Selected answer:", selectedAnswer.querySelector(".ans-text").textContent);
-
-    const currentQuestionId = document.getElementById("question-text").dataset.id; // Correctly fetch the question ID
-    console.log("Current Question ID:", currentQuestionId);
-
-    fetch(`/quiz/next-question?questionId=${currentQuestionId}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.message) {
-                alert(data.message); // Quiz completed message
-                window.location.href = "/result"; // Redirect to result page
-                return;
-            }
-
-            const question = data.question;
-            const answers = data.answers;
-
-            // Update question
-            document.getElementById("question-text").textContent = question.question;
-            document.getElementById("question-text").dataset.id = question.questionId; // Update question ID
-            if (question.image) {
-                document.getElementById("question-image").innerHTML = `<img src="${question.image}" alt="Question image">`;
-            } else {
-                document.getElementById("question-image").innerHTML = "";
-            }
-
-            // Update answers
-            const answersContainer = document.getElementById("answers");
-            answersContainer.innerHTML = "";
-            const answerLabels = ["A", "B", "C", "D"]; // Map indices to letters
-
-            answers.forEach((answer, index) => {
-                const answerElement = document.createElement("div");
-                answerElement.classList.add("answer");
-                answerElement.setAttribute("onclick", "selectAnswer(this)");
-                answerElement.innerHTML = `
-                    <span class="ans-A">${answerLabels[index]}.</span>
-                    <span class="ans-text">${answer.answer}</span>
-                `;
-                answersContainer.appendChild(answerElement);
-            });
-
-            // Update question counter
-            const questionCounter = document.getElementById("question-number");
-            const currentCount = parseInt(questionCounter.textContent.split(" / ")[0]);
-            questionCounter.textContent = `${currentCount + 1} / 8`; // Update the question number
-        })
-        .catch(error => console.error("Error fetching next question:", error));
-});
-
-
-    </script> -->
 <script>
     function selectAnswer(selectedElement) {
         const allAnswers = document.querySelectorAll('.answer');
@@ -306,7 +245,67 @@
 </body>
 </html>
 
+    <!-- <script>
+       document.getElementById("next-btn").addEventListener("click", () => {
+        const selectedAnswer = document.querySelector(".answer.selected");
 
+        if(!selectedAnswer) {
+            alert("Please select an answer before proceeding to the next question.");
+            return; // Exit the function early
+        }
+
+        console.log("Selected answer:", selectedAnswer.querySelector(".ans-text").textContent);
+
+    const currentQuestionId = document.getElementById("question-text").dataset.id; // Correctly fetch the question ID
+    console.log("Current Question ID:", currentQuestionId);
+
+    fetch(`/quiz/next-question?questionId=${currentQuestionId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message); // Quiz completed message
+                window.location.href = "/result"; // Redirect to result page
+                return;
+            }
+
+            const question = data.question;
+            const answers = data.answers;
+
+            // Update question
+            document.getElementById("question-text").textContent = question.question;
+            document.getElementById("question-text").dataset.id = question.questionId; // Update question ID
+            if (question.image) {
+                document.getElementById("question-image").innerHTML = `<img src="${question.image}" alt="Question image">`;
+            } else {
+                document.getElementById("question-image").innerHTML = "";
+            }
+
+            // Update answers
+            const answersContainer = document.getElementById("answers");
+            answersContainer.innerHTML = "";
+            const answerLabels = ["A", "B", "C", "D"]; // Map indices to letters
+
+            answers.forEach((answer, index) => {
+                const answerElement = document.createElement("div");
+                answerElement.classList.add("answer");
+                answerElement.setAttribute("onclick", "selectAnswer(this)");
+                answerElement.innerHTML = `
+                    <span class="ans-A">${answerLabels[index]}.</span>
+                    <span class="ans-text">${answer.answer}</span>
+                `;
+                answersContainer.appendChild(answerElement);
+            });
+
+            // Update question counter
+            const questionCounter = document.getElementById("question-number");
+            const currentCount = parseInt(questionCounter.textContent.split(" / ")[0]);
+            questionCounter.textContent = `${currentCount + 1} / 8`; // Update the question number
+        })
+        .catch(error => console.error("Error fetching next question:", error));
+});
+
+
+    </script> -->
 <!--
     <script>
         function selectAnswer(selectedElement) {

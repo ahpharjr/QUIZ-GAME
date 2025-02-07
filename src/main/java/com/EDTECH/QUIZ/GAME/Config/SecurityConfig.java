@@ -11,7 +11,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.EDTECH.QUIZ.GAME.sevices.CustomOAuth2User;
 import com.EDTECH.QUIZ.GAME.sevices.CustomOAuth2UserService;
-import com.EDTECH.QUIZ.GAME.sevices.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -20,14 +19,11 @@ public class SecurityConfig {
     
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomLoginSuccessHandler customLoginSuccessHandler;
-    private final CustomUserDetailsService customUserDetailsService;
 
     public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, 
-                          CustomLoginSuccessHandler customLoginSuccessHandler, 
-                          CustomUserDetailsService customUserDetailsService) {
+                          CustomLoginSuccessHandler customLoginSuccessHandler) {
         this.customOAuth2UserService = customOAuth2UserService;
         this.customLoginSuccessHandler = customLoginSuccessHandler;
-        this.customUserDetailsService = customUserDetailsService;
     }
 
     // Password encoder bean
