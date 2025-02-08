@@ -41,7 +41,7 @@ public class QuizController {
     @Autowired
     private UserAnswerService userAnswerService;
 
-    @GetMapping("/{phaseId}/{topicId}/quiz")
+    @GetMapping("/{topicId}/quiz")
     public String quiz(@PathVariable("topicId") Long topicId, Model model) {
 
         Quiz quiz = quizRepository.findQuizIdByTopic_TopicId(topicId);

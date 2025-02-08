@@ -49,7 +49,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/register", "/login", "/verify-email", "/styles/**", "/images/**", "/oauth2/**").permitAll()
+        .requestMatchers("/","/register", "/login", "/verify-email", "/styles/**", "/images/**", "/oauth2/**").permitAll()
         .anyRequest().authenticated()
         )
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless before adding filter

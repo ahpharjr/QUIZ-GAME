@@ -296,23 +296,15 @@
             <img class="game-img" src="icons/learning-zone-img.png" alt="Learning zone">
             <span class="game-name">Learning Zone</span>
             <span class="desc-text">Expend you knowledge and understanding with<br>practicing with flashcards</span>
-            <!-- <a th:href="@{'/learning-zone'}" id="learn-link">
-                <button class="btn" onclick="audio.play();">Learn</button>
-            </a> -->
-            <a th:href="@{'/learning-zone'}">
-                <button class="btn" >Learn</button>
-            </a>
+
+            <button class="btn" id="learn-link">Learn</button>
         </div>
         <div class="game-zone-box">
             <img  class="game-img" src="icons/game-zone-img.png" alt="Learning zone">
             <span class="game-name">Gaming Zone</span>
             <span class="desc-text">Expend you knowledge and understanding with <br>practicing with flashcards</span>
-            <!-- <a href="game_zone.html" id="play-link">
-                <button class="btn" onclick="audio.play();">Play</button>
-            </a> -->
-            <a th:href="@{'/gamezone'}">
-                <button class="btn" >Play</button>
-            </a>
+
+            <button class="btn" id="play-link">Play</button>
 
         </div>
     </div>
@@ -321,42 +313,15 @@
     </button>
 </div>
 
-<!-- Audio for Click a button -->
-    <script type="text/javascript">
-
-    const audio = new Audio();
-    audio.src = "./audio/click.mp3";
-    audio.playbackRate = 3;
-
-    const playLink = document.getElementById("play-link");
-    playLink.addEventListener("click",function(event){
-        event.preventDefault();
-        audio.play();
-        
-        document.body.classList.add("fade-out");
-        setTimeout(() => {
-            window.location.href = "/gamezone";
-        }, 300);
-
-    });
-
-    const learnLink = document.getElementById("learn-link");
-    learnLink.addEventListener("click",function(event){
-        event.preventDefault();
-        audio.play();
-        
-        document.body.classList.add("fade-out");
-        setTimeout(() => {
-            window.location.href = "/learning-zone";
-        }, 300);
-
-    });
-
-
-  </script>
-  <!-- Swiper JS -->
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
+  <script src="/scripts/audio.js"></script>
+  <script src="/scripts/profileScript.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.0.1/intro.min.js"></script>
+  <script src="scripts/onboarding/home.js"></script>
+  <script>
+    playNavAudio("learn-link", "learning-zone");
+    playNavAudio("play-link", "gamezone")
+  </script>
   <!-- Initialize Swiper -->
   <script>
     var swiper = new Swiper(".mySwiper", {
@@ -377,26 +342,6 @@
   </script>
 
 <script>
-    const profile = document.getElementById("profile");
-    const profileContainer = document.getElementById("profile-container");
-    const overlay = document.getElementById("overlay");
-    const body = document.body; // Select the body for blurring
-
-    profile.addEventListener("click", () => {
-        profileContainer.classList.toggle("show");
-        overlay.style.display = profileContainer.classList.contains("show") ? "block" : "none";
-    });
-
-    // Close profile container and remove blur when clicking outside
-    document.addEventListener("click", (event) => {
-        if (
-            !profile.contains(event.target) &&
-            !profileContainer.contains(event.target)
-        ) {
-            profileContainer.classList.remove("show");
-            overlay.style.display = "none";
-        }
-    });
 
    /* function logoutUser() {
         fetch('/logout', {
@@ -411,8 +356,6 @@
     }*/
     
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.0.1/intro.min.js"></script>
-<script src="scripts/onboarding/home.js"></script>
 </body>
 
 </html>

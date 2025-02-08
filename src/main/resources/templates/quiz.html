@@ -49,7 +49,7 @@
         <div class="quiz-container">
             <div class="timer">
                 <img src="/icons/stopwatch (1).svg" alt="timer img">
-                <span id="timer">00:45</span>
+                <span id="timer">00:00</span>
             </div>
             <a th:href="@{/quizset}">
                 <div id="exit-link" class="exist">
@@ -78,7 +78,7 @@
                 </span>
             </div>
             <div class="answer-box" id="answers">
-                <div class="answer" 
+                <div class="answer click-answer" 
                         onclick="selectAnswer(this)" 
                         th:each="answer, iterStat : ${answers}"
                         th:attr="data-id=${answer.answerId}">
@@ -87,9 +87,16 @@
                     <div class="ans-bg"></div>
                 </div>              
             </div>
-            <button id="next-btn" class="next-btn">NEXT</button>
+            <button id="next-btn" class="next-btn click-next-btn">NEXT</button>
         </div>
     </div>
+
+    <script src="/scripts/audio.js"></script>
+    <script>
+        playBackgroundAudioQuiz();
+        clickAnswerAudio(".click-answer");
+        clickNextAudio(".click-next-btn");
+    </script>
 
     <script>
         document.getElementById("next-btn").addEventListener("click", () => {
@@ -136,13 +143,16 @@
                     answers.forEach((answer, index) => {
                         const answerElement = document.createElement("div");
                         answerElement.classList.add("answer");
+                        answerElement.classList.add("click-answer");
                         answerElement.setAttribute("data-id", answer.answerId); // Add data-id for the answer
                         answerElement.setAttribute("onclick", "selectAnswer(this)");
                         answerElement.innerHTML = `
                             <span class="ans-A">${["A", "B", "C", "D"][index]}.</span>
                             <span class="ans-text">${answer.answer}</span>
                         `;
+                        clickAnswerAudio(".click-answer");
                         answersContainer.appendChild(answerElement);
+                        clickAnswerAudio(".click-answer");
                     });
                                 // Update question counter
                     const questionCounter = document.getElementById("question-number");

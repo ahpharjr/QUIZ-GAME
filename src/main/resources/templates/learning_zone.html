@@ -35,7 +35,7 @@
             <div class="top-lf">Profile</div>
             <div class="top-rg">
                 <img class="speaker-icon" src="icons/speaker.png" alt="Seapker icon">
-                <a href="/update_profile.html">
+                <a th:href="@{'/profile'}">
                     <img class="edit-icon" src="icons/lucide_edit.png" alt="Edit icon">
                 </a>
             </div>
@@ -63,17 +63,14 @@
         <div class="phase-div swiper mySwiper">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" th:each="phase : ${phases}">
-                    <!-- <a th:href="@{'/card'}" id="phase-link"> -->
-                    <a th:href="@{${phase.phaseId} +'/cards'}">
-                        <div class="phase-1">
-                            <div class="pic-box">
-                                <img src="images\Project+Initiation+Phase+2.webp" alt="spaceman">
-                                <!-- <img th:src="@{${pahse.image}}" th:alt="${phase.name}"> -->
-                            </div>
-                            <span class="phase-name" th:text="${phase.name}">Phase Name</span>
-                            <span class="phase-desc" th:text="${phase.desc}">Phase Description</span>
+                    <div class="phase-1 click-select-phase" th:data-phase-id="${phase.phaseId}">
+                        <div class="pic-box">
+                            <img src="images\Project+Initiation+Phase+2.webp" alt="spaceman">
+                            <!-- <img th:src="@{${pahse.image}}" th:alt="${phase.name}"> -->
                         </div>
-                    </a>
+                        <span class="phase-name" th:text="${phase.name}">Phase Name</span>
+                        <span class="phase-desc" th:text="${phase.desc}">Phase Description</span>
+                    </div>
                 </div>
             </div>
             <!-- <div class="swiper-button-next"></div>
@@ -83,6 +80,12 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="/scripts/profileScript.js"></script>
+    <script src="scripts/audio.js"></script>
+
+    <script>
+      handleClickAudio(".click-select-phase", "cards", "data-phase-id")
+    </script>
 
   <!-- Initialize Swiper -->
   <script>
@@ -129,44 +132,5 @@
 
   </script>
 
-    <script>
-        const profile = document.getElementById("profile");
-        const profileContainer = document.getElementById("profile-container");
-        const overlay = document.getElementById("overlay");
-        const body = document.body; // Select the body for blurring
-    
-        profile.addEventListener("click", () => {
-            profileContainer.classList.toggle("show");
-            overlay.style.display = profileContainer.classList.contains("show") ? "block" : "none";
-        });
-    
-        // Close profile container and remove blur when clicking outside
-        document.addEventListener("click", (event) => {
-            if (
-                !profile.contains(event.target) &&
-                !profileContainer.contains(event.target)
-            ) {
-                profileContainer.classList.remove("show");
-                overlay.style.display = "none";
-            }
-        });
-    </script>
-    <!-- <script type="text/javascript">
-        const audio = new Audio();
-        audio.src = "./audio/click.mp3";
-        audio.playbackRate = 3;
-
-        const phaseLink = document.getElementById("phase-link");
-        phaseLink.addEventListener("click", function (event) {
-            event.preventDefault(); 
-            audio.play(); 
-
-
-            document.body.classList.add("fade-out");
-            setTimeout(() => {
-                window.location.href = "card";
-            }, 300);
-        });
-    </script> -->
 </body>
 </html>

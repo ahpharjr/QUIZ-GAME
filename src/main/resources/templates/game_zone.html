@@ -15,7 +15,7 @@
     <div class="background-image"></div>
     <div class="header">
         <div class="logo-box">
-            <a th:href="@{${'/home'}}">
+            <a th:href="@{'/home'}">
                 <img class="logo" src="icons/quizlogo99.svg" alt="Logo">
             </a>
             <div class="logo-name">
@@ -61,8 +61,8 @@
         <div class="phase-div swiper mySwiper">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" th:each="phase : ${phases}">
-                    <a th:href="@{'/' + ${phase.phaseId} + '/quizset'}" id="phase-link" >
-                        <div class="phase-1">
+                    <!-- <a th:href="@{'/' + ${phase.phaseId} + '/quizset'}" id="phase-link" > -->
+                        <div class="phase-1 game-phase" th:data-phase-id="${phase.phaseId}">
                             <div class="pic-box">
                                 <img src="images/space man.jpg" alt="spaceman">
                                 <!-- <img th:src="@{${pahse.image}}" th:alt="${phase.name}"> -->
@@ -70,7 +70,7 @@
                             <span class="phase-name" th:text="${phase.name}">Phase Name</span>
                             <span class="phase-desc" th:text="${phase.desc}">Phase Description</span>   
                         </div>
-                    </a>
+                    <!-- </a> -->
                 </div>
             </div>
             <!-- <div class="swiper-button-next"></div>
@@ -81,9 +81,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="/scripts/profileScript.js"></script>
+    <script src="/scripts/audio.js"></script>
 
   <!-- Initialize Swiper -->
   <script>
+        handleClickAudio(".game-phase", "quizset", "data-phase-id");
    var swiper = new Swiper(".mySwiper", {
   slidesPerView: 4, // Default for screens greater than 1200px
   spaceBetween: 10,
@@ -126,24 +128,6 @@
 
 
   </script>
-
-    <!-- <script type="text/javascript">
-        const audio = new Audio();
-        audio.src = "./audio/click.mp3";
-        audio.playbackRate = 3;
-
-        const phaseLink = document.getElementById("phase-link");
-        phaseLink.addEventListener("click", function (event) {
-            event.preventDefault(); 
-            audio.play(); 
-
-
-            document.body.classList.add("fade-out");
-            setTimeout(() => {
-                window.location.href = "/quizset";
-            }, 300);
-        });
-    </script> -->
 
     <script>
         function navigateBack() {

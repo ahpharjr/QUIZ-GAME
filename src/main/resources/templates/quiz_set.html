@@ -110,9 +110,12 @@
                         <img src="/images/blog-images-agile3-removebg-preview.png" alt="topic img">
                     </div>
                     <span class="topic-name" th:text="${topic.name}">Project Charter</span>
-                    <a th:href="@{${topic.topicId} + '/quiz'}">
+                    
+                    <button class="start-btn start-link" th:data-topic-id="${topic.topicId}">START</button>
+
+                     <!-- <a th:href="@{${topic.topicId} + '/quiz'}">
                         <button class="start-btn">START</button>
-                    </a>
+                    </a> -->
                 </div>    
             </div>
         </div>
@@ -120,6 +123,10 @@
     </div>
 
     <script src="/scripts/profileScript.js"></script>
+    <script src="/scripts/audio.js"></script>
+    <script>
+        handleClickAudio(".start-link", "quiz", "data-topic-id")
+    </script>
     <script>
         function navigateBack() {
             if (document.referrer) {
