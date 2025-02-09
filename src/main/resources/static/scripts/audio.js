@@ -8,6 +8,10 @@ var backgroundAudio = new Audio('/audios/Rollercoaster - Everet Almond.mp3');
     // audio.src = "/audios/click.mp3";
     audioClick.playbackRate = 2;
 
+    function timerAudio(){
+        audioClick1.play();
+    }
+
     function playBackgroundAudioQuiz(){
         // Autoplay when the page loads
         backgroundAudio.loop = true;

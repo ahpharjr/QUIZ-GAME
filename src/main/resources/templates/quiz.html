@@ -50,6 +50,7 @@
             <div class="timer">
                 <img src="/icons/stopwatch (1).svg" alt="timer img">
                 <span id="timer">00:00</span>
+                <span id="next-message" style="display: none; font-size: .7rem;">(Next Question)</span>
             </div>
             <a th:href="@{/quizset}">
                 <div id="exit-link" class="exist">
@@ -65,7 +66,7 @@
                 </div>
             </div>
             <div class="remain-question" id="question-number">1 / 8</div>
-            <div class="question-box">
+            <div class="question-box" id="question-box">
                 <div class="Q-img" id="question-image">
                     <img src="/images/project-management (1).png" alt="Question image">
                 </div>
@@ -92,17 +93,59 @@
     </div>
 
     <script src="/scripts/audio.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         playBackgroundAudioQuiz();
         clickAnswerAudio(".click-answer");
         clickNextAudio(".click-next-btn");
     </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        gsap.to(".loading", {
+            opacity: 0,
+            duration: 0.2,
+            delay: 2,
+            onComplete: () => {
+                const loadingElement = document.querySelector(".loading");
+                if (loadingElement) {
+                    loadingElement.style.display = "none";
+                }
+
+                document.querySelector(".header").classList.remove("hidden");
+                document.querySelector(".header").classList.add("visible");
+                document.querySelector(".container").classList.remove("hidden");
+                document.querySelector(".container").classList.add("visible");
+            }
+        });
+    });
+
+    const exitLink = document.getElementById("exit-link");
+    const confirmationOverlay = document.getElementById("confirmation-overlay");
+    const confirmExitButton = document.getElementById("confirm-exit");
+    const cancelExitButton = document.getElementById("cancel-exit");
+
+    exitLink.addEventListener("click", (event) => {
+        event.preventDefault(); 
+        confirmationOverlay.classList.remove("hidden");
+        pauseTimer();
+    });
+
+    confirmExitButton.addEventListener("click", () => {
+        window.location.href = "/quizset";
+    });
+
+    cancelExitButton.addEventListener("click", () => {
+        confirmationOverlay.classList.add("hidden");
+        startTimer(); 
+    });
+</script>
+
     <script>
         document.getElementById("next-btn").addEventListener("click", () => {
     const selectedAnswer = document.querySelector(".answer.selected");
     if (!selectedAnswer) {
-        alert("Please select an answer before proceeding to the next question.");
+       // alert("Please select an answer before proceeding to the next question.");
         return;
     }
 
@@ -175,82 +218,104 @@
         selectedElement.classList.add('selected');
     }
 </script>
-
 <script>
-    let elapsedTime = -1; 
-    let timerInterval = null;
+    let timeLeft = 33; // Time in seconds for each question
+    let timerInterval;
     const timerElement = document.getElementById("timer");
+    const nextMessageElement = document.getElementById("next-message");
+    const questionBoxElement = document.getElementById("question-box");
 
     function updateTimer() {
-        const minutes = String(Math.floor(elapsedTime / 60)).padStart(2, '0');
-        const seconds = String(elapsedTime % 60).padStart(2, '0');
+        const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+        const seconds = String(timeLeft % 60).padStart(2, '0');
         timerElement.textContent = `${minutes}:${seconds}`;
-        elapsedTime++;
+
+        // Show "Move to next question" when time is < 5s
+        if (timeLeft < 6) {
+            nextMessageElement.style.display = "inline"; // Show the message
+            questionBoxElement.classList.add("warning");
+            timerAudio();
+        } else {
+            nextMessageElement.style.display = "none"; // Hide otherwise
+            questionBoxElement.classList.remove("warning");
+        }
+
+        if (timeLeft > -1) {
+            timeLeft--;
+        } else {
+            clearInterval(timerInterval);
+            timerElement.textContent = "Time's up!";
+            document.getElementById("next-btn").click(); // Auto-click next button
+        }
     }
 
-    function startTimer() {
-        if (!timerInterval) {
-            timerInterval = setInterval(updateTimer, 1000);
-        }
+    function startTimer(time) {
+        clearInterval(timerInterval); // Ensure no duplicate intervals
+        timeLeft = time; // Reset timer
+        nextMessageElement.style.display = "none"; // Hide message when starting
+        timerInterval = setInterval(updateTimer, 1000);
+        updateTimer();
     }
 
     function pauseTimer() {
         clearInterval(timerInterval);
-        timerInterval = null;
     }
 
-    function stopTimer() {
-        clearInterval(timerInterval);
-        console.log(`Quiz completed in ${Math.floor(elapsedTime / 60)} minutes and ${elapsedTime % 60} seconds.`);
-    }
-
-    startTimer();
-
-    //document.getElementById("finish-btn").addEventListener("click", stopTimer);
-</script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        gsap.to(".loading", {
-            opacity: 0,
-            duration: 0.2,
-            delay: 2.5,
-            onComplete: () => {
-                const loadingElement = document.querySelector(".loading");
-                if (loadingElement) {
-                    loadingElement.style.display = "none";
-                }
-
-                document.querySelector(".header").classList.remove("hidden");
-                document.querySelector(".header").classList.add("visible");
-                document.querySelector(".container").classList.remove("hidden");
-                document.querySelector(".container").classList.add("visible");
-            }
-        });
-    });
-
-    const exitLink = document.getElementById("exit-link");
-    const confirmationOverlay = document.getElementById("confirmation-overlay");
-    const confirmExitButton = document.getElementById("confirm-exit");
-    const cancelExitButton = document.getElementById("cancel-exit");
-
-    exitLink.addEventListener("click", (event) => {
-        event.preventDefault(); 
-        confirmationOverlay.classList.remove("hidden");
+    function resetTimer() {
         pauseTimer();
-    });
+        timeLeft = 30;
+        nextMessageElement.style.display = "none"; // Hide message on reset
+        updateTimer();
+    }
 
-    confirmExitButton.addEventListener("click", () => {
-        window.location.href = "/quizset";
-    });
+    // Start timer when page loads
+    document.addEventListener("DOMContentLoaded", () => startTimer(12));
 
-    cancelExitButton.addEventListener("click", () => {
-        confirmationOverlay.classList.add("hidden");
-        startTimer(); 
+    // Reset timer when user clicks "Next"
+    document.getElementById("next-btn").addEventListener("click", () => {
+        startTimer(12); // Restart the timer for the new question
     });
 </script>
+
+<!-- <script>
+
+     let timeLeft = 301; // Time in seconds
+    const timerElement = document.getElementById("timer");
+
+    function updateTimer() {
+        const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+        const seconds = String(timeLeft % 60).padStart(2, '0');
+        timerElement.textContent = `${minutes}:${seconds}`;
+        if (timeLeft > 0) {
+            timeLeft--;
+        } else {
+            clearInterval(timerInterval);
+            timerElement.textContent = "Time's up!";
+            // Add logic here if you want to handle the end of the timer
+        }
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000); 
+
+        // let elapsedTime = -3; 
+        // const timerElement = document.getElementById("timer");
+
+        // function updateTimer() {
+        //     const minutes = String(Math.floor(elapsedTime / 60)).padStart(2, '0');
+        //     const seconds = String(elapsedTime % 60).padStart(2, '0');
+        //     timerElement.textContent = `${minutes}:${seconds}`;
+        //     elapsedTime++;
+        // }
+        // const timerInterval = setInterval(updateTimer, 1000);
+        // function stopTimer() {
+        //     clearInterval(timerInterval);
+        //     console.log(`Quiz completed in ${Math.floor(elapsedTime / 60)} minutes and ${elapsedTime % 60} seconds.`);
+
+        // }
+
+        // document.getElementById("finish-btn").addEventListener("click", stopTimer);        
+
+</script> -->
 
 </body>
 </html>
@@ -330,45 +395,7 @@
         }
     </script>
 
-    <script>
 
-        /* let timeLeft = 48; // Time in seconds
-        const timerElement = document.getElementById("timer");
-
-        function updateTimer() {
-            const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
-            const seconds = String(timeLeft % 60).padStart(2, '0');
-            timerElement.textContent = `${minutes}:${seconds}`;
-            if (timeLeft > 0) {
-                timeLeft--;
-            } else {
-                clearInterval(timerInterval);
-                timerElement.textContent = "Time's up!";
-                // Add logic here if you want to handle the end of the timer
-            }
-        }
-
-        const timerInterval = setInterval(updateTimer, 1000); */ 
-
-            let elapsedTime = -3; 
-            const timerElement = document.getElementById("timer");
-
-            function updateTimer() {
-                const minutes = String(Math.floor(elapsedTime / 60)).padStart(2, '0');
-                const seconds = String(elapsedTime % 60).padStart(2, '0');
-                timerElement.textContent = `${minutes}:${seconds}`;
-                elapsedTime++;
-            }
-            const timerInterval = setInterval(updateTimer, 1000);
-            function stopTimer() {
-                clearInterval(timerInterval);
-                console.log(`Quiz completed in ${Math.floor(elapsedTime / 60)} minutes and ${elapsedTime % 60} seconds.`);
-
-            }
-
-            document.getElementById("finish-btn").addEventListener("click", stopTimer);        
-
-    </script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 
@@ -409,3 +436,41 @@
         });    
 
 </script> -->
+
+
+<!-- <script>
+    let elapsedTime = -1; 
+    let timerInterval = null;
+    const timerElement = document.getElementById("timer");
+
+    function updateTimer() {
+        const minutes = String(Math.floor(elapsedTime / 60)).padStart(2, '0');
+        const seconds = String(elapsedTime % 60).padStart(2, '0');
+        timerElement.textContent = `${minutes}:${seconds}`;
+        elapsedTime++;
+    }
+
+    function startTimer() {
+        if (!timerInterval) {
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+    }
+
+    function pauseTimer() {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+
+    function stopTimer() {
+        clearInterval(timerInterval);
+        console.log(`Quiz completed in ${Math.floor(elapsedTime / 60)} minutes and ${elapsedTime % 60} seconds.`);
+    }
+
+    startTimer();
+
+    //document.getElementById("finish-btn").addEventListener("click", stopTimer);
+</script> -->
+
+
+
+
