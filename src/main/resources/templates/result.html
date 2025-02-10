@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="x-icon" href="icons/quizlogo99.svg">
-    <link rel="stylesheet" href="styles/general.css">
-    <link rel="stylesheet" href="styles/header.css">
-    <link rel="stylesheet" href="styles/profile.css">
-    <link rel="stylesheet" href="styles/leaderboard.css">
-    <link rel="stylesheet" href="styles/result.css">
+    <link rel="shortcut icon" type="x-icon" href="/icons/quizlogo99.svg">
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/header.css">
+    <link rel="stylesheet" href="/styles/profile.css">
+    <link rel="stylesheet" href="/styles/leaderboard.css">
+    <link rel="stylesheet" href="/styles/result.css">
     <title>Quiz Result</title>
 </head>
 <body>
@@ -16,7 +16,7 @@
     <div class="header">
         <div class="logo-box">
             <a th:href="@{/home}">
-                <img class="logo" src="icons/quizlogo99.svg" alt="Logo">
+                <img class="logo" src="/icons/quizlogo99.svg" alt="Logo">
             </a>
             <div class="logo-name">
                 <span class="quiz">QUIZ</span>
@@ -26,7 +26,7 @@
         <div class="profile-box">
             <span class="pf-lvl">Lvl - 01</span>
             <div >
-                <img class="profile" id="profile" src="images/space man.jpg" alt="Logo">
+                <img class="profile" id="profile" src="/images/space man.jpg" alt="Logo">
             </div>
         </div>
     </div>
@@ -34,17 +34,17 @@
         <div class="top-box">
             <div class="top-lf">Profile</div>
             <div class="top-rg">
-                <img class="speaker-icon" src="icons/speaker.png" alt="Seapker icon">
+                <img class="speaker-icon" src="/icons/speaker.png" alt="Seapker icon">
                 <a href="/update_profile.html">
-                    <img class="edit-icon" src="icons/lucide_edit.png" alt="Edit icon">
+                    <img class="edit-icon" src="/icons/lucide_edit.png" alt="Edit icon">
                 </a>
             </div>
         </div>
         <div class="bottom-box">
-            <div class="pf-picture"><img src="images/space man.jpg" alt="Profile"></div>
+            <div class="pf-picture"><img src="/images/space man.jpg" alt="Profile"></div>
             <div class="pf-name">
                 Space Man
-                <img src="icons/ship-wheel (1).svg" alt="Badge">
+                <img src="/icons/ship-wheel (1).svg" alt="Badge">
             </div>
             <span class="lvl">Level - 01</span>
             <span class="pf-email">spaceman@gmail.com</span>
@@ -54,35 +54,8 @@
     <div id="overlay" class="overlay"></div>
 
     <div class="container">
-        <!-- <a href="/game_set.html">
-            <div class="back-arr">
-                <img class="back-arrow" src="icons/back-arrow.png" alt="back"> Back
-            </div>
-        </a> -->
         <div class="result-container">
             <div class="top-3-box">
-
-            </div>
-            <!-- <div class="result-info-box">
-                <span class="player-rank"> Your Rank: 10</span>
-                <span class="congrat-text"> Congratulation you got 150 points</span>
-                <div class="score-info">
-                    <div class="score-info-left">
-                        <span>Total Question: 08</span>
-                        <span>Correct: 07</span>
-                        <a th:href="@{/review}">
-                            <button class="review-btn">REVIEW</button>
-                        </a>
-                    </div>
-                    <div class="score-info-right">
-                        <span>Time Taken: 03 : 45s</span>
-                        <span>Wrong: 01</span>
-                        <a th:href="@{/quizset}">
-                            <button class="finish-btn">FINISH</button>
-                        </a>
-                    </div>
-                </div>
-            </div> -->
             <div class="result-info-box">
                 <span class="player-rank">Your Rank: 10</span>
                 <span class="congrat-text">Congratulations, you scored ${score} points!</span>
@@ -122,7 +95,7 @@
                         <div class="rank"><span>1</span></div>
                         <div class="player">
                             <div class="player-pf">
-                                <img src="images/selfie-pf.jpg" alt="">
+                                <img src="/images/selfie-pf.jpg" alt="">
                             </div>
                             <div class="player-name">Ah Phar Jr.</div>
                         </div>
@@ -133,62 +106,7 @@
                         <div class="rank">2</div>
                         <div class="player">
                             <div class="player-pf">
-                                <img src="images/space man.jpg" alt="">
-                            </div>
-                            <div class="player-name">Ah Phar Jr.</div>
-                        </div>
-                        <div class="point">1500</div>
-                        <div class="time">00:10:55</div>
-                    </div>
-                    <div class="lb-row">
-                        <div class="rank">3</div>
-                        <div class="player">
-                            <div class="player-pf">
-                                <img src="images/selfie-pf.jpg" alt="">
-                            </div>
-                            <div class="player-name">Ah Phar Jr.</div>
-                        </div>
-                        <div class="point">1500</div>
-                        <div class="time">00:10:55</div>
-                    </div>
-                    <div class="lb-row">
-                        <div class="rank">4</div>
-                        <div class="player">
-                            <div class="player-pf">
-                                <img src="images/space man.jpg" alt="">
-                            </div>
-                            <div class="player-name">Ah Phar Jr.</div>
-                        </div>
-                        <div class="point">1500</div>
-                        <div class="time">00:10:55</div>
-                    </div>
-                    <div class="lb-row">
-                        <div class="rank">5</div>
-                        <div class="player">
-                            <div class="player-pf">
-                                <img src="images/space man.jpg" alt="">
-                            </div>
-                            <div class="player-name">Ah Phar Jr.</div>
-                        </div>
-                        <div class="point">1500</div>
-                        <div class="time">00:10:55</div>
-                    </div>
-                    <div class="lb-row">
-                        <div class="rank">6</div>
-                        <div class="player">
-                            <div class="player-pf">
-                                <img src="images/selfie-pf.jpg" alt="">
-                            </div>
-                            <div class="player-name">Ah Phar Jr.</div>
-                        </div>
-                        <div class="point">1500</div>
-                        <div class="time">00:10:55</div>
-                    </div>
-                    <div class="lb-row">
-                        <div class="rank">7</div>
-                        <div class="player">
-                            <div class="player-pf">
-                                <img src="images/space man.jpg" alt="">
+                                <img src="/images/space man.jpg" alt="">
                             </div>
                             <div class="player-name">Ah Phar Jr.</div>
                         </div>
@@ -200,7 +118,7 @@
                     <div class="rank">10</div>
                     <div class="player">
                         <div class="player-pf">
-                            <img src="images/selfie-pf.jpg" alt="">
+                            <img src="/images/selfie-pf.jpg" alt="">
                         </div>
                         <div class="player-name">Ah Phar Jr.</div>
                     </div>
@@ -211,27 +129,6 @@
         </div>
     </div>
 
-    <script>
-        const profile = document.getElementById("profile");
-        const profileContainer = document.getElementById("profile-container");
-        const overlay = document.getElementById("overlay");
-        const body = document.body; // Select the body for blurring
-    
-        profile.addEventListener("click", () => {
-            profileContainer.classList.toggle("show");
-            overlay.style.display = profileContainer.classList.contains("show") ? "block" : "none";
-        });
-    
-        // Close profile container and remove blur when clicking outside
-        document.addEventListener("click", (event) => {
-            if (
-                !profile.contains(event.target) &&
-                !profileContainer.contains(event.target)
-            ) {
-                profileContainer.classList.remove("show");
-                overlay.style.display = "none";
-            }
-        });
-    </script>
+    <script src="/scripts/profileScript.js"></script>
 </body>
 </html>

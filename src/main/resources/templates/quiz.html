@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,6 +47,9 @@
 
     <div class="container hidden">
         <div class="quiz-container">
+
+            <input type="hidden" id="quiz-id" th:value="${quizId}">
+
             <div class="timer">
                 <img src="/icons/stopwatch (1).svg" alt="timer img">
                 <span id="timer">00:00</span>
@@ -140,8 +143,78 @@
         startTimer(); 
     });
 </script>
+<script>
+    document.getElementById("next-btn").addEventListener("click", () => {
+    const selectedAnswer = document.querySelector(".answer.selected");
+    if (!selectedAnswer) {
+        return;
+    }
 
-    <script>
+    const quizId = document.getElementById("quiz-id").value; // Get the quiz ID
+    const questionId = document.getElementById("question-text").dataset.id;
+    const answerId = selectedAnswer.dataset.id; 
+
+    fetch(`/quiz/submit-answer?quizId=${quizId}&questionId=${questionId}&answerId=${answerId}`, {
+        method: "POST",
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Answer submission:", data);
+        if (data.correct) {
+            console.log("Correct answer!");
+        } else {
+            console.log("Wrong answer.");
+        }
+
+        // Fetch the next question
+        fetch(`/quiz/next-question?quizId=${quizId}&questionId=${questionId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) { 
+            fetch('/quiz/complete')
+                .then(response => response.json())
+                .then(resultData => {
+                    console.log("Quiz completed:", resultData);
+                    window.location.href = `/${quizId}/result`;
+                })
+                .catch(error => console.error("Error completing quiz:", error));
+            return;
+        }
+
+
+            const question = data.question;
+            const answers = data.answers;
+
+            // Update question and answers
+            document.getElementById("question-text").textContent = question.question;
+            document.getElementById("question-text").dataset.id = question.questionId;
+            const answersContainer = document.getElementById("answers");
+            answersContainer.innerHTML = "";
+
+            answers.forEach((answer, index) => {
+                const answerElement = document.createElement("div");
+                answerElement.classList.add("answer", "click-answer");
+                answerElement.setAttribute("data-id", answer.answerId);
+                answerElement.setAttribute("onclick", "selectAnswer(this)");
+                answerElement.innerHTML = `
+                    <span class="ans-A">${["A", "B", "C", "D"][index]}.</span>
+                    <span class="ans-text">${answer.answer}</span>
+                `;
+                answersContainer.appendChild(answerElement);
+            });
+
+            // Update question counter
+            const questionCounter = document.getElementById("question-number");
+            const currentCount = parseInt(questionCounter.textContent.split(" / ")[0]);
+            questionCounter.textContent = `${currentCount + 1} / 8`; 
+        })
+        .catch(error => console.error("Error fetching next question:", error));
+    })
+    .catch(error => console.error("Error submitting answer:", error));
+});
+
+</script>
+    <!-- <script>
         document.getElementById("next-btn").addEventListener("click", () => {
     const selectedAnswer = document.querySelector(".answer.selected");
     if (!selectedAnswer) {
@@ -207,7 +280,7 @@
         .catch((error) => console.error("Error submitting answer:", error));
 });
 
-    </script>
+    </script> -->
 <script>
     function selectAnswer(selectedElement) {
         const allAnswers = document.querySelectorAll('.answer');
@@ -277,199 +350,8 @@
     });
 </script>
 
-<!-- <script>
-
-     let timeLeft = 301; // Time in seconds
-    const timerElement = document.getElementById("timer");
-
-    function updateTimer() {
-        const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
-        const seconds = String(timeLeft % 60).padStart(2, '0');
-        timerElement.textContent = `${minutes}:${seconds}`;
-        if (timeLeft > 0) {
-            timeLeft--;
-        } else {
-            clearInterval(timerInterval);
-            timerElement.textContent = "Time's up!";
-            // Add logic here if you want to handle the end of the timer
-        }
-    }
-
-    const timerInterval = setInterval(updateTimer, 1000); 
-
-        // let elapsedTime = -3; 
-        // const timerElement = document.getElementById("timer");
-
-        // function updateTimer() {
-        //     const minutes = String(Math.floor(elapsedTime / 60)).padStart(2, '0');
-        //     const seconds = String(elapsedTime % 60).padStart(2, '0');
-        //     timerElement.textContent = `${minutes}:${seconds}`;
-        //     elapsedTime++;
-        // }
-        // const timerInterval = setInterval(updateTimer, 1000);
-        // function stopTimer() {
-        //     clearInterval(timerInterval);
-        //     console.log(`Quiz completed in ${Math.floor(elapsedTime / 60)} minutes and ${elapsedTime % 60} seconds.`);
-
-        // }
-
-        // document.getElementById("finish-btn").addEventListener("click", stopTimer);        
-
-</script> -->
-
 </body>
 </html>
-
-    <!-- <script>
-       document.getElementById("next-btn").addEventListener("click", () => {
-        const selectedAnswer = document.querySelector(".answer.selected");
-
-        if(!selectedAnswer) {
-            alert("Please select an answer before proceeding to the next question.");
-            return; // Exit the function early
-        }
-
-        console.log("Selected answer:", selectedAnswer.querySelector(".ans-text").textContent);
-
-    const currentQuestionId = document.getElementById("question-text").dataset.id; // Correctly fetch the question ID
-    console.log("Current Question ID:", currentQuestionId);
-
-    fetch(`/quiz/next-question?questionId=${currentQuestionId}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.message) {
-                alert(data.message); // Quiz completed message
-                window.location.href = "/result"; // Redirect to result page
-                return;
-            }
-
-            const question = data.question;
-            const answers = data.answers;
-
-            // Update question
-            document.getElementById("question-text").textContent = question.question;
-            document.getElementById("question-text").dataset.id = question.questionId; // Update question ID
-            if (question.image) {
-                document.getElementById("question-image").innerHTML = `<img src="${question.image}" alt="Question image">`;
-            } else {
-                document.getElementById("question-image").innerHTML = "";
-            }
-
-            // Update answers
-            const answersContainer = document.getElementById("answers");
-            answersContainer.innerHTML = "";
-            const answerLabels = ["A", "B", "C", "D"]; // Map indices to letters
-
-            answers.forEach((answer, index) => {
-                const answerElement = document.createElement("div");
-                answerElement.classList.add("answer");
-                answerElement.setAttribute("onclick", "selectAnswer(this)");
-                answerElement.innerHTML = `
-                    <span class="ans-A">${answerLabels[index]}.</span>
-                    <span class="ans-text">${answer.answer}</span>
-                `;
-                answersContainer.appendChild(answerElement);
-            });
-
-            // Update question counter
-            const questionCounter = document.getElementById("question-number");
-            const currentCount = parseInt(questionCounter.textContent.split(" / ")[0]);
-            questionCounter.textContent = `${currentCount + 1} / 8`; // Update the question number
-        })
-        .catch(error => console.error("Error fetching next question:", error));
-});
-
-
-    </script> -->
-<!--
-    <script>
-        function selectAnswer(selectedElement) {
-            // Remove 'selected' class from all answers
-            const allAnswers = document.querySelectorAll('.answer');
-            allAnswers.forEach(answer => {
-                answer.classList.remove('selected');
-            });
-    
-            // Add 'selected' class to the clicked answer
-            selectedElement.classList.add('selected');
-        }
-    </script>
-
-
- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-
-        // Wait for the DOM to load
-    document.addEventListener("DOMContentLoaded", () => {
-
-        gsap.to(".loading", {
-            opacity: 0,
-            duration: 0.1,
-            delay: 3.8,
-            onComplete: () => {
-                document.querySelector(".loading").style.display = "none";
-
-                document.querySelector(".header").classList.remove("hidden");
-                document.querySelector(".header").classList.add("visible");
-                document.querySelector(".container").classList.remove("hidden");
-                document.querySelector(".container").classList.add("visible");
-            }
-        });
-    });
-
-    const exitLink = document.getElementById("exit-link");
-    const confirmationOverlay = document.getElementById("confirmation-overlay");
-    const confirmExitButton = document.getElementById("confirm-exit");
-    const cancelExitButton = document.getElementById("cancel-exit");
-    
-    exitLink.addEventListener("click", (event) => {
-            event.preventDefault(); 
-            confirmationOverlay.classList.remove("hidden");
-        });
-    
-        confirmExitButton.addEventListener("click", () => {
-            window.location.href = "game_set.html";
-        });
-    
-        cancelExitButton.addEventListener("click", () => {
-            confirmationOverlay.classList.add("hidden");
-        });    
-
-</script> -->
-
-
-<!-- <script>
-    let elapsedTime = -1; 
-    let timerInterval = null;
-    const timerElement = document.getElementById("timer");
-
-    function updateTimer() {
-        const minutes = String(Math.floor(elapsedTime / 60)).padStart(2, '0');
-        const seconds = String(elapsedTime % 60).padStart(2, '0');
-        timerElement.textContent = `${minutes}:${seconds}`;
-        elapsedTime++;
-    }
-
-    function startTimer() {
-        if (!timerInterval) {
-            timerInterval = setInterval(updateTimer, 1000);
-        }
-    }
-
-    function pauseTimer() {
-        clearInterval(timerInterval);
-        timerInterval = null;
-    }
-
-    function stopTimer() {
-        clearInterval(timerInterval);
-        console.log(`Quiz completed in ${Math.floor(elapsedTime / 60)} minutes and ${elapsedTime % 60} seconds.`);
-    }
-
-    startTimer();
-
-    //document.getElementById("finish-btn").addEventListener("click", stopTimer);
-</script> -->
 
 
 

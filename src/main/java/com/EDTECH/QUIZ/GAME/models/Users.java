@@ -1,6 +1,5 @@
 package com.EDTECH.QUIZ.GAME.models;
 
-import java.security.AuthProvider;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
