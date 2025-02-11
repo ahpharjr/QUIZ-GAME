@@ -175,47 +175,4 @@ public class QuizController {
     }
 
 
-
-    // @GetMapping("/quiz/complete")
-    // @ResponseBody
-    // public ResponseEntity<?> completeQuiz(Principal principal) {
-    //     Users user = userRepository.findByUsername(principal.getName());
-
-    //     System.out.println("in quiz/complete::" + user);
-    //     Long quizId = userAnswerService.getQuizId();
-    //     System.out.println("quizId::::::::::;"+ quizId);
-
-    //     if (quizId == null) {
-    //         return ResponseEntity.badRequest().body("No active quiz found.");
-    //     }
-
-    //     Quiz quiz = quizRepository.findById(quizId).orElse(null);
-    //     if (quiz == null) {
-    //         return ResponseEntity.badRequest().body("Quiz not found.");
-    //     }
-
-    //     int totalPoints = userAnswerService.calculatePoints();
-    //     System.out.println("total points::::::::::::::;"+totalPoints);
-    //     long timeTaken = userAnswerService.getTimeTaken();
-    //     System.out.println("tiemtaken;::::::::::::::;;"+ timeTaken);
-
-    //     // Save only the final score in QuizLeaderboard
-    //     QuizLeaderboard leaderboard = quizLeaderboardRepository.findByUserAndQuiz(user, quiz);
-    //     System.out.println("before save leaderboard+++++++++++++++++++++++11111");
-    //     if (leaderboard == null) {
-    //         System.out.println("before save leaderboard+++++++++++++++++++++++22222222222");
-    //         leaderboard = new QuizLeaderboard(totalPoints, timeTaken, user, quiz);
-    //         System.out.println("before save leaderboard+++++++++++++++++++++++33333333");
-    //     } else {
-    //         leaderboard.setPoint(totalPoints);
-    //         leaderboard.setTimeTaken(timeTaken);
-    //         System.out.println("before save leaderboard+++++++++++++++++++++++444444444");
-    //     }
-    //     quizLeaderboardRepository.save(leaderboard);
-    //     System.out.println("after save leaderboard+++++++++++++++++++++++");
-
-    //     return ResponseEntity.ok(Map.of("points", totalPoints, "timeTaken", timeTaken));
-    // }
-
-
 }

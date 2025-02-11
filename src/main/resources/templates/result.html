@@ -69,7 +69,7 @@
                         <span>Correct: 
                             <span th:text="${correctAnswers}"></span>
                         </span>
-                        <a th:href="@{/review}">
+                        <a th:href="@{/{quizAttemptId}/review(quizAttemptId=${quizAttempt.quizAttemptId})}">
                             <button class="review-btn">REVIEW</button>
                         </a>
                     </div>

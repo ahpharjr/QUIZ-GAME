@@ -74,7 +74,7 @@ public class ResultController {
         model.addAttribute("quizAttempt", lastAttempt);
         model.addAttribute("lastAttemptTime", lastAttemptTime);
         
-        List<QuizLeaderboard> quizLeaderboards = quizLeaderboardRepository.findByQuizOrderByPointDescTimeTakenDesc(quiz);
+        List<QuizLeaderboard> quizLeaderboards = quizLeaderboardRepository.findByQuizOrderByPointDescTimeTakenAsc(quiz);
         QuizLeaderboard userLeaderboard = quizLeaderboardRepository.findByUserAndQuiz(user, quiz);
 
         // Create a list to store leaderboard data with formatted time

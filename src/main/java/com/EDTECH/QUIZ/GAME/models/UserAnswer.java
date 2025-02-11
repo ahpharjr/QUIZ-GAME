@@ -1,5 +1,6 @@
 package com.EDTECH.QUIZ.GAME.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,14 +17,26 @@ public class UserAnswer {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long userAnswerId;
 
+    @Column(name = "question_ref_id") // Rename questionId column in DB
     private Long questionId;
+
+    @Column(name = "answer_ref_id") // Rename answerId column in DB
     private Long answerId;
+
     private boolean isCorrect;
     private Long answerTime;
 
     @ManyToOne
     @JoinColumn(name = "quiz_attempt_id", nullable = false)
     private QuizAttempt quizAttempt;
+
+    @ManyToOne
+    @JoinColumn(name = "question_id", referencedColumnName = "questionId", insertable = false, updatable = false)
+    private Question question;
+
+    @ManyToOne
+    @JoinColumn(name = "answer_id", referencedColumnName = "answerId", insertable = false, updatable = false)
+    private Answer selectedAnswer;
 
     public UserAnswer(){
         
@@ -34,6 +47,22 @@ public class UserAnswer {
         this.answerId = answerId;
         this.isCorrect = isCorrect;
         this.answerTime = answerTime;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
+    public Answer getSelecAnswer() {
+        return selectedAnswer;
+    }
+
+    public void setSelecAnswer(Answer selectedAnswer) {
+        this.selectedAnswer = selectedAnswer;
     }
 
     public Long getQuestionId() {

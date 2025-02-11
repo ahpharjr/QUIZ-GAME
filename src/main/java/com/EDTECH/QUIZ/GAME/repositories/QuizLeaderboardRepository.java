@@ -13,6 +13,6 @@ import com.EDTECH.QUIZ.GAME.models.Users;
 public interface QuizLeaderboardRepository extends JpaRepository<QuizLeaderboard, Long>{
     
     //QuizLeaderboard findByUserAndQuiz(Users user,Quiz quiz);
-    List<QuizLeaderboard> findByQuizOrderByPointDescTimeTakenDesc(Quiz quiz);
+    List<QuizLeaderboard> findByQuizOrderByPointDescTimeTakenAsc(Quiz quiz);
     QuizLeaderboard findByUserAndQuiz(Users user, Quiz quiz);
 }

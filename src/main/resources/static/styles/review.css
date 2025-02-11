@@ -26,6 +26,7 @@
 }
 .review-box{
     display: flex;
+    width: 100%;
     padding: 20px;
     border: 1px solid rgba(0, 225, 255, 0.711); 
     border-radius: 10px;
