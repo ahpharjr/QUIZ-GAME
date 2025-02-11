@@ -54,23 +54,33 @@
     <div id="overlay" class="overlay"></div>
 
     <div class="container">
-        <div class="result-container">
+        <div class="result-container" th:if="${userLeaderboard}">
             <div class="top-3-box">
             <div class="result-info-box">
-                <span class="player-rank">Your Rank: 10</span>
-                <span class="congrat-text">Congratulations, you scored ${score} points!</span>
+                <span class="player-rank">Your Rank: 
+                    <span th:text="${userRank == -1 ? N/A : userRank}">N/A</span>
+                </span>
+                <span class="congrat-text">Congratulations, you get <span th:text="${quizAttempt.totalPoints}"></span> points!</span>
                 <div class="score-info">
                     <div class="score-info-left">
-                        <span>Total Questions: ${totalQuestions}</span>
-                        <span>Correct: ${correctAnswers}</span>
+                        <span>Total Questions: 
+                            <span th:text="${totalQuestions}"></span>
+                        </span>
+                        <span>Correct: 
+                            <span th:text="${correctAnswers}"></span>
+                        </span>
                         <a th:href="@{/review}">
                             <button class="review-btn">REVIEW</button>
                         </a>
                     </div>
                     <div class="score-info-right">
-                        <span>Time Taken: ${timeTaken}</span>
-                        <span>Wrong: ${incorrectAnswers}</span>
-                        <a th:href="@{/quizset}">
+                        <span>Time Taken: 
+                            <span th:text="${lastAttemptTime}"></span>
+                        </span>
+                        <span>Wrong: 
+                            <span th:text="${incorrectAnswers}"></span>
+                        </span>
+                        <a th:href= "@{/{phaseId}/quizset(phaseId=${phaseId})}">
                             <button class="finish-btn">FINISH</button>
                         </a>
                     </div>
@@ -87,43 +97,32 @@
                 <div class="lb-title">
                     <div class="rank">Rank</div>
                     <div class="player">Player</div>
-                    <div class="point">XP</div>
+                    <div class="point">Points</div>
                     <div class="time">Time Taken</div>
                 </div>
                 <div class="lb-body">
-                    <div class="lb-row">
-                        <div class="rank"><span>1</span></div>
+                    <div class="lb-row" th:each="leaderboard, iterStat : ${leaderboards}">
+                        <div class="rank"><span th:text="${iterStat.index + 1}"></span></div>
                         <div class="player">
                             <div class="player-pf">
                                 <img src="/images/selfie-pf.jpg" alt="">
                             </div>
-                            <div class="player-name">Ah Phar Jr.</div>
+                            <div class="player-name" th:text="${leaderboard.user.username}">Player Name</div>
                         </div>
-                        <div class="point">1500</div>
-                        <div class="time">00:10:55</div>
-                    </div>
-                    <div class="lb-row">
-                        <div class="rank">2</div>
-                        <div class="player">
-                            <div class="player-pf">
-                                <img src="/images/space man.jpg" alt="">
-                            </div>
-                            <div class="player-name">Ah Phar Jr.</div>
-                        </div>
-                        <div class="point">1500</div>
-                        <div class="time">00:10:55</div>
+                        <div class="point" th:text="${#numbers.formatInteger(leaderboard.point, 2)}">00</div>
+                        <div class="time" th:text="${leaderboard.timeTaken}">00:10:55</div>
                     </div>
                 </div>
                 <div class="lb-user-rank">
-                    <div class="rank">10</div>
+                    <div class="rank" th:text="${userRank == -1 ? N/A : userRank}">N/A</div>
                     <div class="player">
                         <div class="player-pf">
                             <img src="/images/selfie-pf.jpg" alt="">
                         </div>
-                        <div class="player-name">Ah Phar Jr.</div>
+                        <div class="player-name" th:text="${userLeaderboard.user.username}">Player Name</div>
                     </div>
-                    <div class="point">999</div>
-                    <div class="time">00:20:59</div>
+                    <div class="point" th:text="${#numbers.formatInteger(userLeaderboard.point, 2)}">999</div>
+                    <div class="time" th:text="${lastAttemptTime}">00:20:59</div>
                 </div>
             </div>
         </div>

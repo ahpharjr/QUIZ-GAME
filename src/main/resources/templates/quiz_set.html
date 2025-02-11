@@ -15,7 +15,7 @@
     <div class="background-image"></div>
     <div class="header">
         <div class="logo-box">
-            <a th:href="@{${'/home'}}">
+            <a th:href="@{'/home'}">
                 <img class="logo" src="/icons/quizlogo99.svg" alt="Logo">
             </a>
             <div class="logo-name">
@@ -54,9 +54,11 @@
     <div id="overlay" class="overlay"></div>
 
     <div class="container">
-        <div class="back-arr" onclick="navigateBack()">
-            <img class="back-arrow" src="/icons/back-arrow.png" alt="back"> Back
-        </div>
+        <a th:href="@{'/gamezone'}">
+            <div class="back-arr" onclick="navigateBack()">
+                <img class="back-arrow" src="/icons/back-arrow.png" alt="back"> Back
+            </div>
+        </a>
         <span class="chapter-name" th:text="'Phase ' + ${phase.phaseId} + ': '+ ${phase.name}">Phase</span>
         <div class="leaderboard-container">
             <h2>leaderboard</h2>
@@ -82,7 +84,7 @@
                             <div class="player-name" th:text="${leaderboard.user.username}"></div>
                         </div>
                         <div class="point" th:text="${#numbers.formatInteger(leaderboard.point, 2)}"></div>
-                        <div class="time" th:text="${#numbers.formatInteger(leaderboard.timeTaken, 2)}"></div>
+                        <div class="time" th:text="${leaderboard.timeTaken}">00 : 00 : 00</div>
                     </div>
                 </div>
                 <div class="lb-user-rank" th:if="${userLeaderboard}">
@@ -97,7 +99,7 @@
                         <div class="player-name" th:text="${userLeaderboard.user.username}">Player</div>
                     </div>
                     <div class="point" th:text="${#numbers.formatInteger(userLeaderboard.point, 2)}">00</div>
-                    <div class="time" th:text="${#numbers.formatInteger(userLeaderboard.timeTaken, 2)}">00:00</div>
+                    <div class="time" th:text="${userTimeTaken}">00:00:00</div>
                 </div>                
             </div>
         </div>

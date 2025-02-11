@@ -14,7 +14,9 @@ import com.EDTECH.QUIZ.GAME.models.Answer;
 //import com.EDTECH.QUIZ.GAME.models.Leaderboard;
 import com.EDTECH.QUIZ.GAME.models.Question;
 import com.EDTECH.QUIZ.GAME.models.Quiz;
+import com.EDTECH.QUIZ.GAME.models.QuizAttempt;
 import com.EDTECH.QUIZ.GAME.models.QuizLeaderboard;
+import com.EDTECH.QUIZ.GAME.models.UserAnswer;
 import com.EDTECH.QUIZ.GAME.models.Users;
 // import com.EDTECH.QUIZ.GAME.models.UserAnswer;
 import com.EDTECH.QUIZ.GAME.repositories.AnswerRepository;
@@ -22,6 +24,7 @@ import com.EDTECH.QUIZ.GAME.repositories.QuestionRepository;
 import com.EDTECH.QUIZ.GAME.repositories.QuizLeaderboardRepository;
 import com.EDTECH.QUIZ.GAME.repositories.QuizRepository;
 import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
+import com.EDTECH.QUIZ.GAME.sevices.QuizAttemptService;
 import com.EDTECH.QUIZ.GAME.sevices.UserAnswerService;
 
 // import jakarta.websocket.server.PathParam;
@@ -42,6 +45,9 @@ public class QuizController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private QuizAttemptService quizAttemptService;
 
     @Autowired
     private QuizLeaderboardRepository quizLeaderboardRepository;
@@ -123,15 +129,11 @@ public class QuizController {
         return ResponseEntity.ok(Map.of("correct", isCorrect));
     }
 
-
     @GetMapping("/quiz/complete")
     @ResponseBody
     public ResponseEntity<?> completeQuiz(Principal principal) {
         Users user = userRepository.findByUsername(principal.getName());
-
-        System.out.println("in quiz/complete::" + user);
         Long quizId = userAnswerService.getQuizId();
-        System.out.println("quizId::::::::::;"+ quizId);
 
         if (quizId == null) {
             return ResponseEntity.badRequest().body("No active quiz found.");
@@ -143,9 +145,11 @@ public class QuizController {
         }
 
         int totalPoints = userAnswerService.calculatePoints();
-        System.out.println("total points::::::::::::::;"+totalPoints);
         long timeTaken = userAnswerService.getTimeTaken();
-        System.out.println("tiemtaken;::::::::::::::;;"+ timeTaken);
+        List<UserAnswer> userAnswers = userAnswerService.getUserAnswers();
+
+        // Save the quiz attempt and user answers
+        QuizAttempt quizAttempt = quizAttemptService.saveQuizAttempt(user, quiz, totalPoints, timeTaken, userAnswers);
 
         // Save only the final score in QuizLeaderboard
         QuizLeaderboard leaderboard = quizLeaderboardRepository.findByUserAndQuiz(user, quiz);
@@ -162,8 +166,56 @@ public class QuizController {
         quizLeaderboardRepository.save(leaderboard);
         System.out.println("after save leaderboard+++++++++++++++++++++++");
 
-        return ResponseEntity.ok(Map.of("points", totalPoints, "timeTaken", timeTaken));
+
+        return ResponseEntity.ok(Map.of(
+            "points", totalPoints,
+            "timeTaken", timeTaken,
+            "quizAttemptId", quizAttempt.getQuizAttemptId()
+        ));
     }
+
+
+
+    // @GetMapping("/quiz/complete")
+    // @ResponseBody
+    // public ResponseEntity<?> completeQuiz(Principal principal) {
+    //     Users user = userRepository.findByUsername(principal.getName());
+
+    //     System.out.println("in quiz/complete::" + user);
+    //     Long quizId = userAnswerService.getQuizId();
+    //     System.out.println("quizId::::::::::;"+ quizId);
+
+    //     if (quizId == null) {
+    //         return ResponseEntity.badRequest().body("No active quiz found.");
+    //     }
+
+    //     Quiz quiz = quizRepository.findById(quizId).orElse(null);
+    //     if (quiz == null) {
+    //         return ResponseEntity.badRequest().body("Quiz not found.");
+    //     }
+
+    //     int totalPoints = userAnswerService.calculatePoints();
+    //     System.out.println("total points::::::::::::::;"+totalPoints);
+    //     long timeTaken = userAnswerService.getTimeTaken();
+    //     System.out.println("tiemtaken;::::::::::::::;;"+ timeTaken);
+
+    //     // Save only the final score in QuizLeaderboard
+    //     QuizLeaderboard leaderboard = quizLeaderboardRepository.findByUserAndQuiz(user, quiz);
+    //     System.out.println("before save leaderboard+++++++++++++++++++++++11111");
+    //     if (leaderboard == null) {
+    //         System.out.println("before save leaderboard+++++++++++++++++++++++22222222222");
+    //         leaderboard = new QuizLeaderboard(totalPoints, timeTaken, user, quiz);
+    //         System.out.println("before save leaderboard+++++++++++++++++++++++33333333");
+    //     } else {
+    //         leaderboard.setPoint(totalPoints);
+    //         leaderboard.setTimeTaken(timeTaken);
+    //         System.out.println("before save leaderboard+++++++++++++++++++++++444444444");
+    //     }
+    //     quizLeaderboardRepository.save(leaderboard);
+    //     System.out.println("after save leaderboard+++++++++++++++++++++++");
+
+    //     return ResponseEntity.ok(Map.of("points", totalPoints, "timeTaken", timeTaken));
+    // }
 
 
 }
