@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="x-icon" th:href="@{/icons/titlelogo.png}">
-    <link rel="stylesheet" th:href="@{/styles/general.css}">
-    <link rel="stylesheet" th:href="@{/styles/header.css}">
-    <link rel="stylesheet" th:href="@{/styles/login.css}">
+    <link rel="stylesheet" href="/styles/general.css">
+    <link rel="stylesheet" href="/styles/header.css">
+    <link rel="stylesheet" href="/styles/login.css">
     <title>Login</title>
 </head>
 <body>
@@ -14,7 +14,7 @@
     <div class="header">
         <div class="logo-box">
             <a th:href="@{/}">
-                <img class="logo" src="icons/quizlogo99.svg" alt="Logo">
+                <img class="logo" src="/icons/quizlogo99.svg" alt="Logo">
             </a>
             <div class="logo-name">
                 <span class="quiz">QUIZ</span>
@@ -27,7 +27,7 @@
         <!-- Form for Login -->
         <form th:action="@{/login}" method="POST">
             <div class="input-box">
-                <img class="email-icon" th:src="@{/icons/icons8-email-50.png}" alt="email-icon">
+                <img class="email-icon" src="/icons/icons8-email-50.png" alt="email-icon">
                 <input id="username" type="text" name="username" placeholder="Enter your username" required>
             </div>
             <div class="input-box">

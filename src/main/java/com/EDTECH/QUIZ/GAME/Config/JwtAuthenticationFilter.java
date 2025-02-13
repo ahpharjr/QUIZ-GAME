@@ -77,4 +77,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        
+        return path.equals("/") ||         // Allow Landing Page
+            path.startsWith("/register") ||
+            path.startsWith("/login") ||
+            path.startsWith("/verify-email") ||
+            path.startsWith("/styles/") ||
+            path.startsWith("/images/") ||
+            path.startsWith("/icons/") ||
+            path.startsWith("/oauth2/");  // Allow OAuth login
+    }
+
 }

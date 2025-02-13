@@ -53,7 +53,7 @@
             <div class="timer">
                 <img src="/icons/stopwatch (1).svg" alt="timer img">
                 <span id="timer">00:00</span>
-                <span id="next-message" style="display: none; font-size: .7rem;">(Next Question)</span>
+                <span id="next-message" style="display: none; font-size: .7rem;"> (Next Question)</span>
             </div>
             <a th:href="@{/quizset}">
                 <div id="exit-link" class="exist">
@@ -98,7 +98,12 @@
     <script src="/scripts/audio.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        playBackgroundAudioQuiz();
+        
+        setTimeout(() => {
+            playBackgroundAudioQuiz();
+            console.log("Background audio played.");
+        }, 2000); // 2000ms = 2 seconds
+    
         clickAnswerAudio(".click-answer");
         clickNextAudio(".click-next-btn");
     </script>
@@ -207,6 +212,8 @@
                 const questionCounter = document.getElementById("question-number");
                 const currentCount = parseInt(questionCounter.textContent.split(" / ")[0]);
                 questionCounter.textContent = `${currentCount + 1} / 8`; 
+
+                clickAnswerAudio(".click-answer");
             })
             .catch(error => console.error("Error fetching next question:", error));
         })
@@ -251,8 +258,14 @@
             timeLeft--;
         } else {
             clearInterval(timerInterval);
-            timerElement.textContent = "Time's up!";
-            document.getElementById("next-btn").click(); // Auto-click next button
+            // timerElement.textContent = "Time's up!";
+            timerElement.textContent = "00:00";
+
+
+            setTimeout(() => {
+                document.getElementById("next-btn").click(); // Auto-click next button
+            }, 100);
+
         }
     }
 
@@ -264,23 +277,23 @@
         updateTimer();
     }
 
-    function pauseTimer() {
-        clearInterval(timerInterval);
-    }
+    // function pauseTimer() {
+    //     clearInterval(timerInterval);
+    // }
 
-    function resetTimer() {
-        pauseTimer();
-        timeLeft = 30;
-        nextMessageElement.style.display = "none"; // Hide message on reset
-        updateTimer();
-    }
+    // function resetTimer() {
+    //     pauseTimer();
+    //     timeLeft = 30;
+    //     nextMessageElement.style.display = "none"; // Hide message on reset
+    //     updateTimer();
+    // }
 
     // Start timer when page loads
-    document.addEventListener("DOMContentLoaded", () => startTimer(12));
+    document.addEventListener("DOMContentLoaded", () => startTimer(47));
 
     // Reset timer when user clicks "Next"
     document.getElementById("next-btn").addEventListener("click", () => {
-        startTimer(12); // Restart the timer for the new question
+        startTimer(45); // Restart the timer for the new question
     });
 </script>
 

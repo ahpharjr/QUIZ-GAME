@@ -1,24 +1,34 @@
 
 var audioClick = new Audio('/audios/click.mp3');
 var audioClick1 = new Audio('/audios/click2.mp3');
-var backgroundAudio = new Audio('/audios/Rollercoaster - Everet Almond.mp3');
+//var backgroundAudio = new Audio('/audios/Rollercoaster - Everet Almond.mp3');
 //var backgroundAudio = new Audio('/audios/background.mp3');
+var timeRunningOut = new Audio('/audios/Timer3.mp3');
+var backgroundAudio = new Audio('/audios/BgSound2.mp3');
+var quizFinishAudio = new Audio('/audios/QuizResult.mp3');
 
     // const audio = new Audio();
     // audio.src = "/audios/click.mp3";
     audioClick.playbackRate = 2;
 
     function timerAudio(){
-        audioClick1.play();
+        //audioClick1.play();
+        timeRunningOut.playbackRate = 2;
+        timeRunningOut.play();
+    }
+
+    function finishQuizAudio(){
+        quizFinishAudio.play();
     }
 
     function playBackgroundAudioQuiz(){
         // Autoplay when the page loads
         backgroundAudio.loop = true;
+        backgroundAudio.play();
 
-        window.addEventListener('load', function () {
-            backgroundAudio.play().catch(error => console.log("Autoplay blocked:", error));
-        });
+        // window.addEventListener('load', function () {
+        //     backgroundAudio.play().catch(error => console.log("Autoplay blocked:", error));
+        // });
     }
 
     //for selecting answer
