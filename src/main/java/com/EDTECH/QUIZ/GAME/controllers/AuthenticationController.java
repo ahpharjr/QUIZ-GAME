@@ -52,8 +52,21 @@ public class AuthenticationController {
         return "register";
     }
 
+
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("user") Users user) {
+    public String registerUser(@ModelAttribute("user") Users user, Model model) {
+
+        if(userRepository.findByUsername(user.getUsername()) != null) {
+            System.out.println("This is the post mapping of register Due to Username");
+            model.addAttribute("error", "Username is already taken. Please choose another.");
+            return "register";
+        }
+
+        if(userRepository.findByEmail(user.getEmail()) != null) {
+            System.out.println("This is the post mapping of register Due to Email");
+            model.addAttribute("error", "Your email is already registered. Please use another email."); 
+            return "register";
+        }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(false); 
@@ -110,6 +123,7 @@ public class AuthenticationController {
                 return "redirect:/home";
             }
         }
+        
         return "login";
         
     }
@@ -125,11 +139,25 @@ public class AuthenticationController {
                     CustomOAuth2User customUser = (CustomOAuth2User) principal;
                     Users currentUser = userRepository.findByUsername(customUser.getName());
                     model.addAttribute("user", currentUser);
+                    
+                    int quiz = currentUser.getQuizSet();
+                    System.out.println("========================================");
+                    System.out.println(quiz);
+                    System.out.println("========================================");
+
+                    model.addAttribute("quiz", quiz);
 
                 } else if (principal instanceof UserDetails) {
                     UserDetails userDetails = (UserDetails) principal;
                     System.out.println(userDetails.getUsername());
                     Users currentUser = userRepository.findByUsername(userDetails.getUsername());
+
+                    int quiz = currentUser.getQuizSet();
+                    System.out.println("========================================");
+                    System.out.println(quiz);
+                    System.out.println("========================================");
+
+                    model.addAttribute("quiz", quiz);
 
                     model.addAttribute("user", currentUser);
                 }
@@ -156,6 +184,11 @@ public class AuthenticationController {
 
         String username = principal.getName();
         Users existingUser = userRepository.findByUsername(username);
+
+        if(userRepository.findByUsername(user.getUsername()) != null) {
+            model.addAttribute("error", "Username is already taken. Please choose another.");
+            return "update_profile";
+        }
 
         existingUser.setUsername(user.getUsername());
         // existingUser.setEmail(user.getEmail());

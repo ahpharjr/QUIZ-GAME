@@ -8,6 +8,45 @@
     <link rel="stylesheet" href="styles/header.css">
     <link rel="stylesheet" href="styles/update_profile.css">
     <title>Update Profile</title>
+    <style>
+
+        .error-popup {
+            width: 300px;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #f44336;
+            color: white;
+            padding: 20px;
+            pdding-button: 10px;
+            border-radius: 5px;
+            display: none; /* Hidden by default */
+            z-index: 1000;
+        }
+
+        .error-popup p {
+            margin: 0;
+            font-size: 14px;
+        }
+        
+        .error-popup button {
+            width: 100px;
+            margin-left: 35%;
+            border-radius: 5px;
+            margin-top: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            height: 35px;
+        }
+        
+        .error-popup button:hover {
+            background-color: #555;
+        }
+    </style>
+
 </head>
 <body>
     <div class="background-image"></div>
@@ -29,6 +68,12 @@
             </div>
         </a>
         <h2>Edit Profile</h2>
+        
+        <div id="error-popup" class="error-popup" style="display:none;">
+            <p id="error-message"></p>
+            <button onclick="closeErrorPopup()">Close</button>
+        </div>
+
         <div class="edit-pf-box">
             <!-- Display profile picture and badge -->
             <img class="pf-pic" th:src="@{images/space man.jpg}" alt="spaceman">
@@ -63,5 +108,33 @@
         </div>
         
     </div>
+    <script th:inline="javascript">
+ /*
+        const inputs = document.querySelectorAll('input');
+
+        inputs.forEach(input => {
+            input.addEventListener('input', function () {
+                if (this.value.trim() !== '') {
+                    this.classList.add('filled');
+                } else {
+                    this.classList.remove('filled');
+                }
+            });
+        });
+    */
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            var errorMessage = /*[[${error}]]*/ null;  
+            if (errorMessage) {
+                document.getElementById('error-message').textContent = errorMessage;
+                document.getElementById('error-popup').style.display = 'block';
+            }
+        });
+    
+        function closeErrorPopup() {
+            document.getElementById('error-popup').style.display = 'none';
+        }
+        
+    </script>
 </body>
 </html>

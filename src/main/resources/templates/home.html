@@ -145,7 +145,7 @@
                     <div class="quiz-set-box">
                         <div class="badge-icon"><img src="icons/check-mark (1).svg" alt="Quiz set"></div>
                         <div class="badge-info">
-                            <span class="record" th:text="${#numbers.formatInteger(user.quizSet, 2)}">00</span>
+                            <span class="record" th:text="${quiz}">00</span>
                             <span class="record-name">Quiz Sets</span>
                         </div>
                     </div>
@@ -231,7 +231,7 @@
                 <div class="quiz-set-box">
                     <div class="badge-icon"><img src="icons/check-mark (1).svg" alt="Quiz set"></div>
                     <div class="badge-info">
-                        <span class="record"  th:text="${#numbers.formatInteger(user.quizSet, 2)}">00</span>
+                        <span class="record"  th:text="${quiz}">00</span>
                         <span class="record-name">Quiz Sets</span>
                     </div>
                 </div>
@@ -339,6 +339,9 @@
         prevEl: ".swiper-button-prev",
       },
     });
+
+    const quiz = document.querySelector('.quiz-set-box .record');
+    console.log(quiz);
   </script>
 
 <script>
