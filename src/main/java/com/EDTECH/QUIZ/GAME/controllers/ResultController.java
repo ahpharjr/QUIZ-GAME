@@ -12,13 +12,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.EDTECH.QUIZ.GAME.models.Leaderboard;
 import com.EDTECH.QUIZ.GAME.models.Quiz;
 import com.EDTECH.QUIZ.GAME.models.QuizAttempt;
 import com.EDTECH.QUIZ.GAME.models.QuizLeaderboard;
 import com.EDTECH.QUIZ.GAME.models.UserAnswer;
 import com.EDTECH.QUIZ.GAME.models.Users;
-import com.EDTECH.QUIZ.GAME.repositories.LeaderboardRepository;
 import com.EDTECH.QUIZ.GAME.repositories.QuizAttemptRepository;
 import com.EDTECH.QUIZ.GAME.repositories.QuizLeaderboardRepository;
 import com.EDTECH.QUIZ.GAME.repositories.QuizRepository;
@@ -43,9 +41,6 @@ public class ResultController {
 
     @Autowired
     private QuizAttemptRepository quizAttemptRepository;
-
-    @Autowired
-    private LeaderboardRepository leaderboardRepository;
 
     @Autowired
     private UserAnswerService userAnswerService;
@@ -99,48 +94,6 @@ public class ResultController {
                     }
                 }
         model.addAttribute("userRank", userRank);
-
-        // Update points and time taken for phase leaderboard
-        // Fetch user's phase leaderboard
-        Leaderboard userPhaseLeaderboard = leaderboardRepository.findByUserAndPhase(user, quiz.getTopic().getPhase());
-
-        if (userPhaseLeaderboard == null) { 
-            userPhaseLeaderboard = new Leaderboard(0, 0L, user, quiz.getTopic().getPhase());
-        }
-
-        int currentPoints = userPhaseLeaderboard.getPoint();
-        long currentTimeTaken = userPhaseLeaderboard.getTimeTaken();
-
-        int lastAttemptPoints = lastAttempt.getTotalPoints();
-        long lastAttemptTimeTaken = lastAttempt.getTotalTime();
-
-        // Find the highest points from all previous attempts (excluding the last one)
-        int highestPreviousPoints = quizAttempts.stream()
-                .limit(quizAttempts.size() - 1)  // Exclude the last attempt
-                .mapToInt(QuizAttempt::getTotalPoints)
-                .max()
-                .orElse(0); // If no previous attempts, default to 0
-
-        // Update only if the last attempt has the most points
-        if (lastAttemptPoints > highestPreviousPoints) {
-            int updatedPoints = currentPoints - highestPreviousPoints + lastAttemptPoints;
-            long updatedTimeTaken = currentTimeTaken - 
-                    quizAttempts.stream()
-                        .filter(attempt -> attempt.getTotalPoints() == highestPreviousPoints)
-                        .mapToLong(QuizAttempt::getTotalTime)
-                        .findFirst()
-                        .orElse(0L) 
-                    + lastAttemptTimeTaken;
-
-            userPhaseLeaderboard.setPoint(updatedPoints);
-            userPhaseLeaderboard.setTimeTaken(updatedTimeTaken);
-            leaderboardRepository.save(userPhaseLeaderboard); // Save only if updated
-        } else if (quizAttempts.size() == 1) {
-            // If it's the first attempt, always update
-            userPhaseLeaderboard.setPoint(currentPoints + lastAttemptPoints);
-            userPhaseLeaderboard.setTimeTaken(currentTimeTaken + lastAttemptTimeTaken);
-            leaderboardRepository.save(userPhaseLeaderboard);
-        }
 
         return "result";
     }
