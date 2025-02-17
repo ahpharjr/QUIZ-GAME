@@ -95,6 +95,16 @@ public class ResultController {
                 }
         model.addAttribute("userRank", userRank);
 
+        user.setQuizSet(user.getQuizSet() + 1);
+        System.out.println("=================== This is in Result Controller =====================");
+        System.out.println(user.getQuizSet());
+        System.out.println("========================================");
+        System.out.println(user.getUsername());
+        System.out.println("========================================");
+        System.out.println(user.getQuizSet());
+        userRepository.save(user);
+        System.out.println("========================================");
+
         return "result";
     }
 }
