@@ -15,7 +15,7 @@
     <div class="background-image"></div>
     <div class="header">
         <div class="logo-box">
-            <a th:href="@{${'/home'}}">
+            <a th:href="@{'/home'}">
                 <img class="logo" src="icons/quizlogo99.svg" alt="Logo">
             </a>
             <div class="logo-name">
@@ -60,10 +60,10 @@
             </div>
             <h2>Search Result</h2>
             <div class="card-container">
-                <div th:if="${searchResults.isEmpty()}">
+                <div th:if="${firstSearchCard == null}">
                     <p>No results found for "<span th:text="${keyword}"></span>".</p>
                 </div>
-                <div th:each="flashcard : ${searchResults}" class="flashcard" th:attr="data-card-id=${flashcard.cardId}" onclick="flipCard(this)">
+                <div th:if="${firstSearchCard != null}" class="flashcard" th:attr="data-card-id=${firstSearchCard.cardId}" onclick="flipCard(this)">
                     <div class="flashcard-face front">
                         <div class="content-pic">
                             <img class="pic" src="images\initiation-phase.gif" alt="Image">
@@ -74,12 +74,12 @@
                             </div>
                         </div>
                         <div class="text-content">
-                            <h3 th:text="${flashcard.keyword}"></h3>
+                            <h3 th:text="${firstSearchCard.keyword}"></h3>
                         </div>
                     </div>
                     <div class="flashcard-face back">
                         <div class="text-content-back">
-                            <p th:text="${flashcard.definition}"></p>
+                            <p th:text="${firstSearchCard.definition}"></p>
                         </div>
                     </div>
                 </div>

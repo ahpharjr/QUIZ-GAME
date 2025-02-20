@@ -115,9 +115,6 @@
                     
                     <button class="start-btn start-link" th:data-topic-id="${topic.topicId}">START</button>
 
-                     <!-- <a th:href="@{${topic.topicId} + '/quiz'}">
-                        <button class="start-btn">START</button>
-                    </a> -->
                 </div>    
             </div>
         </div>
@@ -127,9 +124,34 @@
     <script src="/scripts/profileScript.js"></script>
     <script src="/scripts/audio.js"></script>
     <script>
-        handleClickAudio(".start-link", "quiz", "data-topic-id")
-    </script>
-    <script>
+
+        clickStartQuiz(".start-link", "quiz", "data-topic-id")
+
+            //audio for each phase and navigate to specific page 
+        var audioClick = new Audio('/audios/click.mp3');
+        audioClick.playbackRate = 3;
+
+        function clickStartQuiz(className , url, dataId ){
+            document.querySelectorAll(className).forEach(item => {
+                item.addEventListener("click", function(event){
+                    event.preventDefault();
+                    fetch('/quiz/clear-session', {
+                        method: "GET"
+                    }).then(response => response.json())  // Parse the JSON response
+                    .then(data => console.log(data.message))  // Log the "Session cleared" message
+                    .catch(error => console.error("Error clearing session:", error));
+
+                    audioClick.play();
+        
+                    let targetId = this.getAttribute(dataId); //Get the phase ID from the div
+                    let targetUrl = `/${targetId}/${url}`; //construct the URL
+        
+                    setTimeout(() => {
+                        window.location.href = targetUrl; 
+                    }, 130);
+                });
+            });
+        }
         function navigateBack() {
             if (document.referrer) {
                 // Navigate to the referring page

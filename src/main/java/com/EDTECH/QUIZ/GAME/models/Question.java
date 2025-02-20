@@ -22,7 +22,7 @@ public class Question {
     @JsonIgnore 
     private Quiz quiz;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true) 
+    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true) 
     private List<Answer> answers;
 
     public List<Answer> getAnswers() {

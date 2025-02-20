@@ -21,6 +21,7 @@ public class SearchController {
     @GetMapping("/search-card")
     public String search(@RequestParam(required = false, defaultValue = "") String keyword, Model model) {
         List<Flashcard> searchResults = List.of();
+        Flashcard firstSearchCard = null;
 
         if (!keyword.isEmpty()) {
             // Fetch the first matching keyword from the suggestions
@@ -28,10 +29,12 @@ public class SearchController {
             if (!suggestions.isEmpty()) {
                 keyword = suggestions.get(0); // Use the first suggestion as the keyword
                 searchResults = flashcardRepository.searchFlashcards(keyword);
+                firstSearchCard = searchResults.get(0);
             }
         }
 
         model.addAttribute("searchResults", searchResults);
+        model.addAttribute("firstSearchCard", firstSearchCard);
         model.addAttribute("keyword", keyword);
 
         return "search_card";

@@ -28,9 +28,8 @@
     </div>
     <div class="header hidden">
             <div class="logo-box">
-                <a th:href="@{/home}">
                     <img class="logo" src="/icons/quizlogo99.svg" alt="Logo">
-                </a>
+
                     <div class="logo-name">
                     <span class="quiz">QUIZ</span>
                     <span class="game">GAME</span>
@@ -55,20 +54,19 @@
                 <span id="timer">00:00</span>
                 <span id="next-message" style="display: none; font-size: .7rem;"> (Next Question)</span>
             </div>
-            <a th:href="@{/quizset}">
                 <div id="exit-link" class="exist">
                     <img src="/icons/exit-door.svg" alt="exist icon">
-                    <span>Exist</span>
+                    <span>Exit</span>
                 </div>
-            </a>
-            <div id="confirmation-overlay" class="hidden">
+            <div id="confirmation-overlay" class="hidden" th:attr="data-id=${phase.phaseId}">
                 <div class="overlay-box">
                     <p>Are you sure you want to exit?</p>
                     <button id="confirm-exit">Yes</button>
                     <button id="cancel-exit">No</button>
                 </div>
             </div>
-            <div class="remain-question" id="question-number">1 / 8</div>
+            <!-- <div class="remain-question" id="question-number">1 / 8</div> -->
+            <div class="remain-question" id="question-number" th:text="${currentQuestionIndex} + ' / 8'"></div>
             <div class="question-box" id="question-box">
                 <div class="Q-img" id="question-image">
                     <img src="/images/project-management (1).png" alt="Question image">
@@ -90,7 +88,7 @@
                     <span class="ans-text" th:text="${answer.answer}">Answer</span>
                     <div class="ans-bg"></div>
                 </div>              
-            </div>
+            </div>        
             <button id="next-btn" class="next-btn click-next-btn">NEXT</button>
         </div>
     </div>
@@ -98,6 +96,21 @@
     <script src="/scripts/audio.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            
+            // Detect first user interaction
+            function enableAudio() {
+                playBackgroundAudioQuiz();
+                console.log("Background audio played.");
+
+                // Remove event listener after first interaction
+                document.removeEventListener("click", enableAudio);
+            }
+
+            // Listen for the first user click
+            document.addEventListener("click", enableAudio);
+        });
         
         setTimeout(() => {
             playBackgroundAudioQuiz();
@@ -128,10 +141,26 @@
             });
         });
 
+        window.addEventListener("popstate", function (event) {
+            // Show the exit confirmation overlay when the user presses the back button
+            confirmationOverlay.classList.remove("hidden");
+            pauseTimer();
+            
+            // Push the current state back to history to prevent direct navigation
+            history.pushState(null, null, window.location.href);
+        });
+
+        // When the page loads, push a new state into history
+        document.addEventListener("DOMContentLoaded", function () {
+            history.pushState(null, null, window.location.href);
+        });
+
+
         const exitLink = document.getElementById("exit-link");
         const confirmationOverlay = document.getElementById("confirmation-overlay");
         const confirmExitButton = document.getElementById("confirm-exit");
         const cancelExitButton = document.getElementById("cancel-exit");
+        const phaseId = document.getElementById("confirmation-overlay").dataset.id;
 
         exitLink.addEventListener("click", (event) => {
             event.preventDefault(); 
@@ -140,12 +169,20 @@
         });
 
         confirmExitButton.addEventListener("click", () => {
-            window.location.href = "/quizset";
+            fetch(`/quiz/clear-session`, {
+                method: "GET"
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                window.location.href = `/${phaseId}/quizset`;
+            })
+            .catch(error => console.error("Error clearing session:", error));
         });
 
         cancelExitButton.addEventListener("click", () => {
             confirmationOverlay.classList.add("hidden");
-            startTimer(); 
+            resumeTimer();
         });
     </script>
     <script>
@@ -194,7 +231,7 @@
                 document.getElementById("question-text").textContent = question.question;
                 document.getElementById("question-text").dataset.id = question.questionId;
                 const answersContainer = document.getElementById("answers");
-                answersContainer.innerHTML = "";
+                answersContainer.innerHTML = "";   
 
                 answers.forEach((answer, index) => {
                     const answerElement = document.createElement("div");
@@ -261,13 +298,80 @@
             // timerElement.textContent = "Time's up!";
             timerElement.textContent = "00:00";
 
+            const selectedAnswer = document.querySelector(".answer.selected");
+            if (!selectedAnswer) {
+                submitUnanswered();
+            }
 
             setTimeout(() => {
                 document.getElementById("next-btn").click(); // Auto-click next button
+                console.log("Time's up! Moving to next question...");
             }, 100);
-
+            
         }
     }
+
+    function submitUnanswered() {
+    const quizId = document.getElementById("quiz-id").value;
+    const questionId = document.getElementById("question-text").dataset.id;
+
+    fetch(`/quiz/submit-answer?quizId=${quizId}&questionId=${questionId}`, {
+        method: "POST",
+    })
+    .then(response => response.json())
+    .then(() => {
+        fetch(`/quiz/next-question?quizId=${quizId}&questionId=${questionId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) { 
+                fetch('/quiz/complete')
+                    .then(response => response.json())
+                    .then(resultData => {
+                        console.log("Quiz completed:", resultData);
+                        window.location.href = `/${quizId}/result`;
+                    })
+                    .catch(error => console.error("Error completing quiz:", error));
+                return;
+            }
+
+            updateQuestionUI(data);
+            startTimer(30);
+            clickAnswerAudio(".click-answer");
+        })
+        .catch(error => console.error("Error fetching next question:", error));
+    })
+    .catch(error => console.error("Error submitting unanswered question:", error));
+}
+
+function updateQuestionUI(data) {
+    const question = data.question;
+    const answers = data.answers;
+
+    document.getElementById("question-text").textContent = question.question;
+    document.getElementById("question-text").dataset.id = question.questionId;
+    const answersContainer = document.getElementById("answers");
+    answersContainer.innerHTML = "";   
+
+    answers.forEach((answer, index) => {
+        const answerElement = document.createElement("div");
+        answerElement.classList.add("answer", "click-answer");
+        answerElement.setAttribute("data-id", answer.answerId);
+        answerElement.setAttribute("onclick", "selectAnswer(this)");
+        answerElement.innerHTML = `
+            <span class="ans-A">${["A", "B", "C", "D"][index]}.</span>
+            <span class="ans-text">${answer.answer}</span>
+        `;
+        answersContainer.appendChild(answerElement);
+    });
+
+    const questionCounter = document.getElementById("question-number");
+    const currentCount = parseInt(questionCounter.textContent.split(" / ")[0]);
+    questionCounter.textContent = `${currentCount + 1} / 8`; 
+
+    clickAnswerAudio(".click-answer");
+
+}
+
 
     function startTimer(time) {
         clearInterval(timerInterval); // Ensure no duplicate intervals
@@ -277,16 +381,14 @@
         updateTimer();
     }
 
-    // function pauseTimer() {
-    //     clearInterval(timerInterval);
-    // }
+    function pauseTimer() {
+        clearInterval(timerInterval);
+    }
 
-    // function resetTimer() {
-    //     pauseTimer();
-    //     timeLeft = 30;
-    //     nextMessageElement.style.display = "none"; // Hide message on reset
-    //     updateTimer();
-    // }
+    function resumeTimer(){
+        clearInterval(timerInterval);
+        timerInterval = setInterval(updateTimer, 1000);
+    }
 
     // Start timer when page loads
     document.addEventListener("DOMContentLoaded", () => startTimer(32));

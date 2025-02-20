@@ -2,6 +2,9 @@ package com.EDTECH.QUIZ.GAME.sevices;
 
 import org.springframework.stereotype.Service;
 import com.EDTECH.QUIZ.GAME.models.UserAnswer;
+
+import jakarta.servlet.http.HttpSession;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -13,25 +16,30 @@ public class UserAnswerService {
     private long startTime;
     private Long quizId;  
 
-    public void startQuiz(Long quizId) {
-        this.startTime = System.currentTimeMillis();
+    public void startQuiz(Long quizId, Long sessionStartTime) {
+        this.startTime = sessionStartTime; // Use session start time instead of new time
         this.quizId = quizId;
         userAnswers.clear(); // Clear previous answers
     }
 
+    // public void storeAnswer(Long questionId, Long answerId, boolean isCorrect) {
+    //     Long answerTime = System.currentTimeMillis() - startTime;
+    //     userAnswers.add(new UserAnswer(questionId, answerId, isCorrect, answerTime));
+    // }
     public void storeAnswer(Long questionId, Long answerId, boolean isCorrect) {
         Long answerTime = System.currentTimeMillis() - startTime;
+        
+        if (answerId == null) {
+            answerId = -1L; // Use -1 to indicate no answer
+        }
+    
         userAnswers.add(new UserAnswer(questionId, answerId, isCorrect, answerTime));
     }
+    
 
     public List<UserAnswer> getUserAnswers(){
         return new ArrayList<>(userAnswers);
     }
-
-    // public int calculatePoints() {
-    //     int pointsPerCorrectAnswer = 10;
-    //     return (int) userAnswers.stream().filter(UserAnswer::isCorrect).count() * pointsPerCorrectAnswer;
-    // }
 
     public int calculatePoints() {
         int basePointsPerCorrectAnswer = 10; // Default points per correct answer
@@ -54,8 +62,15 @@ public class UserAnswerService {
         else return 0;
     }
     
-    public long getTimeTaken() {
-        return System.currentTimeMillis() - startTime;
+    // public long getTimeTaken() {
+    //     return System.currentTimeMillis() - startTime;
+    // }
+    public long getTimeTaken(HttpSession session) {
+        Long sessionStartTime = (Long) session.getAttribute("startTime");
+        if (sessionStartTime == null) {
+            return 0; // Default to 0 if session time is missing
+        }
+        return System.currentTimeMillis() - sessionStartTime;
     }
 
     public Long getQuizId() {

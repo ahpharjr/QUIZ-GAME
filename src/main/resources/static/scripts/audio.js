@@ -9,11 +9,11 @@ var quizFinishAudio = new Audio('/audios/QuizResult.mp3');
 
     // const audio = new Audio();
     // audio.src = "/audios/click.mp3";
-    audioClick.playbackRate = 2;
+    audioClick.playbackRate = 3;
 
     function timerAudio(){
         //audioClick1.play();
-        timeRunningOut.playbackRate = 2;
+        timeRunningOut.playbackRate = 1.5;
         timeRunningOut.play();
     }
 
@@ -63,7 +63,7 @@ var quizFinishAudio = new Audio('/audios/QuizResult.mp3');
     
                 setTimeout(() => {
                     window.location.href = targetUrl; 
-                }, 200);
+                }, 130);
             });
         });
     }
@@ -78,7 +78,7 @@ var quizFinishAudio = new Audio('/audios/QuizResult.mp3');
             document.body.classList.add("fade-out");
             setTimeout(() => {
                 window.location.href = `/${url}`;
-            }, 200);
+            }, 130);
     
         });
     }

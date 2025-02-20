@@ -8,5 +8,5 @@ import com.EDTECH.QUIZ.GAME.models.Phase;
 @Repository
 public interface PhaseRepository extends JpaRepository<Phase, Long>{
 
-    
+    Phase findByTopics_TopicId( Long topicId);
 } 

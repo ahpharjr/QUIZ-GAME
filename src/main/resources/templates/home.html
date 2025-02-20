@@ -129,7 +129,7 @@
                     <div class="user-pf"><img src="images/space man.jpg" alt="profile picture"></div>
                     <div class="profile-info">
                         <span class="name" th:text="${user.username}">
-                            <img class="badge-lvl" src="/images/Level-1.png" alt="badge-level">
+                            <!-- <img class="badge-lvl" src="/images/Level-1.png" alt="badge-level"> -->
                         </span>
                         <span class="level-no">Lvl - <span th:text="${#numbers.formatInteger(user.level, 2)}"></span></span>
                         <div class="exp-prograss-bar">
@@ -145,7 +145,7 @@
                     <div class="quiz-set-box">
                         <div class="badge-icon"><img src="icons/check-mark (1).svg" alt="Quiz set"></div>
                         <div class="badge-info">
-                            <span class="record" th:text="${quiz}">00</span>
+                            <span class="record" th:text="${#numbers.formatInteger(user.quizSet, 2)}">00</span>
                             <span class="record-name">Quiz Sets</span>
                         </div>
                     </div>
@@ -218,7 +218,7 @@
                 <div class="user-pf"><img src="images/space man.jpg" alt="profile picture"></div>
                 <div class="profile-info">
                     <span class="name"><span th:text="${user.username}"></span>
-                        <img class="badge-lvl" src="/images/Level-1.png" alt="badge-level">
+                        <!-- <img class="badge-lvl" src="/images/Level-1.png" alt="badge-level"> -->
                     </span>
                     <span class="level-no">Lvl - <span  th:text="${#numbers.formatInteger(user.level, 2)}"></span></span>
                     <div class="exp-prograss-bar">
@@ -231,7 +231,7 @@
                 <div class="quiz-set-box">
                     <div class="badge-icon"><img src="icons/check-mark (1).svg" alt="Quiz set"></div>
                     <div class="badge-info">
-                        <span class="record"  th:text="${quiz}">00</span>
+                        <span class="record" th:text="${#numbers.formatInteger(user.quizSet, 2)}">00</span>
                         <span class="record-name">Quiz Sets</span>
                     </div>
                 </div>
@@ -344,21 +344,6 @@
     console.log(quiz);
   </script>
 
-<script>
-
-   /* function logoutUser() {
-        fetch('/logout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]').content
-            }
-        }).then(() => {
-            window.location.href = '/login?logout';
-        });
-    }*/
-    
-</script>
 </body>
 
 </html>
