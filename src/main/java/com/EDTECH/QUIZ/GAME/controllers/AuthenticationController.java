@@ -160,8 +160,6 @@ public class AuthenticationController {
                 }
             }
 
-
-
             return "home";
         }
 
