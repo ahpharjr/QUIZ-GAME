@@ -54,7 +54,6 @@
     <div id="overlay" class="overlay"></div>
 
     <div class="container" id="resultAnimation">
-        <!-- <div class="result-container" th:if="${userLeaderboard}"> -->
             <div id="quizResults" class="result-container" th:if="${userLeaderboard}" style="opacity: 0; transform: scale(0.6);">
             <div class="top-3-box">
             <div class="result-info-box">
@@ -91,7 +90,6 @@
         </div>
 
         <div class="leaderboard-container">
-            <!-- <h2>Leaderboard in this Quiz Set</h2> -->
 
             <div class="leaderboard-box">
                 <div class="bg-div"></div>
@@ -132,13 +130,41 @@
     <script src="/scripts/profileScript.js"></script>
     <script src="/scripts/audio.js"></script>
     <script>
-        finishQuizAudio();
+        
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.2/dist/confetti.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const quizCompleted = localStorage.getItem("quizCompleted");
+
+            if(quizCompleted === "true"){
+
+                finishQuizAudio();
+                rainConfetti();
+                launchConfetti();
+
+                setTimeout(() => {
+                    gsap.to("#resultAnimation", { opacity: 1, scale: 1, duration: 1.5, ease: "back.in(1.7)" });
+
+                    setTimeout(() => {
+                        showQuizResultAnimate();
+                    }, 0); // Wait 1 second before revealing results
+                }, 500); // Start GSAP after confetti ends
+
+            }else{
+                document.getElementById("quizResults").style.opacity = 1;
+                document.getElementById("quizResults").style.transform = "scale(1)";
+            }
+
+            //showQuizResultAnimate();
+            // Clear the flag so animation does not repeat on refresh
+            localStorage.removeItem("quizCompleted");
+
+        });
+
         function launchConfetti() {
             var duration = 1 * 1000; // 2 seconds
             var end = Date.now() + duration;
@@ -164,73 +190,30 @@
             })();
         }
 
-        // function launchConfetti() {
-        //     var duration = 2 * 1000; // 2 seconds
-        //     var end = Date.now() + duration;
-
-        //     (function frame() {
-        //         confetti({
-        //             particleCount: 5,
-        //             angle: 60,
-        //             spread: 75,
-        //             origin: { x: 0, y: 0 }, // 🎉 From top-left
-        //             startVelocity: 30,
-        //         });
-
-        //         confetti({
-        //             particleCount: 5,
-        //             angle: 120,
-        //             spread: 75,
-        //             origin: { x: 1, y: 0 }, // 🎉 From top-right
-        //             startVelocity: 30,
-        //         });
-
-        //         if (Date.now() < end) {
-        //             requestAnimationFrame(frame);
-        //         }
-        //     })();
-        // }
-
-        window.onload = function () {
-           // burstConfetti();
-            //fireworkConfetti();
-            rainConfetti()
-            //waveConfetti();
-            launchConfetti()
-
-            setTimeout(() => {
-                gsap.to("#resultAnimation", { opacity: 1, scale: 1, duration: 1.5, ease: "back.in(1.7)" });
-
-                // Show the quiz results with a slight delay
-                setTimeout(() => {
-                    showQuizResultAnimate();
-                }, 0); // Wait 1 second before revealing results
-            }, 500); // Start GSAP after confetti ends
-        };
-
         function showQuizResultAnimate() {
+
             gsap.to("#quizResults", { opacity: 1, scale: 1, duration: 1, ease: "back.in(1)" });
         }
 
 
 
         function rainConfetti() {
-    var duration = .5 * 1000; // 2 seconds
-    var end = Date.now() + duration;
+            var duration = .5 * 1000; // 2 seconds
+            var end = Date.now() + duration;
 
-    (function frame() {
-        confetti({
-            particleCount: 1,
-            spread: 90,
-            startVelocity: 20,
-            origin: { x: Math.random(), y: 0 }, // Random points from top
-        });
+            (function frame() {
+                confetti({
+                    particleCount: 1,
+                    spread: 90,
+                    startVelocity: 20,
+                    origin: { x: Math.random(), y: 0 }, // Random points from top
+                });
 
-        if (Date.now() < end) {
-            requestAnimationFrame(frame);
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            })();
         }
-    })();
-}
 
         function burstConfetti() {
             confetti({
@@ -242,44 +225,44 @@
         }
 
         function fireworkConfetti() {
-    var duration = 2 * 1000; 
-    var end = Date.now() + duration;
+            var duration = 2 * 1000; 
+            var end = Date.now() + duration;
 
-    (function frame() {
-        confetti({
-            particleCount: 10,
-            spread: 55,
-            startVelocity: 45,
-            origin: { x: 0.5, y: 0.8 }, // Near the bottom center
-        });
+            (function frame() {
+                confetti({
+                    particleCount: 10,
+                    spread: 55,
+                    startVelocity: 45,
+                    origin: { x: 0.5, y: 0.8 }, // Near the bottom center
+                });
 
-        if (Date.now() < end) {
-            requestAnimationFrame(frame);
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            })();
         }
-    })();
-}
 
-function waveConfetti() {
-    var duration = 2 * 1000; 
-    var end = Date.now() + duration;
-    var xPos = 0;
+    function waveConfetti() {
+        var duration = 2 * 1000; 
+        var end = Date.now() + duration;
+        var xPos = 0;
 
-    (function frame() {
-        confetti({
-            particleCount: 5,
-            spread: 60,
-            startVelocity: 30,
-            origin: { x: xPos, y: 0 }, // Moves across the top
-        });
+        (function frame() {
+            confetti({
+                particleCount: 5,
+                spread: 60,
+                startVelocity: 30,
+                origin: { x: xPos, y: 0 }, // Moves across the top
+            });
 
-        xPos += 0.1; // Move across the screen
-        if (xPos > 1) xPos = 0; // Reset after reaching the right
+            xPos += 0.1; // Move across the screen
+            if (xPos > 1) xPos = 0; // Reset after reaching the right
 
-        if (Date.now() < end) {
-            requestAnimationFrame(frame);
-        }
-    })();
-}
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        })();
+    }
 
 
     </script>

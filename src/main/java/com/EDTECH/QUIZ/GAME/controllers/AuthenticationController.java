@@ -23,6 +23,7 @@ import com.EDTECH.QUIZ.GAME.models.Users;
 import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 import com.EDTECH.QUIZ.GAME.sevices.CustomOAuth2User;
 import com.EDTECH.QUIZ.GAME.sevices.EmailService;
+import com.EDTECH.QUIZ.GAME.sevices.UserPerformanceService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -39,6 +40,9 @@ public class AuthenticationController {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private UserPerformanceService userPerformanceService;
 
     @GetMapping("/")
     public String landing() {
@@ -75,6 +79,7 @@ public class AuthenticationController {
         user.setEmail(user.getEmail());
         user.setUsername(user.getUsername());
         user.setHighestScore(0);
+        user.setTimeSpent(0);
         user.setQuizSet(0);
         user.setUserXp(0);
         user.setLevel(1);
@@ -156,6 +161,8 @@ public class AuthenticationController {
                     System.out.println("========================================");
 
                     model.addAttribute("quiz", quiz);
+                    String formatTimeSpent = userPerformanceService.formatTimeSpent(currentUser.getTimeSpent());
+                    model.addAttribute("formatTimeSpent", formatTimeSpent);
 
                 } else if (principal instanceof UserDetails) {
                     UserDetails userDetails = (UserDetails) principal;
@@ -174,7 +181,11 @@ public class AuthenticationController {
                         return "/login";
                     }
                     model.addAttribute("quiz", quiz);
+
                     model.addAttribute("user", currentUser);
+
+                    String formatTimeSpent = userPerformanceService.formatTimeSpent(currentUser.getTimeSpent());
+                    model.addAttribute("formatTimeSpent", formatTimeSpent);
                 }
             }
 

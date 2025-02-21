@@ -198,6 +198,7 @@
 
         fetch(`/quiz/submit-answer?quizId=${quizId}&questionId=${questionId}&answerId=${answerId}`, {
             method: "POST",
+            headers: {"Accept": "application/json"} //Ensure JSON response
         })
         .then(response => response.json())
         .then(data => {
@@ -212,11 +213,18 @@
             fetch(`/quiz/next-question?quizId=${quizId}&questionId=${questionId}`)
             .then(response => response.json())
             .then(data => {
+                if(data.error){
+                    console.error("Error fetching next question:", data.error);
+                    return;
+                }
                 if (data.message) { 
                 fetch('/quiz/complete')
                     .then(response => response.json())
                     .then(resultData => {
                         console.log("Quiz completed:", resultData);
+
+                        markQuizAsCompleted(); // Set flag when quiz is completed
+
                         window.location.href = `/${quizId}/result`;
                     })
                     .catch(error => console.error("Error completing quiz:", error));
@@ -317,17 +325,25 @@
 
     fetch(`/quiz/submit-answer?quizId=${quizId}&questionId=${questionId}`, {
         method: "POST",
+        headers: { "Accept": "application/json" }
     })
     .then(response => response.json())
     .then(() => {
         fetch(`/quiz/next-question?quizId=${quizId}&questionId=${questionId}`)
         .then(response => response.json())
         .then(data => {
+            if(data.error){
+                    console.error("Error fetching next question:", data.error);
+                    return;
+                }
             if (data.message) { 
                 fetch('/quiz/complete')
                     .then(response => response.json())
                     .then(resultData => {
                         console.log("Quiz completed:", resultData);
+
+                        markQuizAsCompleted(); // Set flag when quiz is completed
+                        
                         window.location.href = `/${quizId}/result`;
                     })
                     .catch(error => console.error("Error completing quiz:", error));
@@ -397,6 +413,11 @@ function updateQuestionUI(data) {
     document.getElementById("next-btn").addEventListener("click", () => {
         startTimer(30); // Restart the timer for the new question
     });
+
+    function markQuizAsCompleted(){
+        localStorage.setItem("quizCompleted", true);
+    }
+
 </script>
 
 </body>
