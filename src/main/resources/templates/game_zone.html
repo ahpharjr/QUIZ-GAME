@@ -53,9 +53,11 @@
     </div>
     <div id="overlay" class="overlay"></div>
     <div class="body-div">
-        <div class="back-arr" onclick="navigateBack()">
-            <img class="back-arrow" src="icons/back-arrow.png" alt="back"> Back
-        </div>
+        <a th:href="@{'/home'}">
+            <div class="back-arr" onclick="navigateBack()">
+                <img class="back-arrow" src="icons/back-arrow.png" alt="back"> Back
+            </div>
+        </a>
 
         <!-- <h2 class="content-title">Unlock Project Management Skills with Flashcards!</h2> -->
         <div class="phase-div swiper mySwiper">
@@ -86,60 +88,47 @@
   <!-- Initialize Swiper -->
   <script>
         handleClickAudio(".game-phase", "quizset", "data-phase-id");
-   var swiper = new Swiper(".mySwiper", {
-  slidesPerView: 4, // Default for screens greater than 1200px
-  spaceBetween: 10,
-  keyboard: {
-    enabled: true,
-  },
-  pagination: {
-    el: ".swiper-pagination",
-    clickable: true,
-  },
-  navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
-  },
-  breakpoints: {
-    1400: {
-      slidesPerView: 4,
-    },
-    // For screens <= 1200px
-    1200: {
-      slidesPerView: 4,
-      spaceBetween: 10,
-    },
-    1000: {
-      slidesPerView: 3,
-      spaceBetween: 10,
-    },
-    // For screens <= 768px
-    600: {
-      slidesPerView: 2,
-      spaceBetween: 10,
-    },
-    // For screens <= 480px
-    150: {
-      slidesPerView: 1,
-      spaceBetween: 10,
-    },
-  },
-});
 
-
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 4, // Default for screens greater than 1200px
+            spaceBetween: 10,
+            keyboard: {
+                enabled: true,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            breakpoints: {
+                1400: {
+                slidesPerView: 4,
+                },
+                // For screens <= 1200px
+                1200: {
+                slidesPerView: 4,
+                spaceBetween: 10,
+                },
+                1000: {
+                slidesPerView: 3,
+                spaceBetween: 10,
+                },
+                // For screens <= 768px
+                600: {
+                slidesPerView: 2,
+                spaceBetween: 10,
+                },
+                // For screens <= 480px
+                150: {
+                slidesPerView: 1,
+                spaceBetween: 10,
+                },
+            },
+        });
   </script>
 
-    <script>
-        function navigateBack() {
-            
-            if (document.referrer) {
-                // Navigate to the referring page
-                window.history.back();
-            } else {
-                // Fallback: navigate to a default page
-                window.location.href = "/home";
-            }
-        }
-    </script>
 </body>
 </html>

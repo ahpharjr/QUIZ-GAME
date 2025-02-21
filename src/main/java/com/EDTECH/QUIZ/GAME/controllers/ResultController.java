@@ -24,6 +24,8 @@ import com.EDTECH.QUIZ.GAME.repositories.UserAnswerRepository;
 import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 import com.EDTECH.QUIZ.GAME.sevices.UserAnswerService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class ResultController {
 
@@ -46,7 +48,7 @@ public class ResultController {
     private UserAnswerService userAnswerService;
             
     @GetMapping("/{quizId}/result")
-    public String showResult(@PathVariable Long quizId,Model model, Principal principal) {
+    public String showResult(@PathVariable Long quizId,Model model, Principal principal, HttpSession session) {
 
         Users user = userRepository.findByUsername(principal.getName());
         Quiz quiz = quizRepository.findById(quizId).orElse(null);
@@ -95,15 +97,19 @@ public class ResultController {
                 }
         model.addAttribute("userRank", userRank);
 
-        // user.setQuizSet(user.getQuizSet() + 1);
-        // System.out.println("=================== This is in Result Controller =====================");
-        // System.out.println(user.getQuizSet());
-        // System.out.println("========================================");
-        // System.out.println(user.getUsername());
-        // System.out.println("========================================");
-        // System.out.println(user.getQuizSet());
-        // userRepository.save(user);
-        // System.out.println("========================================");
+        // Clear quiz session data
+        if (session.getAttribute("selectedQuestions") != null ||
+            session.getAttribute("currentQuestionIndex") != null ||
+            session.getAttribute("userAnsers") != null ||
+            session.getAttribute("startTime") != null){
+
+                
+            session.removeAttribute("selectedQuestions");
+            session.removeAttribute("currentQuestionIndex");
+            session.removeAttribute("userAnswers");
+            session.removeAttribute("startTime");
+
+        }
 
         return "result";
     }

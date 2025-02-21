@@ -13,4 +13,5 @@ import com.EDTECH.QUIZ.GAME.models.Users;
 public interface QuizAttemptRepository extends JpaRepository<QuizAttempt, Long>{
     
     List<QuizAttempt> findByUserAndQuiz(Users user, Quiz quiz);
+    List<QuizAttempt> findByUser(Users user);
 }

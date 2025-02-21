@@ -1,6 +1,5 @@
 package com.EDTECH.QUIZ.GAME.models;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class Users {
     private String password;
     private int level;
     private int userXp;
-    private Timestamp timeSpent;
+    private long timeSpent;
     private int quizSet;
     private int highestScore;
     private String pfPicture;
@@ -118,16 +117,26 @@ public class Users {
         this.userXp = userXp;
     }
 
-    public Timestamp getTimeSpent() {
-        return timeSpent;
-    }
-
-    public void setTimeSpent(Timestamp timeSpent) {
-        this.timeSpent = timeSpent;
-    }
+    
 
     public int getQuizSet() {
         return quizSet;
+    }
+
+    public long getTimeSpent() {
+        return timeSpent;
+    }
+
+    public void setTimeSpent(long timeSpent) {
+        this.timeSpent = timeSpent;
+    }
+
+    public List<QuizAttempt> getQuizAttempts() {
+        return quizAttempts;
+    }
+
+    public void setQuizAttempts(List<QuizAttempt> quizAttempts) {
+        this.quizAttempts = quizAttempts;
     }
 
     public void setQuizSet(int quizSet) {

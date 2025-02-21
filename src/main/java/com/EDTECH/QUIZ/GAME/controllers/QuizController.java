@@ -16,6 +16,7 @@ import com.EDTECH.QUIZ.GAME.models.*;
 import com.EDTECH.QUIZ.GAME.repositories.*;
 import com.EDTECH.QUIZ.GAME.sevices.QuizAttemptService;
 import com.EDTECH.QUIZ.GAME.sevices.UserAnswerService;
+import com.EDTECH.QUIZ.GAME.sevices.UserPerformanceService;
 
 @Controller
 public class QuizController {
@@ -50,7 +51,8 @@ public class QuizController {
     @Autowired
     private PhaseRepository phaseRepository;
 
-
+    @Autowired
+    private UserPerformanceService userPerformanceService;
 
     @GetMapping("/{topicId}/quiz")
     public String quiz(@PathVariable("topicId") Long topicId, Model model, Principal principal, HttpSession session) {
@@ -157,12 +159,12 @@ public class QuizController {
     
         Quiz quiz = quizRepository.findById(quizId).orElse(null);
         if (quiz == null) {
-            return ResponseEntity.badRequest().body("Invalid quiz.");
+            return ResponseEntity.badRequest().body(Map.of("error", "Invalid quiz."));
         }
     
         Question question = questionRepository.findById(questionId).orElse(null);
         if (question == null || !question.getQuiz().equals(quiz)) {
-            return ResponseEntity.badRequest().body("Invalid question.");
+            return ResponseEntity.badRequest().body(Map.of("error", "Invalid question."));
         }
     
         boolean isCorrect = false;
@@ -269,11 +271,12 @@ public class QuizController {
             userRepository.save(user);
         }
 
-        // Clear quiz session data
-        session.removeAttribute("selectedQuestions");
-        session.removeAttribute("currentQuestionIndex");
-        session.removeAttribute("userAnswers");
-        session.removeAttribute("startTime");
+
+        //Update user's highest score
+        userPerformanceService.updateHighestScore(user);
+        System.out.println("before update Total time spent::::::::::::::::::::>>>>>>> " + user.getTimeSpent());
+        userPerformanceService.updateTimeSpent(user);
+        System.out.println("after Total time spent::::::::::::::::::::>>>>>>> " + user.getTimeSpent());
 
         return ResponseEntity.ok(Map.of(
             "points", totalPoints,
@@ -285,12 +288,25 @@ public class QuizController {
     @GetMapping("/quiz/clear-session")
     @ResponseBody
     public ResponseEntity<?> clearSession(HttpSession session) {
-        session.removeAttribute("selectedQuestions");
-        session.removeAttribute("currentQuestionIndex");
-        session.removeAttribute("userAnswers");
-        session.removeAttribute("startTime");
+        if (session == null){
+            return ResponseEntity.ok(Map.of("message", "No active session found."));
+        }
 
-        return ResponseEntity.ok(Map.of("message", "Session cleared"));
+        if (session.getAttribute("selectedQuestions") != null ||
+            session.getAttribute("currentQuestionIndex") != null ||
+            session.getAttribute("userAnsers") != null ||
+            session.getAttribute("startTime") != null){
+
+                
+            session.removeAttribute("selectedQuestions");
+            session.removeAttribute("currentQuestionIndex");
+            session.removeAttribute("userAnswers");
+            session.removeAttribute("startTime");
+
+            return ResponseEntity.ok(Map.of("message", "Session cleared"));
+        }
+
+        return ResponseEntity.ok(Map.of("message", "Session was already empty"));
     }
 
 }
