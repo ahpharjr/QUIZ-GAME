@@ -14,7 +14,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     
     List<Question> findByQuiz_QuizId(Long quizId);
 
-    @Query(value = "SELECT * FROM questions WHERE quiz_id = :quizId ORDER BY RAND() LIMIT :limit", nativeQuery = true)
-    List<Question> findRandomQuestionsByQuizId(@Param("quizId") Long quizId, @Param("limit") int limit);
+    //@Query(value = "SELECT * FROM questions WHERE quiz_id = :quizId ORDER BY RAND() LIMIT :limit", nativeQuery = true)
+    //List<Question> findRandomQuestionsByQuizId(@Param("quizId") Long quizId, @Param("limit") int limit);
     
 }

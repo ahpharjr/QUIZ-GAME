@@ -28,7 +28,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String name = oAuth2User.getAttribute("name");
         System.out.println("Email: " + email);
         System.out.println("Name: " + name);
-        Users user = userRepository.findByUsername(name);
+        Users user = userRepository.findByEmail(email);
         
         if (user == null) {
 

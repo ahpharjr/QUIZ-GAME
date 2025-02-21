@@ -120,6 +120,16 @@ public class AuthenticationController {
             }
             if(principal instanceof UserDetails){
                 System.out.println("This is redirect to home page and the principal is in Userdetails" );
+                Users currentUser = userRepository.findByUsername(((UserDetails) principal).getUsername());
+                if(currentUser.isEnabled()){
+                    if(userRepository.findByEmail(currentUser.getEmail()) != null) {
+                        System.out.println("This is the check point for the email.");
+                        model.addAttribute("error", "Your email is already registered. Please use another email."); 
+                        return "/register";
+                    }
+                }else{
+                    System.out.println("User is not enabled");
+                }
                 return "redirect:/home";
             }
         }
@@ -142,7 +152,7 @@ public class AuthenticationController {
                     
                     int quiz = currentUser.getQuizSet();
                     System.out.println("========================================");
-                    System.out.println(quiz);
+                    System.out.println("This is the Custom Oauth2 User");
                     System.out.println("========================================");
 
                     model.addAttribute("quiz", quiz);
@@ -151,14 +161,19 @@ public class AuthenticationController {
                     UserDetails userDetails = (UserDetails) principal;
                     System.out.println(userDetails.getUsername());
                     Users currentUser = userRepository.findByUsername(userDetails.getUsername());
-
                     int quiz = currentUser.getQuizSet();
                     System.out.println("========================================");
-                    System.out.println(quiz);
+                    System.out.println("This is the User Details User");
                     System.out.println("========================================");
 
+                    if(currentUser.isEnabled()){
+                        System.out.println("User is enabled");
+                    } else {
+                        System.out.println("User is not enabled");
+                        model.addAttribute("error", "Please Verify your email to continue");
+                        return "/login";
+                    }
                     model.addAttribute("quiz", quiz);
-
                     model.addAttribute("user", currentUser);
                 }
             }

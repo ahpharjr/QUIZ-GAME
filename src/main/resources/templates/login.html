@@ -8,6 +8,43 @@
     <link rel="stylesheet" href="/styles/header.css">
     <link rel="stylesheet" href="/styles/login.css">
     <title>Login</title>
+    <style>
+        .error-popup {
+            width: 300px;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #f44336;
+            color: white;
+            padding: 20px;
+            padding-button: 10px;
+            border-radius: 5px;
+            display: none; /* Hidden by default */
+            z-index: 1000;
+        }
+
+        .error-popup p {
+            margin: 0;
+            font-size: 14px;
+        }
+        
+        .error-popup button {
+            width: 100px;
+            margin-left: 35%;
+            border-radius: 5px;
+            margin-top: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            height: 35px;
+        }
+        
+        .error-popup button:hover {
+            background-color: #555;
+        }
+    </style>
 </head>
 <body>
     <div class="background-image"></div>
@@ -24,6 +61,10 @@
     </div>
     <div class="login-box">
         <h2>Log in</h2>
+        <div id="error-popup" class="error-popup" style="display:none;">
+            <p id="error-message"></p>
+            <button onclick="closeErrorPopup()">Close</button>
+        </div>
         <!-- Form for Login -->
         <form th:action="@{/login}" method="POST">
             <div class="input-box">
@@ -67,6 +108,22 @@
             });
         });
         /*]]>*/
+
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log("DOM fully loaded and parsed");
+            var errorMessage = /*[[${error}]]*/ null;  
+            if (errorMessage) {
+                document.getElementById('error-message').textContent = errorMessage;
+                document.getElementById('error-popup').style.display = 'block';
+            }
+            console.log("Error message: " + errorMessage);
+
+        });
+    
+        function closeErrorPopup() {
+            document.getElementById('error-popup').style.display = 'none';
+        }
+
     </script>
 </body>
 </html>
