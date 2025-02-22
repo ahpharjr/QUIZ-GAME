@@ -100,10 +100,12 @@ public class AuthenticationController {
             model.addAttribute("message", "Invalid verification link!");
             return "error";
         }
-
+        System.out.println("User before verification " + user.isEnabled());
         user.setEnabled(true);
         user.setVerificationToken(null); 
         userRepository.save(user);
+        System.out.println("User before verification " + user.isEnabled());
+
 
         Users updatedUser = userRepository.findByUsername(user.getUsername());
         System.out.println("User after verification " + updatedUser.isEnabled());
