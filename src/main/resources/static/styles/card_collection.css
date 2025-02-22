@@ -1,93 +1,29 @@
-.background-image {
-    background-image: url('/images/WHG1m7.webp');
-    background-size: cover;
-    background-position: center;
-    height: 100%; 
-    width: 100%; 
-    position: fixed;
-    opacity: 0.3;
-    overflow: hidden;
-}
-.body-container{
-    padding-top: 130px;
-    color: white;
-}
-.body-container h2{
-    text-align: center;
-}
-
-/* ====================Card Container=========================== */
-/* .card-container{
-    margin: 30px;
-    display: flex;
-    flex-wrap: wrap;
+.title-box{
+    position: absolute;
+    top: 20px;
+    align-items: center;
     justify-content: center;
-    column-gap: 20px;
-    row-gap: 20px;
-} */
-.card-container {
-    margin: 30px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    overflow: auto;
-    column-gap: 20px;
-    row-gap: 20px;
-    padding: 20px;
-}
-
-.card-container::-webkit-scrollbar {
-    height: 7px;
-    width: 10px;
-}
-
-.card-container::-webkit-scrollbar-thumb {
-    background-color: #00c0ca;
-    border-radius: 5px;
-}
-
-.card-container::-webkit-scrollbar-track {
-    background-color: #cccccca1; 
-    border-radius: 5px;
-}
-.flashcard {
-    height: 28rem;
-    width: 20rem;
-    background: radial-gradient(circle, rgb(24, 78, 77) 30%, transparent);
-    border: .1rem solid rgb(255, 255, 255);
-    border-radius: .7rem;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.6s;
     display: flex;
-    color: white;
-}
-.flashcard.is-flipped {
-    transform: rotateY(180deg); 
-    border-radius: .7rem;
+    width: 100%;
 }
 .title{
-    color: #fff;
+    text-align: center;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
 }
-
-.flashcard-face {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    backface-visibility: hidden; /* Hide back side of the flashcard */
+.swiper-wrapper{
     display: flex;
-    flex-direction: column;
+}
+.swiper-slide{
+    display: flex;
     align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
-    border-radius: .7rem;
+    justify-content: center;
+    min-width: 22rem;
 }
-.flashcard-face.back {
-    transform: rotateY(180deg);
-}
-.content-pic{
-    position: relative;
-    width: 100%;
-    height: 233px;
+.swiper .swiper-pagination{
+    position: absolute;
+    bottom: 10px;
 }
 .star, 
 .favorite {
@@ -96,131 +32,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    /* background-color: rgb(20, 78, 128);  */
     background-color: rgb(20, 78, 128);
-    box-shadow: inset 0 0 5px rgba(255, 255, 255, 1);
-    border: 1px solid white;
+    border: 1px solid rgb(255, 255, 255);
     z-index: 10;
     top: -5px;
-    right: -5px;
+    right: -42px;
     cursor: pointer;
     width: 27px;
     height: 27px;
     border-radius: 50%;
     transition: 0.15s;
-}
-.favorite{
-    position: fixed;
-    top: 80px;
-    right: 240px;
-    background-color: white;
-}
-/* .star:hover{
-    background-color: rgb(255, 255, 255);
-    border: 1px solid rgb(20, 78, 128);
-} */
-
-.star:active,
-.favorite:active {
-    transform: scale(1.1);
-}
-
-.star-icon, 
-.star-icon-color,
-.fav-icon {
-    position: absolute;
-    width: 15px;
-    height: 15px;
-}
-.star-icon-color{
-    visibility: hidden;
-}
-.star:hover .star-icon-color{
-    visibility: visible;
-}
-.tooltip, .tooltip-collection {
-    position: absolute;
-    white-space: nowrap;
-    background-color: rgb(20, 78, 128);
-    color: rgb(255, 255, 255);
-    font-size: 0.6rem;
-    padding: 5px 8px;
-    border-radius: 4px;
-    visibility: hidden;
-    opacity: 1;
-    transition: opacity 0.2s ease-in-out;
-    z-index: 20;
-}
-.tooltip{
-    bottom: 130%; /* Position the tooltip above the star */
-    left: 50%;
-    transform: translateX(-50%);
-}
-.tooltip-collection{
-    top: 50%; 
-    right: 125%; 
-    transform: translateY(-50%); 
-}
-.tooltip-collection::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 95%; /* Position the arrow at the left edge of the tooltip */
-    transform: translateY(-50%) rotate(45deg);
-    width: 8px;
-    height: 8px;
-    background-color: rgb(20, 78, 128);
-    z-index: -1;
-}
-.tooltip::before {
-    position: absolute;
-    content: '';
-    bottom: -4px; /* Arrow is just below the tooltip */
-    left: 47%;
-    transform: translateX(-40%) rotate(45deg);
-    border: 4px solid rgb(20, 78, 128);
-}
-
-.star:hover .tooltip,
-.favorite:hover .tooltip-collection {
-    visibility: visible;
-    opacity: 1;
-}
-.pic {
-    width: 100%;
-    height: 233px;
-    border-radius: .6rem;
-    object-fit: cover;
-    
-}
-.text-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin-top: .4rem;
-    padding: 0 1rem;
-    width: 100%;
-    height: 100%;
-}
-
-.text-content h3 {
-    font-size: 1.3rem;
-    font-weight: 500;
-    text-align: center;
-}
-
-.text-content p,
-.text-content-back p {
-    margin-top: 1rem;
-    max-width: 22rem;
-    font-size: 1rem;
-    font-weight: 400;
-    text-align: center;
-}
-.text-content-back {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }

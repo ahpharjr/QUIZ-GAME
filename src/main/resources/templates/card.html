@@ -13,24 +13,9 @@
     <link rel="stylesheet" href="/styles/card.css">
     <link rel="stylesheet" href="/styles/header.css">
     <link rel="stylesheet" href="/styles/profile.css">
+    <link rel="stylesheet" href="/styles/swiper.css">
     <title>QUIZ GAME - Cards</title>
-
-    <style>
-        /* Star icon for cards in the collection */
-    .star.in-collection {
-        background-color: rgb(20, 78, 128);  /* Golden background for collected stars */
-        border: 1px solid rgb(255, 255, 255); /* Golden border */
-    }
-
-    .star.in-collection .star-icon-color {
-        visibility: hidden; /* Show the colored icon */
-    }
-
-    .star.in-collection .star-icon {
-        visibility: visible; /* Hide the default icon */
-    }
-
-    </style>
+    
 </head>
 
 
@@ -38,7 +23,7 @@
     <div class="background-image"></div>
     <div class="header">
         <div class="logo-box">
-            <a th:href="@{${'/home'}}">
+            <a th:href="@{'/home'}">
                 <img class="logo" src="/icons/quizlogo99.svg" alt="Logo">
             </a>
             <div class="logo-name">
@@ -100,12 +85,8 @@
     </a>
     <div class="container">
         <div class="collection">
-            <div class="flashcard-set-box">
-                <div class="set-title"
-                     th:each="topic : ${topics}"
-                     th:attr="data-topic-id=${topic.topicId}">
-                    <span th:text="${topic.name}">Topic Name</span>
-                </div>
+            <div class="topic-name-box">
+                <span class="topic-name" id="topic-name">Topic Name</span>
             </div>
             <div class="swiper mySwiper">
                 <div class="swiper-wrapper" id="flashcards-container">
@@ -114,6 +95,14 @@
             <div class="swiper-button-next"></div>
             <div class="swiper-button-prev"></div>
             <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
+    <div class="flashcard-set-box">
+        <div class="set-title"
+                th:each="topic, iterStat : ${topics}"
+                th:attr="data-topic-id=${topic.topicId}, data-topic-name=${topic.name}">
+            <span th:text="${iterStat.index + 1}">Topic Number</span>
         </div>
     </div>
 

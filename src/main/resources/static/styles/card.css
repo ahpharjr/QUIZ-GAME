@@ -115,11 +115,25 @@
 }
 .flashcard-set-box{
     position: absolute;
-    bottom: -15%;
+    bottom: 10px;
     display: flex;
     width: 100%;
     align-items: center;
     justify-content: center;
+}
+.topic-name-box{
+    position: absolute;
+    top: 20px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    width: 100%;
+}
+.topic-name{
+    text-align: center;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 500;
 }
 .set-title{
     padding: 10px 15px;
@@ -129,6 +143,7 @@
     font: 0.8rem;
     text-align: center;
     cursor: pointer;
+    /* background: #000000; */
 }
 .set-title::after{
     content: '';
@@ -171,7 +186,8 @@
     color: white;
 }
 .collection .swiper-pagination{
-    bottom: 92%;
+    /* bottom: 92%; */
+    bottom: -15px;
 }
 .all-cards-link{
     color: rgb(255, 255, 255);
@@ -190,8 +206,10 @@
     color: rgb(193, 193, 193);
 }
 .flashcard {
-    width: 100%;
-    height: 100%;
+    /* width: 100%;
+    height: 100%; */
+    height: 28rem;
+    width: 22rem;
     background: radial-gradient(circle, rgb(24, 78, 77) 30% , transparent);
     border: .1rem solid rgb(255, 255, 255);
     border-radius: .7rem;
@@ -274,6 +292,19 @@
 }
 .star:hover .star-icon-color{
     visibility: visible;
+}
+/* Star icon for cards in the collection */
+.star.in-collection {
+    background-color: rgb(20, 78, 128);  
+    border: 1px solid rgb(255, 255, 255); 
+}
+
+.star.in-collection .star-icon-color {
+    visibility: hidden; /* Show the colored icon */
+}
+
+.star.in-collection .star-icon {
+    visibility: visible; /* Hide the default icon */
 }
 .tooltip, .tooltip-collection {
     position: absolute;
@@ -365,42 +396,3 @@
     align-items: center;
 }
 
-/* Customize the left and right shadows */
-.swiper-slide-shadow-left,
-.swiper-slide-shadow-right {
-    border-radius: .7em;
-    transition: box-shadow 0.3s ease-in-out;
-}
-
-/* Make the active (center) slide brighter */
-.swiper-slide-active {
-    transform: scale(1.1); /* Slightly enlarge the active slide */
-    filter: brightness(1.2); /* Make the active slide brighter */
-}
-
-/* Dim the non-active (back) slides */
-.swiper-slide {
-    opacity: 1; /* Make all slides a little dim */
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-/* When the slide is not active (on the left and right), reduce opacity */
-.swiper-slide:not(.swiper-slide-active) {
-    opacity: 1; /* Reduce opacity for non-active slides */
-    filter: brightness(0.5);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-@media (max-width: 1124px){
-    .swiper-button-next,
-    .swiper-button-prev{
-        transform: scale(.8)
-    }
-}
-@media (max-width: 460px){
-
-    .collection .swiper-button-next,
-    .collection .swiper-button-prev{
-        visibility: hidden;
-    }
-}

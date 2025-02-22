@@ -84,6 +84,7 @@ public class AuthenticationController {
         user.setUserXp(0);
         user.setLevel(1);
         user.setCreatedDate(new Date());
+        //user.setEnabled(true);
         userRepository.save(user);
 
         emailService.sendVerificationEmail(user.getEmail(), token);

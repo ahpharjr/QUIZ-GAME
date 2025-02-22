@@ -79,7 +79,7 @@ public class QuizController {
         if (selectedQuestions == null || selectedQuestions.isEmpty()) {
             List<Question> allQuestions = questionRepository.findByQuiz_QuizId(quizId);
             Collections.shuffle(allQuestions);
-            selectedQuestions = allQuestions.stream().limit(8).collect(Collectors.toList());
+            selectedQuestions = allQuestions.stream().limit(10).collect(Collectors.toList());
             session.setAttribute("selectedQuestions", selectedQuestions);
             currentQuestionIndex = 0;
             session.setAttribute("currentQuestionIndex", currentQuestionIndex);

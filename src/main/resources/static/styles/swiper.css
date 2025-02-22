@@ -1,0 +1,39 @@
+/* Customize the left and right shadows */
+.swiper-slide-shadow-left,
+.swiper-slide-shadow-right {
+    border-radius: .7em;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Make the active (center) slide brighter */
+.swiper-slide-active {
+    transform: scale(1.1); /* Slightly enlarge the active slide */
+    filter: brightness(1.2); /* Make the active slide brighter */
+}
+
+/* Dim the non-active (back) slides */
+.swiper-slide {
+    opacity: 1; /* Make all slides a little dim */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* When the slide is not active (on the left and right), reduce opacity */
+.swiper-slide:not(.swiper-slide-active) {
+    opacity: 1; /* Reduce opacity for non-active slides */
+    filter: brightness(0.5);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+@media (max-width: 1124px){
+    .swiper-button-next,
+    .swiper-button-prev{
+        transform: scale(.8)
+    }
+}
+@media (max-width: 460px){
+
+    .collection .swiper-button-next,
+    .collection .swiper-button-prev{
+        visibility: hidden;
+    }
+}
