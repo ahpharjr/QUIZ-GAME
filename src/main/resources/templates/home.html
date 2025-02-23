@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="utf-8" />
   <title>QUIZ GAME</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+
   <link rel="shortcut icon" type="x-icon" href="icons/quizlogo99.svg">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link rel="stylesheet" href="styles/general.css">
@@ -13,7 +14,7 @@
   <link rel="stylesheet" href="styles/profile.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.0.1/introjs.min.css" />
   <link rel="stylesheet" href="styles/onboarding_home.css">
-  <!-- Demo styles -->
+
   <style>
 
     .swiper {
@@ -133,12 +134,11 @@
                         </span>
                         <span class="level-no">Lvl - <span th:text="${#numbers.formatInteger(user.level, 2)}"></span></span>
                         <div class="exp-prograss-bar">
-                            <div class="exp-bar-fill"></div>
-                            <span class="exp">900/1200EXP</span>
-            <!--
-                            <span class="exp"><span th:text="${user.userXp}"></span>/1200EXP</span>
--->
-                        </div>
+                            <div class="exp-bar-fill" th:style="'width:' + ${progressPercentage} + '%'"></div>
+                            <span class="exp">
+                                <span th:text="${#numbers.formatInteger(user.userXp, 2)}"></span>/<span th:text="${xpEnd}"></span> EXP
+                            </span>
+                        </div>                        
                     </div>
                 </div>
                 <div class="record-box">
@@ -223,9 +223,11 @@
                     </span>
                     <span class="level-no">Lvl - <span  th:text="${#numbers.formatInteger(user.level, 2)}"></span></span>
                     <div class="exp-prograss-bar">
-                        <div class="exp-bar-fill"></div>
-                        <span class="exp">900/1200 XP</span>
-                    </div>
+                        <div class="exp-bar-fill" th:style="'width:' + ${progressPercentage} + '%'"></div>
+                        <span class="exp">
+                            <span th:text="${#numbers.formatInteger(user.userXp, 2)}"></span>/<span th:text="${xpEnd}"></span> EXP
+                        </span>
+                    </div>                        
                 </div>
             </div>
             <div class="record-box">
@@ -323,7 +325,6 @@
     playNavAudio("learn-link", "learning-zone");
     playNavAudio("play-link", "gamezone");
   </script>
-  <!-- Initialize Swiper -->
   <script>
     var swiper = new Swiper(".mySwiper", {
       slidesPerView: 1,

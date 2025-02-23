@@ -1,10 +1,13 @@
 package com.EDTECH.QUIZ.GAME.models;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -52,14 +55,31 @@ public class Users {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<QuizAttempt> quizAttempts;
 
+    @ElementCollection
+    private Set<Long> completedPhases = new HashSet<>();
+
     public Users() {
     }
 
-    // @JsonIgnore
     public Users(int userId) {
         this.userId = userId;
     }
 
+    public boolean hasCompletedPhase(Long phaseId) {
+        return completedPhases.contains(phaseId);
+    }
+
+    public void markPhaseCompleted(Long phaseId) {
+        completedPhases.add(phaseId);
+    }
+
+    public Set<Long> getCompletedPhases() {
+        return completedPhases;
+    }
+
+    public void setCompletedPhases(Set<Long> completedPhases) {
+        this.completedPhases = completedPhases;
+    }
 
     public int getUserId() {
         return userId;

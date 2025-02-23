@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.EDTECH.QUIZ.GAME.models.Phase;
 import com.EDTECH.QUIZ.GAME.models.Quiz;
 import com.EDTECH.QUIZ.GAME.models.QuizAttempt;
 import com.EDTECH.QUIZ.GAME.models.Users;
@@ -14,4 +15,6 @@ public interface QuizAttemptRepository extends JpaRepository<QuizAttempt, Long>{
     
     List<QuizAttempt> findByUserAndQuiz(Users user, Quiz quiz);
     List<QuizAttempt> findByUser(Users user);
+    List<QuizAttempt> findByUserAndQuizTopicPhase(Users user, Phase phase);
+
 }

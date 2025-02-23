@@ -100,11 +100,13 @@ public class QuizController {
             }
         }
 
+        int questionCount = selectedQuestions.size();
         Phase phase = phaseRepository.findByTopics_TopicId(topicId);
         model.addAttribute("phase", phase);
         model.addAttribute("quizId", quizId);
         model.addAttribute("questions", selectedQuestions);
         model.addAttribute("currentQuestion", selectedQuestions.get(currentQuestionIndex));
+        model.addAttribute("questionCount", questionCount);
 
         List<Answer> answers = answerRepository.findByQuestion_QuestionId(selectedQuestions.get(currentQuestionIndex).getQuestionId());
 
@@ -208,8 +210,9 @@ public class QuizController {
         int totalPoints = userAnswerService.calculatePoints();
         long timeTaken = userAnswerService.getTimeTaken(session); // Use session-based time
         List<UserAnswer> userAnswers = userAnswerService.getUserAnswers();
+        int bonusXp = userAnswerService.calculateCorrectAnswerPercentage();
 
-        QuizAttempt quizAttempt = quizAttemptService.saveQuizAttempt(user, quiz, totalPoints, timeTaken, userAnswers);
+        QuizAttempt quizAttempt = quizAttemptService.saveQuizAttempt(user, quiz, totalPoints, timeTaken, userAnswers, bonusXp);
 
         QuizLeaderboard leaderboard = quizLeaderboardRepository.findByUserAndQuiz(user, quiz);
 
@@ -221,6 +224,7 @@ public class QuizController {
         }
         quizLeaderboardRepository.save(leaderboard);
 
+        // Update user phase leaderboard
         Leaderboard userPhaseLeaderboard = leaderboardRepository.findByUserAndPhase(user, quiz.getTopic().getPhase());
 
         if (userPhaseLeaderboard == null) { 
@@ -245,6 +249,8 @@ public class QuizController {
 
                 System.out.println("highestPreviousPoints::::::::::::::::::::>>>>>>> " + highestPreviousPoints);  
 
+        System.out.println("Correct Answers Percentage::::::::::::::::::::>>>>>>> " + userAnswerService.calculateCorrectAnswerPercentage());
+
         if (lastAttemptPoints > highestPreviousPoints) {
             System.out.println("lastAttemptPoints::::::::::::::::::::>>>>>>> " + lastAttemptPoints);
             int updatedPoints = currentPoints - highestPreviousPoints + lastAttemptPoints;
@@ -267,17 +273,21 @@ public class QuizController {
             userPhaseLeaderboard.setTimeTaken(currentTimeTaken + lastAttemptTimeTaken);
             leaderboardRepository.save(userPhaseLeaderboard);
 
-            // Update user quiz set count
-            user.setQuizSet(user.getQuizSet() + 1);
+            user.setQuizSet(user.getQuizSet() + 1); // Update user quiz set count
+            user.setUserXp(user.getUserXp() + 200 + bonusXp); // Add 200 XP for completing a quiz
+
             userRepository.save(user);
         }
-
 
         //Update user's highest score
         userPerformanceService.updateHighestScore(user);
         System.out.println("before update Total time spent::::::::::::::::::::>>>>>>> " + user.getTimeSpent());
+
         userPerformanceService.updateTimeSpent(user);
         System.out.println("after Total time spent::::::::::::::::::::>>>>>>> " + user.getTimeSpent());
+
+        userPerformanceService.updateBonusXp(user, quiz);
+        userPerformanceService.grantXpForPhaseCompletion(user, quiz.getTopic().getPhase());
 
         return ResponseEntity.ok(Map.of(
             "points", totalPoints,

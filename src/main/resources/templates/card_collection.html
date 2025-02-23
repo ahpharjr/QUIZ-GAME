@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="shortcut icon" type="x-icon" href="icons/quizlogo99.svg">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="styles/general.css">
     <link rel="stylesheet" href="styles/header.css">
     <link rel="stylesheet" href="styles/profile.css">
     <link rel="stylesheet" href="styles/card_collection.css">
+    <link rel="stylesheet" href="styles/card.css">
     <title>Card Collection</title>
+
 </head>
 <body th:attr="data-user-id=${user.userId}">
     <div class="background-image"></div>
@@ -53,13 +56,26 @@
     </div>
     <div id="overlay" class="overlay"></div>
 
-    <div class="body-container">
-        <h2 class="title">Card Collection</h2>
-        <div class="back-arr" onclick="navigateBack()">
-            <img class="back-arrow" src="icons/back-arrow.png" alt="back"> Back
-        </div>
-        <div class="card-container"></div>
+    <div class="back-arr" onclick="navigateBack()">
+        <img class="back-arrow" src="icons/back-arrow.png" alt="back"> Back
     </div>
+
+    <div class="container">
+
+        <div class="collection card-collection">
+            <div class="title-box">
+                <h2 class="title">Card Collection</h2>
+            </div>
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper" id="flashcards-container">
+                </div>
+            </div>
+            <!-- <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div> -->
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="scripts/profileScript.js"></script>
     <script src="/scripts/collection.js"></script>
     <script>
@@ -67,6 +83,36 @@
         function flipCard(card) {
             card.classList.toggle('is-flipped');
         }
+
+        function initializeSwiper() {
+            return new Swiper(".mySwiper", {
+                
+                slidesPerView: 4,
+                spaceBetween: 15,
+                keyboard: {
+                    enabled: true,
+                },
+                pagination: {
+                    el: ".swiper-pagination",
+                    //type: "fraction",
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                breakpoints: {
+                    1500: {slidesPerView: 4,},
+                    1100: {slidesPerView: 3,spaceBetween: 10,},
+                    740: {slidesPerView: 2,spaceBetween: 10,},
+                    150: {slidesPerView: 1,spaceBetween: 10,},
+                },
+            });
+        }
+
+
+// Initialize Swiper once the script loads
+let swiper = initializeSwiper();
 
 // Function to navigate back
 function navigateBack() {
@@ -102,6 +148,8 @@ function navigateBack() {
                             if (response.ok) {
                                 console.log("Card removed successfully");
                                 star.closest(".flashcard").remove(); // Remove card from DOM
+
+                                loadCards(); // Load cards again
                             } else {
                                 return response.text().then(text => {
                                     console.error("Error removing card:", text);
@@ -119,30 +167,40 @@ function navigateBack() {
             fetch(`/collections?userId=${userId}`)
                 .then(response => response.json())
                 .then(data => {
-                    const cardContainer = document.querySelector(".card-container");
-                    cardContainer.innerHTML = ""; // Clear existing cards
+                    const flashcardsContainer = document.getElementById('flashcards-container');
+                    flashcardsContainer.innerHTML = ''; // Clear existing flashcards
+
                     data.forEach(card => {
-                        cardContainer.innerHTML += 
-                            `<div class="flashcard" data-card-id="${card.cardId}" onclick="flipCard(this)">
-                                <div class="flashcard-face front">
-                                    <div class="content-pic">
-                                        <img class="pic" src="/images/project-management (1).png" alt="Image">
-                                        <div class="star"> 
-                                            <img class="star-icon" src="icons/icons8-star-50 (2).png" alt="star">
-                                            <span class="tooltip">Remove Card</span>
+                        flashcardsContainer.innerHTML += `
+                            <div class="swiper-slide">
+                                <div class="flashcard" data-card-id="${card.cardId}" onclick="flipCard(this)">
+                                    <div class="flashcard-face front">
+                                        <div class="content-pic">
+                                            <img class="pic" src="/images/Project Goals.png" alt="Image">
+                                            <div class="star">
+                                                <img class="star-icon" src="/icons/icons8-star-50 (2).png" alt="star">
+                                                <span class="tooltip">Remove Card</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-content">
+                                            <h3>${card.keyword}</h3>
                                         </div>
                                     </div>
-                                    <div class="text-content">
-                                        <h3>${card.keyword}</h3>
-                                    </div>
-                                </div>
-                                <div class="flashcard-face back">
-                                    <div class="text-content-back">
-                                        <p>${card.definition}</p>
+                                    <div class="flashcard-face back">
+                                        <div class="text-content-back">
+                                            <p>${card.definition}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>`;
                     });
+
+                    // Reinitialize Swiper
+                    if (swiper) {
+                        swiper.destroy(true, true);
+                    }
+                    swiper = initializeSwiper();
+
                     attachRemoveCardListeners(); // Attach event listeners to the stars
                 })
                 .catch(error => console.error("Error fetching collections:", error));
@@ -152,14 +210,14 @@ function navigateBack() {
         document.addEventListener("DOMContentLoaded", loadCards);
 
         window.onpopstate = function (event) {
-    console.log("Back navigation detected");
-    if (event.state === null) {
-        console.log("This is a back navigation");
-    } else {
-        console.log("This is not a back navigation");
-    }
-    attachStarListeners(); // Re-attach star listeners when coming back
-};
+            console.log("Back navigation detected");
+            if (event.state === null) {
+                console.log("This is a back navigation");
+            } else {
+                console.log("This is not a back navigation");
+            }
+            attachStarListeners(); // Re-attach star listeners when coming back
+        };
 
         //<img class="pic" src="/images/${card.image}" alt="image">
     </script>

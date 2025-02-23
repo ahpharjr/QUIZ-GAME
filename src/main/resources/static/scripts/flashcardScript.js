@@ -65,10 +65,15 @@ document.addEventListener("DOMContentLoaded", attachStarListeners);
 document.querySelectorAll('.set-title').forEach(topic => {
     topic.addEventListener('click', function () {
         const topicId = this.getAttribute('data-topic-id');
+        const topicName = this.getAttribute('data-topic-name'); // Get the displayed topic name
 
         // Highlight the selected topic
         document.querySelectorAll('.set-title').forEach(t => t.classList.remove('selected'));
         this.classList.add('selected');
+
+        // Update topic name in UI
+        const topicNameElement = document.getElementById('topic-name');
+        topicNameElement.innerText = topicName;
 
         // Fetch and update flashcards for the selected topic
         fetch(`/flashcards/${topicId}`)
@@ -102,16 +107,17 @@ document.querySelectorAll('.set-title').forEach(topic => {
                         </div>`;
                 });
 
-                // Reinitialize the Swiper instance
+                // Reinitialize Swiper
                 if (swiper) {
                     swiper.destroy(true, true);
                 }
                 swiper = initializeSwiper();
 
-                // Reattach event listeners to the new `.star-icon-color` elements
+                // Reattach event listeners
                 attachStarListeners();
             });
     });
 });
+
 
 //<img class="star-icon-color" src="/icons/icons8-star-50 (1).png" alt="star">
