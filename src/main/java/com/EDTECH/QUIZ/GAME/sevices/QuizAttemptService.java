@@ -21,12 +21,13 @@ public class QuizAttemptService {
     @Autowired
     private UserAnswerRepository userAnswerRepository;
 
-    public QuizAttempt saveQuizAttempt(Users user, Quiz quiz, int totalPoints, long timeTaken, List<UserAnswer> userAnswers) {
+    public QuizAttempt saveQuizAttempt(Users user, Quiz quiz, int totalPoints, long timeTaken, List<UserAnswer> userAnswers, int bonusXp) {
         QuizAttempt quizAttempt = new QuizAttempt();
         quizAttempt.setUser(user);
         quizAttempt.setQuiz(quiz);
         quizAttempt.setTotalPoints(totalPoints);
         quizAttempt.setTotalTime(timeTaken);
+        quizAttempt.setBonusXp(bonusXp);
 
         // Save QuizAttempt first so that UserAnswers can reference it
         quizAttempt = quizAttemptRepository.save(quizAttempt);

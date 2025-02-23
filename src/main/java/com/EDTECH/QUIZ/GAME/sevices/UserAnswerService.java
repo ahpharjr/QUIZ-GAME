@@ -22,10 +22,6 @@ public class UserAnswerService {
         userAnswers.clear(); // Clear previous answers
     }
 
-    // public void storeAnswer(Long questionId, Long answerId, boolean isCorrect) {
-    //     Long answerTime = System.currentTimeMillis() - startTime;
-    //     userAnswers.add(new UserAnswer(questionId, answerId, isCorrect, answerTime));
-    // }
     public void storeAnswer(Long questionId, Long answerId, boolean isCorrect) {
         Long answerTime = System.currentTimeMillis() - startTime;
         
@@ -36,7 +32,6 @@ public class UserAnswerService {
         userAnswers.add(new UserAnswer(questionId, answerId, isCorrect, answerTime));
     }
     
-
     public List<UserAnswer> getUserAnswers(){
         return new ArrayList<>(userAnswers);
     }
@@ -62,9 +57,6 @@ public class UserAnswerService {
         else return 0;
     }
     
-    // public long getTimeTaken() {
-    //     return System.currentTimeMillis() - startTime;
-    // }
     public long getTimeTaken(HttpSession session) {
         Long sessionStartTime = (Long) session.getAttribute("startTime");
         if (sessionStartTime == null) {
@@ -75,6 +67,18 @@ public class UserAnswerService {
 
     public Long getQuizId() {
         return quizId;
+    }
+
+    public int calculateCorrectAnswerPercentage(){
+        if (userAnswers.isEmpty()) {
+            return 0;
+        }
+
+        long correctCount = userAnswers.stream()
+            .filter(UserAnswer::isCorrect)
+            .count();
+
+        return (int) Math.round(correctCount * 100) / userAnswers.size();
     }
 
     /**

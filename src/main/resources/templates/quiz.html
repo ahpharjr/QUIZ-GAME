@@ -65,8 +65,10 @@
                     <button id="cancel-exit">No</button>
                 </div>
             </div>
-            <!-- <div class="remain-question" id="question-number">1 / 8</div> -->
-            <div class="remain-question" id="question-number" th:text="${currentQuestionIndex} + ' / 10'"></div>
+            <div class="remain-question" 
+                id="question-number" 
+                th:attr="data-id=${questionCount}"
+                th:text="${currentQuestionIndex} + ' / '+ ${questionCount}"></div>
             <div class="question-box" id="question-box">
                 <div class="Q-img" id="question-image">
                     <img src="/images/project-management (1).png" alt="Question image">
@@ -256,7 +258,8 @@
                 // Update question counter
                 const questionCounter = document.getElementById("question-number");
                 const currentCount = parseInt(questionCounter.textContent.split(" / ")[0]);
-                questionCounter.textContent = `${currentCount + 1} / 10`; 
+                const totalQuestion = document.getElementById("question-number").dataset.id;
+                questionCounter.textContent = `${currentCount + 1} / ${totalQuestion}`; 
 
                 clickAnswerAudio(".click-answer");
             })
@@ -382,7 +385,9 @@ function updateQuestionUI(data) {
 
     const questionCounter = document.getElementById("question-number");
     const currentCount = parseInt(questionCounter.textContent.split(" / ")[0]);
-    questionCounter.textContent = `${currentCount + 1} / 10`; 
+    const totalQuestion = document.getElementById("question-number").dataset.id;
+    questionCounter.textContent = `${currentCount + 1} / ${totalQuestion}`; 
+    //questionCounter.textContent = `${currentCount + 1} / 10`; 
 
     clickAnswerAudio(".click-answer");
 

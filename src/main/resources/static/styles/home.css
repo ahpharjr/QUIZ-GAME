@@ -97,10 +97,7 @@
     font-weight: 600;
     color: rgb(187, 187, 187);
 }
-.exp{
-    font-size: 0.7rem;
-}
-/* Container for the progress bar */
+
 .exp-prograss-bar {
     position: relative;
     background-color: #e0e0e0;
@@ -115,7 +112,7 @@
     height: 100%;
     background-color: #25ab83; 
     border-radius: 8px 0 0 8px; 
-    transition: width 0.3s ease; 
+    transition: width 0.5s ease-in-out; 
 }
 
 .exp-prograss-bar .exp {

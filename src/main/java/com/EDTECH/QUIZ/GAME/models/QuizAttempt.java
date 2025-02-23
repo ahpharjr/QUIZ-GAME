@@ -14,6 +14,7 @@ public class QuizAttempt {
 
     private int totalPoints;
     private long totalTime;
+    private int bonusXp;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -73,6 +74,13 @@ public class QuizAttempt {
     public void setUserAnswers(List<UserAnswer> userAnswers) {
         this.userAnswers = userAnswers;
     }
+    
+    public int getBonusXp() {
+        return bonusXp;
+    }
 
+    public void setBonusXp(int bonusXp) {
+        this.bonusXp = bonusXp;
+    }
     
 }

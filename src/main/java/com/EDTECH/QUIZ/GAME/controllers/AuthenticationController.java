@@ -84,10 +84,10 @@ public class AuthenticationController {
         user.setUserXp(0);
         user.setLevel(1);
         user.setCreatedDate(new Date());
-        //user.setEnabled(true);
+        user.setEnabled(true);
         userRepository.save(user);
 
-        emailService.sendVerificationEmail(user.getEmail(), token);
+        //emailService.sendVerificationEmail(user.getEmail(), token);
 
         return "redirect:/login";
     }
@@ -152,48 +152,112 @@ public class AuthenticationController {
 
             if (authentication != null) {
                 Object principal = authentication.getPrincipal();
+                Users currentUser = null;
 
                 if (principal instanceof CustomOAuth2User) {
-                    CustomOAuth2User customUser = (CustomOAuth2User) principal;
-                    Users currentUser = userRepository.findByUsername(customUser.getName());
-                    model.addAttribute("user", currentUser);
-                    
-                    int quiz = currentUser.getQuizSet();
-                    System.out.println("========================================");
-                    System.out.println("This is the Custom Oauth2 User");
-                    System.out.println("========================================");
-
-                    model.addAttribute("quiz", quiz);
-                    String formatTimeSpent = userPerformanceService.formatTimeSpent(currentUser.getTimeSpent());
-                    model.addAttribute("formatTimeSpent", formatTimeSpent);
-
+                    currentUser = userRepository.findByUsername(((CustomOAuth2User) principal).getName());
                 } else if (principal instanceof UserDetails) {
-                    UserDetails userDetails = (UserDetails) principal;
-                    System.out.println(userDetails.getUsername());
-                    Users currentUser = userRepository.findByUsername(userDetails.getUsername());
-                    int quiz = currentUser.getQuizSet();
-                    System.out.println("========================================");
-                    System.out.println("This is the User Details User");
-                    System.out.println("========================================");
-
-                    if(currentUser.isEnabled()){
-                        System.out.println("User is enabled");
-                    } else {
-                        System.out.println("User is not enabled");
+                    currentUser = userRepository.findByUsername(((UserDetails) principal).getUsername());
+                    if (!currentUser.isEnabled()) {
                         model.addAttribute("error", "Please Verify your email to continue");
                         return "/login";
                     }
-                    model.addAttribute("quiz", quiz);
+                }
 
-                    model.addAttribute("user", currentUser);
+                if (currentUser != null) {
+                    int userXp = currentUser.getUserXp();
+                    int level = 1;
+                    int xpStart = 0;
+                    int xpEnd = 1200;
 
+                    if (userXp >= 1200 && userXp < 3200) {
+                        level = 2;
+                        xpStart = 1200;
+                        xpEnd = 3200;
+                        currentUser.setLevel(level);
+                        userRepository.save(currentUser);
+                    } else if (userXp >= 3200 && userXp < 6200) {
+                        level = 3;
+                        xpStart = 3200;
+                        xpEnd = 6200;
+                        currentUser.setLevel(level);
+                        userRepository.save(currentUser);
+                    } else if(userXp >= 6200 && userXp < 10000) {
+                        level = 4;
+                        xpStart = 6200;
+                        xpEnd = 10000;
+                        currentUser.setLevel(level);
+                        userRepository.save(currentUser);
+                    } else if(userXp >= 10000) {
+                        level = 5;
+                        xpStart = 10000;
+                        xpEnd = 10000;
+                        currentUser.setLevel(level);
+                        userRepository.save(currentUser);
+                    }
+
+                    int progressPercentage = (int) (((double) (userXp - xpStart) / (xpEnd - xpStart)) * 100);
                     String formatTimeSpent = userPerformanceService.formatTimeSpent(currentUser.getTimeSpent());
                     model.addAttribute("formatTimeSpent", formatTimeSpent);
+
+                    model.addAttribute("user", currentUser);
+                    model.addAttribute("xpStart", xpStart);
+                    model.addAttribute("xpEnd", xpEnd);
+                    model.addAttribute("progressPercentage", progressPercentage);
                 }
             }
 
             return "home";
         }
+
+    // @GetMapping("/home")
+    //     public String home(Model model) {
+    //         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+    //         if (authentication != null) {
+    //             Object principal = authentication.getPrincipal();
+
+    //             if (principal instanceof CustomOAuth2User) {
+    //                 CustomOAuth2User customUser = (CustomOAuth2User) principal;
+    //                 Users currentUser = userRepository.findByUsername(customUser.getName());
+    //                 model.addAttribute("user", currentUser);
+                    
+    //                 int quiz = currentUser.getQuizSet();
+    //                 System.out.println("========================================");
+    //                 System.out.println("This is the Custom Oauth2 User");
+    //                 System.out.println("========================================");
+
+    //                 model.addAttribute("quiz", quiz);
+    //                 String formatTimeSpent = userPerformanceService.formatTimeSpent(currentUser.getTimeSpent());
+    //                 model.addAttribute("formatTimeSpent", formatTimeSpent);
+
+    //             } else if (principal instanceof UserDetails) {
+    //                 UserDetails userDetails = (UserDetails) principal;
+    //                 System.out.println(userDetails.getUsername());
+    //                 Users currentUser = userRepository.findByUsername(userDetails.getUsername());
+    //                 int quiz = currentUser.getQuizSet();
+    //                 System.out.println("========================================");
+    //                 System.out.println("This is the User Details User");
+    //                 System.out.println("========================================");
+
+    //                 if(currentUser.isEnabled()){
+    //                     System.out.println("User is enabled");
+    //                 } else {
+    //                     System.out.println("User is not enabled");
+    //                     model.addAttribute("error", "Please Verify your email to continue");
+    //                     return "/login";
+    //                 }
+    //                 model.addAttribute("quiz", quiz);
+
+    //                 model.addAttribute("user", currentUser);
+
+    //                 String formatTimeSpent = userPerformanceService.formatTimeSpent(currentUser.getTimeSpent());
+    //                 model.addAttribute("formatTimeSpent", formatTimeSpent);
+    //             }
+    //         }
+
+    //         return "home";
+    //     }
 
         @GetMapping("/profile")
         public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
