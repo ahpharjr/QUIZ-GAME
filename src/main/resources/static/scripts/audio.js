@@ -53,12 +53,8 @@ var TimeOutNext = new Audio('/audios/TimeOutNext.mp3');
     }
 
     //for the next questions after time out
-    function clickTimeOut(className){
-        const nextElement = document.querySelector(className);
-        nextElement.addEventListener("click", function(event){
-            event.preventDefault();
-            TimeOutNext.play();
-        })
+    function clickTimeOut(){
+        TimeOutNext.play();
     }
 
     //audio for each phase and navigate to specific page 

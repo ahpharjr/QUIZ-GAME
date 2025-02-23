@@ -121,6 +121,7 @@
     
         clickAnswerAudio(".click-answer");
         clickNextAudio(".click-next-btn");
+        //clickTimeOut();
     </script>
 
     <script>
@@ -281,7 +282,7 @@
     }
 </script>
 <script>
-    let timeLeft = 33; // Time in seconds for each question
+    let timeLeft = 13; // Time in seconds for each question
     let timerInterval;
     const timerElement = document.getElementById("timer");
     const nextMessageElement = document.getElementById("next-message");
@@ -315,15 +316,25 @@
                 submitUnanswered();
             }
 
+            
+
             setTimeout(() => {
-                TimeOutSound.play();
-                clickTimeOut(".next-btn");
-                document.getElementById("next-btn").click();
+                //TimeOutSound.play();
+
+                clickTimeOut();
+                //document.getElementById("next-btn").click();
                 
+                
+
+                //clickTimeOut(".next-btn");
+
                 // Auto-click next button
                 console.log("Time's up! Moving to next question...");
             }, 100);
             
+            document.querySelector(".next-btn").addEventListener("click", () => {
+                playClickSound(); // Play user click audio
+            });
         }
     }
 
@@ -359,7 +370,7 @@
             }
 
             updateQuestionUI(data);
-            startTimer(30);
+            startTimer(10);
             clickAnswerAudio(".click-answer");
         })
         .catch(error => console.error("Error fetching next question:", error));
@@ -417,11 +428,11 @@ function updateQuestionUI(data) {
     }
 
     // Start timer when page loads
-    document.addEventListener("DOMContentLoaded", () => startTimer(32));
+    document.addEventListener("DOMContentLoaded", () => startTimer(12));
 
     // Reset timer when user clicks "Next"
     document.getElementById("next-btn").addEventListener("click", () => {
-        startTimer(30); // Restart the timer for the new question
+        startTimer(10); // Restart the timer for the new question
     });
 
     function markQuizAsCompleted(){
