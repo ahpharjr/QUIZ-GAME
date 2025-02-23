@@ -66,7 +66,7 @@
                 </div>
             </div>
             <!-- <div class="remain-question" id="question-number">1 / 8</div> -->
-            <div class="remain-question" id="question-number" th:text="${currentQuestionIndex} + ' / 8'"></div>
+            <div class="remain-question" id="question-number" th:text="${currentQuestionIndex} + ' / 10 '"></div>
             <div class="question-box" id="question-box">
                 <div class="Q-img" id="question-image">
                     <img src="/images/project-management (1).png" alt="Question image">
@@ -256,7 +256,7 @@
                 // Update question counter
                 const questionCounter = document.getElementById("question-number");
                 const currentCount = parseInt(questionCounter.textContent.split(" / ")[0]);
-                questionCounter.textContent = `${currentCount + 1} / 8`; 
+                questionCounter.textContent = `${currentCount + 1} / 10`; 
 
                 clickAnswerAudio(".click-answer");
             })
@@ -283,6 +283,7 @@
     const timerElement = document.getElementById("timer");
     const nextMessageElement = document.getElementById("next-message");
     const questionBoxElement = document.getElementById("question-box");
+    const TimeOutSound = new Audio('next-question.mp3');
 
     function updateTimer() {
         const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
@@ -312,7 +313,11 @@
             }
 
             setTimeout(() => {
-                document.getElementById("next-btn").click(); // Auto-click next button
+                TimeOutSound.play();
+                clickTimeOut(".next-btn");
+                document.getElementById("next-btn").click();
+                
+                // Auto-click next button
                 console.log("Time's up! Moving to next question...");
             }, 100);
             
@@ -382,7 +387,7 @@ function updateQuestionUI(data) {
 
     const questionCounter = document.getElementById("question-number");
     const currentCount = parseInt(questionCounter.textContent.split(" / ")[0]);
-    questionCounter.textContent = `${currentCount + 1} / 8`; 
+    questionCounter.textContent = `${currentCount + 1} / 10`; 
 
     clickAnswerAudio(".click-answer");
 

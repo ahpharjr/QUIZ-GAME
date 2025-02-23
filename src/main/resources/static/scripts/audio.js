@@ -6,6 +6,7 @@ var audioClick1 = new Audio('/audios/click2.mp3');
 var timeRunningOut = new Audio('/audios/Timer3.mp3');
 var backgroundAudio = new Audio('/audios/BgSound2.mp3');
 var quizFinishAudio = new Audio('/audios/QuizResult.mp3');
+var TimeOutNext = new Audio('/audios/TimeOutNext.mp3');
 
     // const audio = new Audio();
     // audio.src = "/audios/click.mp3";
@@ -48,6 +49,15 @@ var quizFinishAudio = new Audio('/audios/QuizResult.mp3');
         nextElement.addEventListener("click", function(event){
             event.preventDefault();
             audioClick.play();
+        })
+    }
+
+    //for the next questions after time out
+    function clickTimeOut(className){
+        const nextElement = document.querySelector(className);
+        nextElement.addEventListener("click", function(event){
+            event.preventDefault();
+            TimeOutNext.play();
         })
     }
 

@@ -79,7 +79,7 @@ public class QuizController {
         if (selectedQuestions == null || selectedQuestions.isEmpty()) {
             List<Question> allQuestions = questionRepository.findByQuiz_QuizId(quizId);
             Collections.shuffle(allQuestions);
-            selectedQuestions = allQuestions.stream().limit(8).collect(Collectors.toList());
+            selectedQuestions = allQuestions.stream().limit(10).collect(Collectors.toList());
             session.setAttribute("selectedQuestions", selectedQuestions);
             currentQuestionIndex = 0;
             session.setAttribute("currentQuestionIndex", currentQuestionIndex);
@@ -107,6 +107,8 @@ public class QuizController {
         model.addAttribute("currentQuestion", selectedQuestions.get(currentQuestionIndex));
 
         List<Answer> answers = answerRepository.findByQuestion_QuestionId(selectedQuestions.get(currentQuestionIndex).getQuestionId());
+
+
         Collections.shuffle(answers);
         model.addAttribute("answers", answers);
         model.addAttribute("answerLabels", Arrays.asList("A", "B", "C", "D"));
@@ -115,7 +117,6 @@ public class QuizController {
 
         return "quiz";
     }
- 
 
 
     @GetMapping("/quiz/next-question")
