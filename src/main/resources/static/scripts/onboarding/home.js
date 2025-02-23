@@ -1,3 +1,18 @@
+
+function playClickSound() {
+    const audioClick = new Audio('/audios/TutorialWalk.mp3');
+    audioClick.playbackRate = 3;
+    audioClick.play();
+}
+
+function playFinalSound() {
+    const audioClick = new Audio('/audios/TutorialFinish.mp3');
+    audioClick.playbackRate = 1;
+    audioClick.play();
+}
+
+
+
 function startOnboarding() {
     const intro = introJs();
 
@@ -8,6 +23,7 @@ function startOnboarding() {
         skipLabel: 'Skip',
         tooltipClass: 'custom-tooltip',
         highlightClass: 'custom-highlight',
+        overlayOpacity: 0.9,
         steps: [
             {
                 title: "Welcome to Quiz Game! 🚀",
@@ -42,7 +58,12 @@ function startOnboarding() {
         ]
     });
 
+    intro.onbeforechange(function (){
+        playClickSound();
+    })
+
     intro.oncomplete(function () {
+        playFinalSound();
         // Set onboarding complete flag in localStorage
         localStorage.setItem('onboardingCompleted', 'true');
     });

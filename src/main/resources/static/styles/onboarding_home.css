@@ -26,10 +26,9 @@
 }
 
 .introjs-button:hover {
-    background-color: #057b6fc3;
+    background-color: #209488c3;
     color: white;
-    border: 1px solid white;
-    
+    /*border: 1px solid white;*/
 }
 
 /* Active step indicator (dot) */
@@ -51,9 +50,29 @@
 /* Highlighted element */
 .introjs-helperLayer {
     border-radius: 10px;
-    border: 1px solid white;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 55px rgba(255, 255, 255, 0.8), 
+                0 0 125px rgba(0, 255, 187, 0.8);
     z-index: 1000;
+    transition: all 0.3s ease-in-out;
 }
+
+@keyframes pulseGlow {
+    0% { box-shadow: 0 0 10px rgb(248, 227, 71); }
+    25% { box-shadow: 0 0 20px rgb(30, 149, 17,0.8); }
+    50% { box-shadow: 0 0 10px rgba(0, 225, 255, 0.8); }
+    75% { box-shadow: 0 0 10px rgb(56, 56, 231); }
+    100% { box-shadow: 0 0 10px rgb(223, 255, 143); }
+}
+
+.introjs-helperLayer {
+    animation: pulseGlow 2.5s infinite alternate;
+}
+
+/* .introjs-overlay {
+    background: rgba(0,0,0,0.6);
+} */
+
 /* Custom tooltip class */
 .custom-tooltip {
     background-color: #ffffff; /* Green background */
@@ -67,6 +86,12 @@
     color: red;
     font-size: 16px;
 }
+
+/* .introjs-skipbutton:hover{
+    color: red;
+    
+    transform: scale(1.05);
+} */
 
 .onboarding-btn{
     position: absolute;
