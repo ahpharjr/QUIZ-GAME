@@ -43,19 +43,36 @@ var TimeOutNext = new Audio('/audios/TimeOutNext.mp3');
         })
     }
 
-    //for next button in quiz
-    function clickNextAudio(className){
+    let isTimeoutTriggered = false; // Flag to track timeout event
+
+    // Next button click sound
+    function clickNextAudio(className) {
         const nextElement = document.querySelector(className);
-        nextElement.addEventListener("click", function(event){
+        nextElement.addEventListener("click", function (event) {
             event.preventDefault();
-            audioClick.play();
-        })
+            if (!isTimeoutTriggered) {
+                audioClick.play(); // Play only if not timeout
+            }
+        });
     }
 
-    //for the next questions after time out
-    function clickTimeOut(){
-        TimeOutNext.play();
+    // Time-out function for next button
+    function clickTimeOut(className) {
+        isTimeoutTriggered = true; // Set flag to true on timeout
+        const nextElement = document.querySelector(className);
+        nextElement.click(); // Simulate click
+        TimeOutNext.play(); // Play timeout audio
+        
+        setTimeout(() => {
+            isTimeoutTriggered = false; // Reset flag after timeout action
+        }, 500); // Small delay to prevent conflicts
     }
+
+
+    //for the next questions after time out
+    // function clickTimeOut(){
+    //     TimeOutNext.play();
+    // }
 
     //audio for each phase and navigate to specific page 
     function handleClickAudio(className , url, dataId ){

@@ -42,6 +42,7 @@
     flex-direction: column;
     height: 100%;
     position: relative;
+    z-index: 1001;
 }
 .left-div::after{
     content: '';
@@ -418,6 +419,7 @@
 
     .info-container{
         visibility: hidden;
+        width: 88%;
     }
 
     .activty-box{
@@ -463,6 +465,7 @@
 
     .info-container {
         visibility: hidden;
+        width: 90%;
     }
 
     .container{
@@ -495,6 +498,7 @@
 
     .info-container {
         visibility: hidden;
+        width: 93%;
     }
 
     .desc-text{

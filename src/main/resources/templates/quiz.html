@@ -121,7 +121,6 @@
     
         clickAnswerAudio(".click-answer");
         clickNextAudio(".click-next-btn");
-        //clickTimeOut();
     </script>
 
     <script>
@@ -272,6 +271,8 @@
     </script>
 
 <script>
+    let isAnswerSelected = false; // Track if the user has selected an answer
+
     function selectAnswer(selectedElement) {
         const allAnswers = document.querySelectorAll('.answer');
         allAnswers.forEach(answer => {
@@ -279,15 +280,16 @@
         });
 
         selectedElement.classList.add('selected');
+        isAnswerSelected = true; // Set flag to true when an answer is selected
     }
+
 </script>
 <script>
-    let timeLeft = 13; // Time in seconds for each question
+    let timeLeft = 33; // Time in seconds for each question
     let timerInterval;
     const timerElement = document.getElementById("timer");
     const nextMessageElement = document.getElementById("next-message");
     const questionBoxElement = document.getElementById("question-box");
-    const TimeOutSound = new Audio('next-question.mp3');
 
     function updateTimer() {
         const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
@@ -316,25 +318,11 @@
                 submitUnanswered();
             }
 
-            
-
             setTimeout(() => {
-                //TimeOutSound.play();
-
-                clickTimeOut();
-                //document.getElementById("next-btn").click();
-                
-                
-
-                //clickTimeOut(".next-btn");
-
-                // Auto-click next button
+                clickTimeOut(".next-btn"); // Play timeout sound & move to next
                 console.log("Time's up! Moving to next question...");
             }, 100);
             
-            document.querySelector(".next-btn").addEventListener("click", () => {
-                playClickSound(); // Play user click audio
-            });
         }
     }
 
@@ -403,7 +391,6 @@ function updateQuestionUI(data) {
     const currentCount = parseInt(questionCounter.textContent.split(" / ")[0]);
     const totalQuestion = document.getElementById("question-number").dataset.id;
     questionCounter.textContent = `${currentCount + 1} / ${totalQuestion}`; 
-    //questionCounter.textContent = `${currentCount + 1} / 10`; 
 
     clickAnswerAudio(".click-answer");
 
@@ -432,8 +419,12 @@ function updateQuestionUI(data) {
 
     // Reset timer when user clicks "Next"
     document.getElementById("next-btn").addEventListener("click", () => {
-        startTimer(10); // Restart the timer for the new question
+        if (isAnswerSelected) { 
+            startTimer(10); // Restart the timer only if an answer was selected
+            isAnswerSelected = false; // Reset flag for the next question
+        }
     });
+
 
     function markQuizAsCompleted(){
         localStorage.setItem("quizCompleted", true);
@@ -443,7 +434,6 @@ function updateQuestionUI(data) {
 
 </body>
 </html>
-
 
 
 

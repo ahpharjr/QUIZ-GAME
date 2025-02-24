@@ -123,95 +123,6 @@
   <div id="overlay" class="overlay"></div>
 
   <div class="container">
-    <div class="swiper mySwiper">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide">
-                <div class="profile-info-box" >
-                    <div class="user-pf"><img src="images/space man.jpg" alt="profile picture"></div>
-                    <div class="profile-info">
-                        <span class="name" th:text="${user.username}">
-                            <!-- <img class="badge-lvl" src="/images/Level-1.png" alt="badge-level"> -->
-                        </span>
-                        <span class="level-no">Lvl - <span th:text="${#numbers.formatInteger(user.level, 2)}"></span></span>
-                        <div class="exp-prograss-bar">
-                            <div class="exp-bar-fill" th:style="'width:' + ${progressPercentage} + '%'"></div>
-                            <span class="exp">
-                                <span th:text="${#numbers.formatInteger(user.userXp, 2)}"></span>/<span th:text="${xpEnd}"></span> EXP
-                            </span>
-                        </div>                        
-                    </div>
-                </div>
-                <div class="record-box">
-                    <div class="quiz-set-box">
-                        <div class="badge-icon"><img src="icons/check-mark (1).svg" alt="Quiz set"></div>
-                        <div class="badge-info">
-                            <span class="record" th:text="${#numbers.formatInteger(user.quizSet, 2)}">00</span>
-                            <span class="record-name">Quiz Sets</span>
-                        </div>
-                    </div>
-                    <div class="high-score-box">
-                        <div class="badge-icon"><img src="icons/trophy-cup (2).svg" alt="High score"></div>
-                        <div class="badge-info">
-                            <span class="record" th:text="${#numbers.formatInteger(user.highestScore, 2)}">00</span>
-                            <span class="record-name">Highest Score</span>
-                        </div>
-                    </div>
-                    <div class="time-spent-box">
-                        <div class="badge-icon"><img src="icons/stopwatch.svg" alt="Time-spent"></div>
-                        <div class="badge-info">
-                            <!-- <span class="record">01h 15m</span> -->
-                            <span class="record" th:text = "${formatTimeSpent}">01h 15m</span>
-                            <span class="record-name">Time Spent</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          <div class="swiper-slide">
-            <h2 class="title">Achievement</h2>
-
-            <div class="achievement-1">
-                <div class="achieve-box" >
-                    <img class="phase1-logo" src="/images/phase1-achievement.png" alt="Phase 1">
-                    <span>Phase 1</span>
-                </div>
-                <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/phase2-achievement.png" alt="Phase 2">
-                    <span>Phase 2</span>
-                </div>
-                <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/phase3-achievement.png" alt="Phase 3">
-                    <span>Phase 3</span>
-                </div>
-                <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/phase4-achievement.png" alt="Phase 4">
-                    <span>Phase 4</span>
-                </div>
-            </div>
-            <div class="achievement-1">
-                <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/1st-Achiever.png" alt="First-Achiever">
-                    <span>1st Achiever</span>
-                </div>
-                <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/rising-star-achievement.png" alt="Rising Star">
-                    <span>Rising Star</span>
-                </div>
-                <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/rookie-quizzer-achievement.png" alt="Rookie Quizzer">
-                    <span>Rookie Quizzer</span>
-                </div>
-                <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/ultimate-genius-achievement.png" alt="Ultimate Genius">
-                    <span>Genius</span>
-                </div>
-            </div>
-        </div>
-        </div>
-        <!-- <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div> -->
-        <div class="swiper-pagination"></div>
-      </div>
-    <!-- <h1>Master the Basics: Learning & Practice Zone</h1> -->
     <div class="info-container">
         <div class="bg-color"></div>
         <div class="left-div">
@@ -294,6 +205,96 @@
             </div>
         </div>
     </div>
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide swiper-slide-info">
+                <div class="profile-info-box" >
+                    <div class="user-pf"><img src="images/space man.jpg" alt="profile picture"></div>
+                    <div class="profile-info">
+                        <span class="name" th:text="${user.username}">
+                            <!-- <img class="badge-lvl" src="/images/Level-1.png" alt="badge-level"> -->
+                        </span>
+                        <span class="level-no">Lvl - <span th:text="${#numbers.formatInteger(user.level, 2)}"></span></span>
+                        <div class="exp-prograss-bar">
+                            <div class="exp-bar-fill" th:style="'width:' + ${progressPercentage} + '%'"></div>
+                            <span class="exp">
+                                <span th:text="${#numbers.formatInteger(user.userXp, 2)}"></span>/<span th:text="${xpEnd}"></span> EXP
+                            </span>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="record-box">
+                    <div class="quiz-set-box">
+                        <div class="badge-icon"><img src="icons/check-mark (1).svg" alt="Quiz set"></div>
+                        <div class="badge-info">
+                            <span class="record" th:text="${#numbers.formatInteger(user.quizSet, 2)}">00</span>
+                            <span class="record-name">Quiz Sets</span>
+                        </div>
+                    </div>
+                    <div class="high-score-box">
+                        <div class="badge-icon"><img src="icons/trophy-cup (2).svg" alt="High score"></div>
+                        <div class="badge-info">
+                            <span class="record" th:text="${#numbers.formatInteger(user.highestScore, 2)}">00</span>
+                            <span class="record-name">Highest Score</span>
+                        </div>
+                    </div>
+                    <div class="time-spent-box">
+                        <div class="badge-icon"><img src="icons/stopwatch.svg" alt="Time-spent"></div>
+                        <div class="badge-info">
+                            <!-- <span class="record">01h 15m</span> -->
+                            <span class="record" th:text = "${formatTimeSpent}">01h 15m</span>
+                            <span class="record-name">Time Spent</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          <div class="swiper-slide swiper-slide-achievement">
+            <h2 class="title">Achievement</h2>
+
+            <div class="achievement-1">
+                <div class="achieve-box" >
+                    <img class="phase1-logo" src="/images/phase1-achievement.png" alt="Phase 1">
+                    <span>Phase 1</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/phase2-achievement.png" alt="Phase 2">
+                    <span>Phase 2</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/phase3-achievement.png" alt="Phase 3">
+                    <span>Phase 3</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/phase4-achievement.png" alt="Phase 4">
+                    <span>Phase 4</span>
+                </div>
+            </div>
+            <div class="achievement-1">
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/1st-Achiever.png" alt="First-Achiever">
+                    <span>1st Achiever</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/rising-star-achievement.png" alt="Rising Star">
+                    <span>Rising Star</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/rookie-quizzer-achievement.png" alt="Rookie Quizzer">
+                    <span>Rookie Quizzer</span>
+                </div>
+                <div class="achieve-box">
+                    <img class="achieve-logo" src="/images/ultimate-genius-achievement.png" alt="Ultimate Genius">
+                    <span>Genius</span>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!-- <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div> -->
+        <div class="swiper-pagination"></div>
+      </div>
+    <!-- <h1>Master the Basics: Learning & Practice Zone</h1> -->
+
     <div class="activty-box">
         <div class="learning-zone-box">
             <img class="game-img" src="icons/learning-zone-img.png" alt="Learning zone">
