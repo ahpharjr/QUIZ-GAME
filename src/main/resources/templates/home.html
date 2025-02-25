@@ -27,7 +27,7 @@
     align-items: center;
     border-radius: 10px;
     border: 2px solid white;
-    z-index: 1;
+    z-index: 1000000000000;
     backdrop-filter: blur(7px);
     color: white;
     box-shadow: inset 5px 5px 10px rgb(70, 124, 147), inset -5px -5px 10px rgb(68, 133, 160);
@@ -46,34 +46,60 @@
 
     @media (min-width: 570px) and (max-width: 764.999px){
 
-    .swiper{
-        width: 88%;
-        visibility: visible;
-        overflow: hidden;
-    }
+        .swiper{
+            width: 88%;
+            visibility: visible;
+            overflow: hidden;
+        }
 
     }
 
     @media (min-width: 488px) and (max-width: 569.999px){
 
-    .swiper {
-        width: 90%;
-        visibility: visible;
-        overflow: hidden;
-    }
-
+        .swiper {
+            width: 90%;
+            visibility: visible;
+            overflow: hidden;
+        }
     }
 
     @media (max-width: 487.999px){
 
-    .swiper {
-        width: 93%;
-        visibility: visible;
+        .swiper {
+            width: 93%;
+            visibility: visible;
+        }
+    }
+
+      
+    .info-container {
+        position: relative;
+        z-index: 99;
+    }
+
+    .left-div {
+        position: relative;
+        z-index: 100;
+    }
+
+    .right-div {
+        position: relative;
+        z-index: 101;
     }
 
 
+    .introjs-showElement {
+        z-index: 1000;
+    }
+    
+    .introjs-tooltip{
+        z-index: 1001 ;
     }
 
+    .introjs-overlay {
+        z-index: 100;
+        
+    }
     
   </style>
 
