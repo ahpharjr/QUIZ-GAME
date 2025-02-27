@@ -36,7 +36,7 @@ public class CardController {
     public String showCard(@PathVariable Long phaseId, Model model, Principal principal) {
 
         if (principal != null) {
-            var user = userRepository.findByUsername(principal.getName());
+            var user = userRepository.findByEmail(principal.getName());
             model.addAttribute("user", user);
         }
         // Fetch topics related to the selected phase

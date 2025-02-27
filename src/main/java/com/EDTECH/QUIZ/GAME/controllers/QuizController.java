@@ -195,7 +195,7 @@ public class QuizController {
     @GetMapping("/quiz/complete")
     @ResponseBody
     public ResponseEntity<?> completeQuiz(Principal principal, HttpSession session) { 
-        Users user = userRepository.findByUsername(principal.getName());
+        Users user = userRepository.findByEmail(principal.getName());
         Long quizId = userAnswerService.getQuizId();
 
         if (quizId == null) {

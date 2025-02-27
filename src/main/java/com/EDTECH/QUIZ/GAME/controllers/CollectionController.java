@@ -35,7 +35,7 @@ public class CollectionController {
     @GetMapping("/collection")
     public String collection(Model model, Principal principal) {
         if (principal != null) {
-            Users user = userRepository.findByUsername(principal.getName());
+            Users user = userRepository.findByEmail(principal.getName());
             model.addAttribute("user", user);
         }
 
@@ -51,7 +51,7 @@ public class CollectionController {
         }
 
         // Get currently logged-in user
-        Users currentUser = userRepository.findByUsername(principal.getName());
+        Users currentUser = userRepository.findByEmail(principal.getName());
         if (currentUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
         }
@@ -75,7 +75,7 @@ public class CollectionController {
     @GetMapping("/collections/check")
     @ResponseBody
     public ResponseEntity<Boolean> isCardInCollection(@RequestParam Long cardId, Principal principal) {
-        Users currentUser = userRepository.findByUsername(principal.getName());
+        Users currentUser = userRepository.findByEmail(principal.getName());
         if (currentUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
         }
@@ -90,7 +90,7 @@ public class CollectionController {
     @GetMapping("/collections")
     @ResponseBody
     public ResponseEntity<List<Flashcard>> getUserCollections(Principal principal) {
-        Users currentUser = userRepository.findByUsername(principal.getName());
+        Users currentUser = userRepository.findByEmail(principal.getName());
         if (currentUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
@@ -105,7 +105,7 @@ public class CollectionController {
     @PostMapping("/collections/remove")
     @ResponseBody
     public ResponseEntity<String> removeCardFromCollection(@RequestParam Long cardId, Principal principal) {
-        Users currentUser = userRepository.findByUsername(principal.getName());
+        Users currentUser = userRepository.findByEmail(principal.getName());
         if (currentUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
         }

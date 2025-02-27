@@ -50,7 +50,7 @@ public class ResultController {
     @GetMapping("/{quizId}/result")
     public String showResult(@PathVariable Long quizId,Model model, Principal principal, HttpSession session) {
 
-        Users user = userRepository.findByUsername(principal.getName());
+        Users user = userRepository.findByEmail(principal.getName());
         Quiz quiz = quizRepository.findById(quizId).orElse(null);
         List<QuizAttempt> quizAttempts = quizAttemptRepository.findByUserAndQuiz(user, quiz);
         QuizAttempt lastAttempt = quizAttempts.get(quizAttempts.size()-1);
