@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,6 +25,7 @@ import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 import com.EDTECH.QUIZ.GAME.sevices.CustomOAuth2User;
 import com.EDTECH.QUIZ.GAME.sevices.EmailService;
 import com.EDTECH.QUIZ.GAME.sevices.UserPerformanceService;
+import com.EDTECH.QUIZ.GAME.sevices.UserService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -34,6 +36,8 @@ public class AuthenticationController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -134,6 +138,8 @@ public class AuthenticationController {
     
             if (principal instanceof CustomOAuth2User) {
                 System.out.println("This is redirect to home page and the principal is in OAuthUser" );
+                Users currentUser = userRepository.findByEmail(((CustomOAuth2User) principal).getEmail());
+                model.addAttribute("profile", userService.getProfileImage(currentUser.getUserId())); 
                 return "redirect:/home";
             }
             if(principal instanceof UserDetails){
@@ -148,6 +154,7 @@ public class AuthenticationController {
                 }else{
                     System.out.println("User is not enabled");
                 }
+                model.addAttribute("profile", userService.getProfileImage(currentUser.getUserId())); 
                 return "redirect:/home";
             }
         }
@@ -228,6 +235,8 @@ public class AuthenticationController {
                     model.addAttribute("xpStart", xpStart);
                     model.addAttribute("xpEnd", xpEnd);
                     model.addAttribute("progressPercentage", progressPercentage);
+                    model.addAttribute("profile", userService.getProfileImage(currentUser.getUserId())); 
+
                 }
             }
 
@@ -264,7 +273,8 @@ public class AuthenticationController {
         userRepository.save(existingUser);
         model.addAttribute("user", existingUser);  
 
-        
+        model.addAttribute("profile", userService.getProfileImage(existingUser.getUserId())); 
+
         return "redirect:/home"; 
     }
 
