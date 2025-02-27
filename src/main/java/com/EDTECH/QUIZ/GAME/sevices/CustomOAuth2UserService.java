@@ -26,8 +26,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
-        System.out.println("Email: " + email);
-        System.out.println("Name: " + name);
+        System.out.println("Email: in service " + email);
+        System.out.println("Name: in service " + name);
         Users user = userRepository.findByEmail(email);
         
         if (user == null) {
@@ -46,9 +46,17 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             user.setPassword("");
             user.setCreatedDate(new Date());
             userRepository.save(user);
+        }else{
+            System.out.println("User: in the Oauth Service :  " + user.getUsername());
+            if (!user.getUsername().equals(name)) {
+                //user.setUsername(name);
+                //userRepository.save(user);
+                System.out.print("Username in the database and the Google acc name is not equal.");
+            }
         }
         System.out.println("User: in the Oauth Service :  " + user);
-        return new CustomOAuth2User(oAuth2User , userRepository);
+        CustomOAuth2User CustomUser = new CustomOAuth2User(oAuth2User, userRepository);
+        return CustomUser;
     }
     
 }

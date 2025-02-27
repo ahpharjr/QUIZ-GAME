@@ -56,8 +56,8 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless before adding filter
         .formLogin(form -> form
             .loginPage("/login")
-            .usernameParameter("username")
-            .passwordParameter("password")
+            // .usernameParameter("username")
+            // .passwordParameter("password")
             .successHandler(customLoginSuccessHandler)
             .permitAll()
         )
