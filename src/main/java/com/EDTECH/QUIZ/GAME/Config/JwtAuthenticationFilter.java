@@ -55,6 +55,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }else {
             System.out.println("Cookies are null in JwtAuthenticationFilter");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT token is missing");
+            return;
         }
 
         if (token != null) {

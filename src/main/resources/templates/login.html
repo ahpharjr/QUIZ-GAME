@@ -85,6 +85,8 @@
             
             <button class="sign-in-btn" type="submit">Log in</button>
         </form>
+
+        <p th:if="${message}" th:text="${message}" style="color: green;"></p>
         
         <a th:href="@{/oauth2/authorization/google}" > 
             Log in with Google 

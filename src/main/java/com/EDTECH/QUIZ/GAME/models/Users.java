@@ -27,6 +27,8 @@ public class Users {
     private int userId;
 
     private String username;
+
+    @Column(unique = true)
     private String email;
     
     @Column(nullable = true)

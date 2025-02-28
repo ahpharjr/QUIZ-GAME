@@ -83,6 +83,9 @@
             <button class="sign-in-btn" type="submit">Register</button>
         </form>
 
+        <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+        <p th:if="${message}" th:text="${message}" style="color: green;"></p>
+
         <span class="sign-up-text">Already had an account? <a th:href="@{/login}">Sign in here</a></span>
     </div>
     

@@ -76,7 +76,7 @@ public class AuthenticationController {
         user.setEnabled(false); 
         String token  = UUID.randomUUID().toString();
         user.setVerificationToken(token);
-        user.setEmail(user.getEmail());
+        user.setEmail(user.getEmail()); 
         user.setUsername(user.getUsername());
         user.setHighestScore(0);
         user.setTimeSpent(0);
@@ -84,10 +84,14 @@ public class AuthenticationController {
         user.setUserXp(0);
         user.setLevel(1);
         user.setCreatedDate(new Date());
-        user.setEnabled(true);
+        //user.setEnabled(true);
         userRepository.save(user);
 
-        //emailService.sendVerificationEmail(user.getEmail(), token);
+        System.out.println("User registered:>>>>>>>> " + user.getEmail() + " | Sending verification email...");
+
+        emailService.sendVerificationEmail(user.getEmail(), token);
+
+        System.out.println("Email sent process completed for:?>>>>>>> " + user.getEmail());
 
         return "redirect:/login";
     }
@@ -210,55 +214,6 @@ public class AuthenticationController {
             return "home";
         }
 
-    // @GetMapping("/home")
-    //     public String home(Model model) {
-    //         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-    //         if (authentication != null) {
-    //             Object principal = authentication.getPrincipal();
-
-    //             if (principal instanceof CustomOAuth2User) {
-    //                 CustomOAuth2User customUser = (CustomOAuth2User) principal;
-    //                 Users currentUser = userRepository.findByUsername(customUser.getName());
-    //                 model.addAttribute("user", currentUser);
-                    
-    //                 int quiz = currentUser.getQuizSet();
-    //                 System.out.println("========================================");
-    //                 System.out.println("This is the Custom Oauth2 User");
-    //                 System.out.println("========================================");
-
-    //                 model.addAttribute("quiz", quiz);
-    //                 String formatTimeSpent = userPerformanceService.formatTimeSpent(currentUser.getTimeSpent());
-    //                 model.addAttribute("formatTimeSpent", formatTimeSpent);
-
-    //             } else if (principal instanceof UserDetails) {
-    //                 UserDetails userDetails = (UserDetails) principal;
-    //                 System.out.println(userDetails.getUsername());
-    //                 Users currentUser = userRepository.findByUsername(userDetails.getUsername());
-    //                 int quiz = currentUser.getQuizSet();
-    //                 System.out.println("========================================");
-    //                 System.out.println("This is the User Details User");
-    //                 System.out.println("========================================");
-
-    //                 if(currentUser.isEnabled()){
-    //                     System.out.println("User is enabled");
-    //                 } else {
-    //                     System.out.println("User is not enabled");
-    //                     model.addAttribute("error", "Please Verify your email to continue");
-    //                     return "/login";
-    //                 }
-    //                 model.addAttribute("quiz", quiz);
-
-    //                 model.addAttribute("user", currentUser);
-
-    //                 String formatTimeSpent = userPerformanceService.formatTimeSpent(currentUser.getTimeSpent());
-    //                 model.addAttribute("formatTimeSpent", formatTimeSpent);
-    //             }
-    //         }
-
-    //         return "home";
-    //     }
-
         @GetMapping("/profile")
         public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
             Users currentUser = userRepository.findByUsername(userDetails.getUsername());
@@ -292,5 +247,27 @@ public class AuthenticationController {
         
         return "redirect:/home"; 
     }
+
+    // @GetMapping("/resend-verification")
+    // public String resendVerificationEmail(@RequestParam("email") String email, Model model) {
+    //     User user = userRepository.findByEmail(email);
+
+    //     if (user == null || user.isEnabled()) {
+    //         model.addAttribute("error", "Email is invalid or already verified.");
+    //         return "login";
+    //     }
+
+    //     // Generate new verification token
+    //     String token = UUID.randomUUID().toString();
+    //     user.setVerificationToken(token);
+    //     userRepository.save(user);
+
+    //     // Resend email
+    //     emailService.sendVerificationEmail(user.getEmail(), token);
+
+    //     model.addAttribute("message", "A new verification email has been sent.");
+    //     return "login";
+    // }
+
 
 }

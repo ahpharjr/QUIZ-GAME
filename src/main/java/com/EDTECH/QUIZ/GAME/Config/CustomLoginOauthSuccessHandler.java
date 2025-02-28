@@ -35,9 +35,12 @@ public class CustomLoginOauthSuccessHandler implements AuthenticationSuccessHand
         System.out.println("++++++++++++++++++++  Token in the google oauth authentication of userdetails  ==============");
         System.out.println("JWT Token: " + jwtToken);
         Cookie jwtCookie = new Cookie("JWT_TOKEN", jwtToken);
+        
+        jwtCookie.setSecure(true); // Ensure HTTPS
         jwtCookie.setHttpOnly(true);
         jwtCookie.setPath("/");
         jwtCookie.setMaxAge(60 * 60 * 24);
+        jwtCookie.setAttribute("SameSite", "Strict"); // Prevent CSRF
         System.out.println("++++++++++++++++++++  Token Before the cookie in added ==============");
         System.out.println("JWT Token: " + jwtToken);
         response.addCookie(jwtCookie);
