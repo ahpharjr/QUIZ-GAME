@@ -45,6 +45,64 @@
         .error-popup button:hover {
             background-color: #555;
         }
+
+        .profile-pic-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .edit-pf-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            /* border-radius: 50%; */
+            width: 50px;
+            height: 25px;
+            cursor: pointer;
+        }
+
+        .profile-popup {
+            display: none;
+            justify-content: center;
+        }
+
+        .profile-popup h3 {
+            margin: 20px 0px;
+            color: white;
+        }
+
+        .popup-content {
+            text-align: center;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .profile-grid img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid rgb(255, 255, 255);
+            cursor: pointer;
+        }
+
+        .profile-grid img:hover, .profile-grid img.selected {
+            border: 2px solid blue;
+        }
+
+        .close-popup {
+            cursor: pointer;
+            font-size: 24px;
+            float: right;
+        }
+
     </style>
 
 </head>
@@ -52,7 +110,7 @@
     <div class="background-image"></div>
     <div class="header">
         <div class="logo-box">
-            <a href="home.html">
+            <a th:href="@{/home}">
                 <img class="logo" src="icons/quizlogo99.svg" alt="Logo">
             </a>
             <div class="logo-name">
@@ -74,57 +132,115 @@
             <button onclick="closeErrorPopup()">Close</button>
         </div>
 
-        <div class="edit-pf-box">
-            <!-- Display profile picture and badge -->
-            <img class="pf-pic" th:src="@{images/space man.jpg}" alt="spaceman">
-            <img class="badge-icon" th:src="@{icons/emerald.svg}" alt="badge lvl">
-            
-            <!-- Display user level (hardcoded or dynamically set in model if available) -->
-            <span class="level">Level - 01</span>
-        
-            <!-- Display email dynamically from the model -->
-            <span class="email" th:text="${user.email}">user@example.com</span>
-        
-            <!-- Form for updating user profile -->
-            <form th:action="@{/edit}" method="post" th:object="${user}">
-                <div class="input-box">
-                    <label for="username">Name</label>
-                    <input type="text" id="username" name="username" th:field="*{username}" placeholder="Enter your name" required>
+        <div class="edit-pf-box" id="edit-pf-box">
+            <!-- Profile Picture with Edit Button -->
+            <div class="profile-pic-container">
+                <img class="pf-pic" 
+                    th:src="@{'/images/profiles/' + ${user.pfPicture}}" 
+                    alt="Profile Picture"
+                    onclick="openProfilePopup()">
+                <!-- <button class="edit-pf-btn" > Edit ✎</button> -->
+
+            </div>
+
+            <!-- Profile Picture Selection Popup -->
+            <div id="profile-popup" class="profile-popup">
+                <div class="popup-content">
+                    <!-- <span class="close-popup" onclick="closeProfilePopup()">&times;</span> -->
+                    <h3>Select a Profile Picture</h3>
+                    <div class="profile-grid">
+                        <img th:each="image : ${profileImages}" th:src="@{'/images/profiles/' + ${image}}" 
+                            th:attr="data-image=${image}" onclick="selectProfileImage(this)">
+                    </div>
+                    <button class="select-btn" onclick="saveProfileImage()">Select</button>
+                    <!-- <button class="cancel-btn" onclick="closeProfilePopup()">Cancel</button> -->
                 </div>
+            </div>
         
-                <!--
-                <div class="input-box">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" th:field="*{email}" placeholder="Enter your email" required>
-                </div> 
-                -->
-        
-                <!-- CSRF Token (required for security in Spring Boot) -->
-<!--
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
--->        
-                <button class="update-btn" type="submit">Update</button>
-            </form>
-        </div>
+            <div class="profile-info-box" id="profile-info-box">
+                <span class="level" th:text="'Level - ' + ${#numbers.formatInteger(user.level, 2)}">Level - 01</span>
+                <span class="email" th:text="${user.email}">Email</span>
+            
+                <form th:action="@{/edit}" method="post" th:object="${user}" onsubmit="return validateProfileUpdate()">
+                    <div class="input-box">
+                        <!-- <label for="username">Name</label> -->
+                        <input type="text" id="username" name="username" th:field="*{username}" placeholder="Edit name" required>
+
+                        <!-- Display error message if username is already taken -->
+                        <p class="error-message" th:if="${usernameError}" th:text="${usernameError}" style="color: rgb(247, 40, 40); font-size: .8rem; margin-top: 3px;"></p>
+                    </div>
+                    <input type="hidden" id="pfPicture" name="pfPicture">
+                    
+                    <button class="update-btn" type="submit">Update</button>
+                </form>
+            </div>
+        </div>        
         
     </div>
-    <script th:inline="javascript">
- /*
-        const inputs = document.querySelectorAll('input');
+    <script>
 
-        inputs.forEach(input => {
-            input.addEventListener('input', function () {
-                if (this.value.trim() !== '') {
-                    this.classList.add('filled');
-                } else {
-                    this.classList.remove('filled');
+        document.addEventListener("DOMContentLoaded", function() {
+            // Store original values
+            const originalUsername = document.getElementById("username").value;
+            const originalProfilePicture = document.querySelector(".pf-pic").getAttribute("src");
+
+            window.validateProfileUpdate = function() {
+                const newUsername = document.getElementById("username").value;
+                const newProfilePicture = document.querySelector(".pf-pic").getAttribute("src");
+
+                if (newUsername === originalUsername && newProfilePicture === originalProfilePicture) {
+                    //alert("No changes were made!");
+                    return false;  // Prevent form submission
                 }
-            });
+                return true;  // Allow form submission
+            };
         });
-    */
+
+
+        function openProfilePopup() {
+            document.getElementById("profile-popup").style.display = "block";
+            document.getElementById("profile-info-box").style.display = "none";
+            // document.getElementById("edit-pf-box").style.height = "500px";
+        }
+    
+        function closeProfilePopup() {
+            document.getElementById("profile-popup").style.display = "none";
+            document.getElementById("profile-info-box").style.display = "flex";
+        }
+    
+        function selectProfileImage(img) {
+            // Remove "selected" class from all images
+            document.querySelectorAll(".profile-grid img").forEach(el => el.classList.remove("selected"));
+            
+            // Add "selected" class to clicked image
+            img.classList.add("selected");
+
+            // Get selected image source
+            const selectedImageSrc = img.getAttribute("src");
+
+            // Update hidden input field value
+            document.getElementById("pfPicture").value = img.getAttribute("data-image");
+
+            // Update the displayed profile picture dynamically
+            document.querySelector(".pf-pic").setAttribute("src", selectedImageSrc);
+        }
+
+        function saveProfileImage() {
+            const selectedImage = document.querySelector(".profile-grid img.selected");
+            if (selectedImage) {
+                document.getElementById("pfPicture").value = selectedImage.getAttribute("data-image");
+            }
+            closeProfilePopup();
+        }
+
+
+
+    </script>
+    
+    <script th:inline="javascript">
         
         document.addEventListener("DOMContentLoaded", function() {
-            var errorMessage = /*[[${error}]]*/ null;  
+            var errorMessage = null;  
             if (errorMessage) {
                 document.getElementById('error-message').textContent = errorMessage;
                 document.getElementById('error-popup').style.display = 'block';

@@ -10,7 +10,7 @@
     top: 65px;
     right: 20px;
     display: none;
-    z-index: 101;
+    z-index: 1002;
     /* background: linear-gradient(to right, rgb(65, 125, 151), rgb(88, 154, 176), rgb(32, 95, 122)); */
     /* background-color: rgb(255, 255, 255); */
     background-color: #142d24cb;
@@ -104,5 +104,5 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.4); 
     display: none; 
-    z-index: 100;
+    z-index: 1001;
 }

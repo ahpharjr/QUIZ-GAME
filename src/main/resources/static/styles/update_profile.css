@@ -43,6 +43,7 @@
     border-radius: 20px;
     align-items: center;
     justify-content: center;
+    text-align: center;
     position: relative;
     backdrop-filter: blur(8px);
     box-shadow: inset 5px 5px 8px rgb(70, 124, 147), inset -5px -5px 8px rgb(68, 133, 160);
@@ -53,12 +54,18 @@
     border-radius: 50%;
     object-fit: cover;
     margin-top: 20px;
+    border: 2px solid white;
 }
 .badge-icon{
     width: 30px;
     position: absolute;
     top: 15px;
     right: 15px;
+}
+.profile-info-box{
+    display: flex;
+    flex-direction: column;
+    visibility: visible;
 }
 .level{
     margin-top: 8px;
@@ -71,7 +78,7 @@
 .input-box{
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 100%;
     margin-top: 15px;
 }
 .input-box label{
@@ -93,7 +100,9 @@
 .input-box input.filled{
     color: rgb(255, 255, 255);
 }
-.update-btn{
+.update-btn, 
+.select-btn,
+.cancel-btn{
     margin: 25px 0;
     padding: 8px 25px;
     border: none;
@@ -103,7 +112,8 @@
     cursor: pointer;
     transition: 0.2s;
 }
-.update-btn:hover{
+.update-btn:hover,
+.select-btn:hover{
     color: white;
     background-color: #225668;
     border: 1.5px solid white;
@@ -113,6 +123,18 @@
 }
 .update-btn:active{
     transform: scale(0.95);
+}
+
+.select-btn{
+    margin-right: 10px;
+}
+.select-btn:hover,
+.cancel-btn:hover{
+    transform: scale(1.05);
+}
+.cancel-btn{
+    background-color: red;
+    color: white
 }
 .input-box input{
     color: white;

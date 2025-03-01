@@ -1,5 +1,8 @@
 package com.EDTECH.QUIZ.GAME.sevices;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +35,11 @@ public class UserService {
         int index = (int) (userId % 15);
         
         return PROFILE_IMAGES[index];
+    }
+
+    // Method to get the list of profile images
+    public List<String> getProfileImages() {
+        return Arrays.asList(PROFILE_IMAGES);
     }
 
 }

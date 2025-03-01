@@ -1,6 +1,7 @@
 package com.EDTECH.QUIZ.GAME.controllers;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
@@ -253,39 +254,98 @@ public class AuthenticationController {
             return "home";
         }
 
-        @GetMapping("/profile")
-        public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-            Users currentUser = userRepository.findByEmail(userDetails.getUsername());
-            
-            if (currentUser == null) {
-                return "redirect:/login";  
-            }
+    // @GetMapping("/profile")
+    // public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+    //     Users currentUser = userRepository.findByEmail(userDetails.getUsername());
         
-            model.addAttribute("user", currentUser);
-            return "update_profile";  
+    //     if (currentUser == null) {
+    //         return "redirect:/login";  
+    //     }
+    
+    //     model.addAttribute("user", currentUser);
+    //     model.addAttribute("profile", userService.getProfileImage(currentUser.getUserId())); 
+
+    //     return "update_profile";  
+    // }   
+    
+    @GetMapping("/profile")
+    public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        Users currentUser = userRepository.findByEmail(userDetails.getUsername());
+        
+        if (currentUser == null) {
+            return "redirect:/login";  
         }
-        
 
-    @PostMapping("/edit")
+        model.addAttribute("user", currentUser);
+        model.addAttribute("profileImages", userService.getProfileImages());
+        model.addAttribute("profile", userService.getProfileImage(currentUser.getUserId()));
+
+        return "update_profile";  
+    }
+
+    @PostMapping("/edit") 
     public String editProfile(@ModelAttribute("user") Users user, Principal principal, Model model) {
-
         String email = principal.getName();
         Users existingUser = userRepository.findByEmail(email);
 
-        if(userRepository.findByUsername(user.getUsername()) != null) {
-            model.addAttribute("error", "Username is already taken. Please choose another.");
-            return "update_profile";
+        if (existingUser == null) {
+            return "redirect:/login";  
         }
 
-        existingUser.setUsername(user.getUsername());
+        System.out.println("New profile picture received: " + user.getPfPicture());
 
+        // Check if username is changed AND already taken
+        if (!user.getUsername().equals(existingUser.getUsername()) 
+            && userRepository.findByUsername(user.getUsername()) != null) {
+               
+            model.addAttribute("usernameError", "Username is already taken.");
+            model.addAttribute("profileImages", userService.getProfileImages());
+            model.addAttribute("user", existingUser);  // Keep old user data
+           
+            return "update_profile";  // Stay on the same page
+        }
+
+        // Update username only if it has changed
+        if (!user.getUsername().equals(existingUser.getUsername())) {
+            existingUser.setUsername(user.getUsername());
+        }
+
+        // Update profile picture only if it has changed (not null or empty)
+        if (user.getPfPicture() != null && !user.getPfPicture().isEmpty()) {
+            existingUser.setPfPicture(user.getPfPicture());
+        }
+
+        // Save changes
         userRepository.save(existingUser);
-        model.addAttribute("user", existingUser);  
-
-        model.addAttribute("profile", userService.getProfileImage(existingUser.getUserId())); 
 
         return "redirect:/home"; 
     }
+
+
+
+
+
+    // @PostMapping("/edit")
+    // public String editProfile(@ModelAttribute("user") Users user, Principal principal, Model model) {
+
+    //     String email = principal.getName();
+    //     Users existingUser = userRepository.findByEmail(email);
+
+    //     if(userRepository.findByUsername(user.getUsername()) != null) {
+    //         model.addAttribute("error", "Username is already taken. Please choose another.");
+    //         return "update_profile";
+    //     }
+
+    //     existingUser.setUsername(user.getUsername());
+    //     existingUser.setPfPicture(user.getPfPicture()); // Save selected profile picture
+    //     System.out.println("This is the profile picture >>>>>>>>>>>>>>>>>>" + user.getPfPicture());
+    //     userRepository.save(existingUser);
+
+    //     model.addAttribute("user", existingUser);  
+    //     //model.addAttribute("profile", userService.getProfileImage(existingUser.getUserId())); 
+
+    //     return "redirect:/home"; 
+    // }
 
     // @GetMapping("/resend-verification")
     // public String resendVerificationEmail(@RequestParam("email") String email, Model model) {

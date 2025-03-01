@@ -39,6 +39,10 @@ public class Users {
     private int quizSet;
     private int highestScore;
     private String pfPicture;
+
+    // @Column(nullable = false)
+    // private String pfPicture = "profile1.jpg";  // Default profile picture
+
     private Date createdDate;
     
     private boolean enabled = false;
