@@ -4,12 +4,13 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.EDTECH.QUIZ.GAME.models.Users;
 import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 
-public class CustomOAuth2User implements OAuth2User {
+public class CustomOAuth2User implements OAuth2User , UserDetails {
 
     
     private final OAuth2User oAuth2User;
@@ -27,7 +28,9 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public String getName() {
-        return oAuth2User.getAttribute("name");
+        String email = oAuth2User.getAttribute("email");
+        Users user = userRepo.findByEmail(email);
+        return user != null ? user.getUsername() : oAuth2User.getAttribute("name");
     }
 
     public int getId() {
@@ -49,4 +52,18 @@ public class CustomOAuth2User implements OAuth2User {
         return oAuth2User.getAuthorities();
     }
 
+    @Override
+    public String getPassword() {
+        return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return oAuth2User.getAttribute("email");
+    }
+
+    // public String getProfilePicture() {
+    //     return oAuth2User.getAttribute("picture");
+    // }
+    
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,6 +25,7 @@ import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 import com.EDTECH.QUIZ.GAME.sevices.CustomOAuth2User;
 import com.EDTECH.QUIZ.GAME.sevices.EmailService;
 import com.EDTECH.QUIZ.GAME.sevices.UserPerformanceService;
+import com.EDTECH.QUIZ.GAME.sevices.UserService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -34,6 +36,8 @@ public class AuthenticationController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -64,6 +68,10 @@ public class AuthenticationController {
             System.out.println("This is the post mapping of register Due to Username");
             model.addAttribute("error", "Username is already taken. Please choose another.");
             return "register";
+        }else if(user.getUsername().contains("@")){
+            System.out.println("This is the post mapping of register Due to Special Character '@'");
+            model.addAttribute("error", "Username cannot contain '@'. Please choose another.");
+            return "register";
         }
 
         if(userRepository.findByEmail(user.getEmail()) != null) {
@@ -84,6 +92,7 @@ public class AuthenticationController {
         user.setUserXp(0);
         user.setLevel(1);
         user.setCreatedDate(new Date());
+
         //user.setEnabled(true);
         userRepository.save(user);
 
@@ -92,6 +101,11 @@ public class AuthenticationController {
         emailService.sendVerificationEmail(user.getEmail(), token);
 
         System.out.println("Email sent process completed for:?>>>>>>> " + user.getEmail());
+
+        // user.setEnabled(true);
+        userRepository.save(user);
+
+        emailService.sendVerificationEmail(user.getEmail(), token);
 
         return "redirect:/login";
     }
@@ -121,13 +135,21 @@ public class AuthenticationController {
 
     @GetMapping("/login")
     public String showLoginForm(Model model) {
+
+        System.out.println("This is the login page");
+        System.out.println("==============================");
+        System.out.println("This is before authentication");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        
+        System.out.println("authentication check point " + authentication);
+        System.out.println("This is after authentication");
+        System.out.println("==============================");
         if (authentication != null && authentication.isAuthenticated()) {
             Object principal = authentication.getPrincipal();
     
             if (principal instanceof CustomOAuth2User) {
                 System.out.println("This is redirect to home page and the principal is in OAuthUser" );
+                Users currentUser = userRepository.findByEmail(((CustomOAuth2User) principal).getEmail());
+                model.addAttribute("profile", userService.getProfileImage(currentUser.getUserId())); 
                 return "redirect:/home";
             }
             if(principal instanceof UserDetails){
@@ -142,6 +164,7 @@ public class AuthenticationController {
                 }else{
                     System.out.println("User is not enabled");
                 }
+                model.addAttribute("profile", userService.getProfileImage(currentUser.getUserId())); 
                 return "redirect:/home";
             }
         }
@@ -153,19 +176,33 @@ public class AuthenticationController {
     @GetMapping("/home")
         public String home(Model model) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            System.out.println("This is the home page");
+            System.out.println("==============================");
+            System.out.println("authentication check point " + authentication);
 
             if (authentication != null) {
                 Object principal = authentication.getPrincipal();
                 Users currentUser = null;
 
                 if (principal instanceof CustomOAuth2User) {
-                    currentUser = userRepository.findByUsername(((CustomOAuth2User) principal).getName());
+                    System.out.println("This is the Custom Oauth2 User");
+                    System.out.println("========================================");
+                    System.out.println("This is the email value to find in the databse => " + ((CustomOAuth2User) principal).getEmail());
+                    System.out.println("========================================");
+                    currentUser = userRepository.findByEmail(((CustomOAuth2User) principal).getEmail());
                 } else if (principal instanceof UserDetails) {
-                    currentUser = userRepository.findByUsername(((UserDetails) principal).getUsername());
+                    System.out.println("This is the User Details User");
+                    System.out.println("========================================");
+                    System.out.println("This is the email value to find in the databse => " + ((UserDetails) principal).getUsername());
+                    System.out.println("========================================");
+                    currentUser = userRepository.findByEmail(((UserDetails) principal).getUsername());
                     if (!currentUser.isEnabled()) {
                         model.addAttribute("error", "Please Verify your email to continue");
                         return "/login";
                     }
+                }else{
+                    System.out.println("This is the else statement");
+                    System.out.println(" The User is nether of the Type.");
                 }
 
                 if (currentUser != null) {
@@ -208,6 +245,8 @@ public class AuthenticationController {
                     model.addAttribute("xpStart", xpStart);
                     model.addAttribute("xpEnd", xpEnd);
                     model.addAttribute("progressPercentage", progressPercentage);
+                    model.addAttribute("profile", userService.getProfileImage(currentUser.getUserId())); 
+
                 }
             }
 
@@ -216,7 +255,7 @@ public class AuthenticationController {
 
         @GetMapping("/profile")
         public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-            Users currentUser = userRepository.findByUsername(userDetails.getUsername());
+            Users currentUser = userRepository.findByEmail(userDetails.getUsername());
             
             if (currentUser == null) {
                 return "redirect:/login";  
@@ -230,8 +269,8 @@ public class AuthenticationController {
     @PostMapping("/edit")
     public String editProfile(@ModelAttribute("user") Users user, Principal principal, Model model) {
 
-        String username = principal.getName();
-        Users existingUser = userRepository.findByUsername(username);
+        String email = principal.getName();
+        Users existingUser = userRepository.findByEmail(email);
 
         if(userRepository.findByUsername(user.getUsername()) != null) {
             model.addAttribute("error", "Username is already taken. Please choose another.");
@@ -239,12 +278,12 @@ public class AuthenticationController {
         }
 
         existingUser.setUsername(user.getUsername());
-        // existingUser.setEmail(user.getEmail());
 
         userRepository.save(existingUser);
         model.addAttribute("user", existingUser);  
 
-        
+        model.addAttribute("profile", userService.getProfileImage(existingUser.getUserId())); 
+
         return "redirect:/home"; 
     }
 

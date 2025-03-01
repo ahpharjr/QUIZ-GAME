@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -54,7 +55,12 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
         
+        System.out.println("++++++++++++++++++++  Custom Login Success Handler  ==============");
+        System.out.println("Username to lead the user in the success handler => " + authentication.getName());
         UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
+
+        System.out.println("++++++++++++++++++++  Load By Username for the Register user  ==============");
+        System.out.println(userDetails.getUsername());
         String jwtToken = jwtService.generateToken(userDetails); // Correct JWT generation
         System.out.println("++++++++++++++++++++  Token taken from user details  ==============");
         System.out.println("JWT Token: " + jwtToken);
@@ -65,6 +71,9 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         System.out.println("++++++++++++++++++++  Token Before the cookie in added ==============");
         System.out.println("JWT Token: " + jwtToken);
         response.addCookie(jwtCookie);
+                
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         response.sendRedirect("/home");
     }
 }

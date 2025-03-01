@@ -4,11 +4,13 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import com.EDTECH.QUIZ.GAME.sevices.CustomOAuth2User;
 import com.EDTECH.QUIZ.GAME.sevices.JwtService;
 
 import jakarta.servlet.ServletException;
@@ -26,12 +28,21 @@ public class CustomLoginOauthSuccessHandler implements AuthenticationSuccessHand
     private UserDetailsService userDetailsService; 
 
 
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
         
-        UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName());
+     //   UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getName()); 
+
+        CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
+        String email = customOAuth2User.getEmail(); 
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        
+        
+        
         String jwtToken = jwtService.generateToken(userDetails); // Correct JWT generation
+        
         System.out.println("++++++++++++++++++++  Token in the google oauth authentication of userdetails  ==============");
         System.out.println("JWT Token: " + jwtToken);
         Cookie jwtCookie = new Cookie("JWT_TOKEN", jwtToken);
@@ -44,6 +55,9 @@ public class CustomLoginOauthSuccessHandler implements AuthenticationSuccessHand
         System.out.println("++++++++++++++++++++  Token Before the cookie in added ==============");
         System.out.println("JWT Token: " + jwtToken);
         response.addCookie(jwtCookie);
-        response.sendRedirect("/home");    
+        
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        
+        response.sendRedirect("/home");
     }
 }

@@ -59,7 +59,7 @@ public class QuizSetController {
         model.addAttribute("leaderboards", formattedLeaderboards);
 
         if (principal != null) {
-            var user = userRepository.findByUsername(principal.getName());
+            var user = userRepository.findByEmail(principal.getName());
             Leaderboard userLeaderboard = leaderboardRepository.findByUserAndPhase(user, phase);
 
             if (userLeaderboard == null) { 
