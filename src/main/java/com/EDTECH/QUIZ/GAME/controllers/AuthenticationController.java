@@ -1,13 +1,13 @@
 package com.EDTECH.QUIZ.GAME.controllers;
 
 import java.security.Principal;
-import java.util.Arrays;
+// import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+// import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+// import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.servlet.http.Cookie;
+//import jakarta.servlet.http.Cookie;
 
 import com.EDTECH.QUIZ.GAME.models.Users;
 import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
@@ -28,7 +28,7 @@ import com.EDTECH.QUIZ.GAME.sevices.EmailService;
 import com.EDTECH.QUIZ.GAME.sevices.UserPerformanceService;
 import com.EDTECH.QUIZ.GAME.sevices.UserService;
 
-import jakarta.servlet.http.HttpServletResponse;
+//import jakarta.servlet.http.HttpServletResponse;
 
 
 @Controller
@@ -93,6 +93,9 @@ public class AuthenticationController {
         user.setUserXp(0);
         user.setLevel(1);
         user.setCreatedDate(new Date());
+
+        String profilePicture = userService.getProfileImage(user.getUserId());
+        user.setPfPicture(profilePicture);
 
         //user.setEnabled(true);
         userRepository.save(user);
@@ -240,33 +243,20 @@ public class AuthenticationController {
 
                     int progressPercentage = (int) (((double) (userXp - xpStart) / (xpEnd - xpStart)) * 100);
                     String formatTimeSpent = userPerformanceService.formatTimeSpent(currentUser.getTimeSpent());
-                    model.addAttribute("formatTimeSpent", formatTimeSpent);
 
+                    model.addAttribute("formatTimeSpent", formatTimeSpent);
                     model.addAttribute("user", currentUser);
                     model.addAttribute("xpStart", xpStart);
                     model.addAttribute("xpEnd", xpEnd);
                     model.addAttribute("progressPercentage", progressPercentage);
-                    model.addAttribute("profile", userService.getProfileImage(currentUser.getUserId())); 
+
+                    //model.addAttribute("profile", userService.getProfileImage(currentUser.getUserId())); 
 
                 }
             }
 
             return "home";
-        }
-
-    // @GetMapping("/profile")
-    // public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-    //     Users currentUser = userRepository.findByEmail(userDetails.getUsername());
-        
-    //     if (currentUser == null) {
-    //         return "redirect:/login";  
-    //     }
-    
-    //     model.addAttribute("user", currentUser);
-    //     model.addAttribute("profile", userService.getProfileImage(currentUser.getUserId())); 
-
-    //     return "update_profile";  
-    // }   
+        }  
     
     @GetMapping("/profile")
     public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
@@ -321,10 +311,20 @@ public class AuthenticationController {
         return "redirect:/home"; 
     }
 
+    // @GetMapping("/profile")
+    // public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+    //     Users currentUser = userRepository.findByEmail(userDetails.getUsername());
+        
+    //     if (currentUser == null) {
+    //         return "redirect:/login";  
+    //     }
+    
+    //     model.addAttribute("user", currentUser);
+    //     model.addAttribute("profile", userService.getProfileImage(currentUser.getUserId())); 
 
-
-
-
+    //     return "update_profile";  
+    // } 
+    
     // @PostMapping("/edit")
     // public String editProfile(@ModelAttribute("user") Users user, Principal principal, Model model) {
 

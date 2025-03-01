@@ -1,5 +1,6 @@
 package com.EDTECH.QUIZ.GAME.controllers;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.EDTECH.QUIZ.GAME.models.Flashcard;
+import com.EDTECH.QUIZ.GAME.models.Users;
 import com.EDTECH.QUIZ.GAME.repositories.FlashcardRepository;
+import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 
 @Controller
 public class SearchController {
@@ -18,8 +21,16 @@ public class SearchController {
     @Autowired
     private FlashcardRepository flashcardRepository;
 
+    @Autowired
+    private UserRepository  userRepository;
+
     @GetMapping("/search-card")
-    public String search(@RequestParam(required = false, defaultValue = "") String keyword, Model model) {
+    public String search(@RequestParam(required = false, defaultValue = "") String keyword, Model model, Principal principal) {
+        
+        String email = principal.getName();
+        Users user = userRepository.findByEmail(email);
+        model.addAttribute("user", user);
+
         List<Flashcard> searchResults = List.of();
         Flashcard firstSearchCard = null;
 

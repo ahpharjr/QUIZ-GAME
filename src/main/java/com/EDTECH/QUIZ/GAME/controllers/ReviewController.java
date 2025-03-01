@@ -1,5 +1,6 @@
 package com.EDTECH.QUIZ.GAME.controllers;
 
+import java.security.Principal;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.EDTECH.QUIZ.GAME.models.Answer;
 import com.EDTECH.QUIZ.GAME.models.Question;
 import com.EDTECH.QUIZ.GAME.models.UserAnswer;
+import com.EDTECH.QUIZ.GAME.models.Users;
 import com.EDTECH.QUIZ.GAME.repositories.AnswerRepository;
 import com.EDTECH.QUIZ.GAME.repositories.QuestionRepository;
 import com.EDTECH.QUIZ.GAME.repositories.UserAnswerRepository;
+import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 
 @Controller
 public class ReviewController {
@@ -27,8 +30,14 @@ public class ReviewController {
     @Autowired
     private AnswerRepository answerRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @GetMapping("/{quizAttemptId}/review")
-    public String review(Model model, @PathVariable Long quizAttemptId) {
+    public String review(Model model, @PathVariable Long quizAttemptId, Principal principal) {
+
+        Users user = userRepository.findByEmail(principal.getName());
+        model.addAttribute("user", user);
         List<UserAnswer> userAnswers = userAnswerRepository.findByQuizAttempt_QuizAttemptId(quizAttemptId);
 
         List<Map<String, Object>> reviewData = new ArrayList<>();

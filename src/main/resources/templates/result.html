@@ -15,7 +15,7 @@
     <div class="background-image"></div>
     <div class="header">
         <div class="logo-box">
-            <a th:href="@{/home}">
+            <a th:href="@{'/home'}">
                 <img class="logo" src="/icons/quizlogo99.svg" alt="Logo">
             </a>
             <div class="logo-name">
@@ -24,9 +24,9 @@
             </div>
         </div>
         <div class="profile-box">
-            <span class="pf-lvl">Lvl - 01</span>
+            <span class="pf-lvl"  th:text="'Lvl - ' + ${#numbers.formatInteger(user.level, 2)}">Lvl - 01</span>
             <div >
-                <img class="profile" id="profile" src="/images/space man.jpg" alt="Logo">
+                <img class="profile" id="profile" th:src="@{'/images/profiles/' + ${user.pfPicture}}" alt="Logo">
             </div>
         </div>
     </div>
@@ -34,22 +34,24 @@
         <div class="top-box">
             <div class="top-lf">Profile</div>
             <div class="top-rg">
-                <img class="speaker-icon" src="/icons/speaker.png" alt="Seapker icon">
-                <a href="/update_profile.html">
-                    <img class="edit-icon" src="/icons/lucide_edit.png" alt="Edit icon">
+                <!-- <img class="speaker-icon" src="icons/speaker.png" alt="Seapker icon"> -->
+                <a th:href="@{/profile}" class="edit-btn">
+                    <img class="edit-icon" src="/icons/icons8-create-26.png" alt="Edit icon">
                 </a>
             </div>
         </div>
         <div class="bottom-box">
-            <div class="pf-picture"><img src="/images/space man.jpg" alt="Profile"></div>
+            <div class="pf-picture"><img th:src="@{'/images/profiles/' + ${user.pfPicture}}" alt="Profile"></div>
             <div class="pf-name">
-                Space Man
-                <img src="/icons/ship-wheel (1).svg" alt="Badge">
+                <span th:text="${user.username}"></span>
+                <!-- <img src="/images/Level-2.png" alt="Badge"> -->
             </div>
-            <span class="lvl">Level - 01</span>
-            <span class="pf-email">spaceman@gmail.com</span>
-            <!-- <button class="sign-out-btn">Sign out</button> -->
-        </div>
+            <span class="lvl" th:text="'Level - ' + ${#numbers.formatInteger(user.level, 2)}">Level - 01</span>
+            <span class="pf-email" th:text="${user.email}"></span>
+            
+            <a th:href="@{/logout}" class="sign-out-btn">Sign out</a>
+          
+          </div>
     </div>
     <div id="overlay" class="overlay"></div>
 
@@ -104,7 +106,7 @@
                         <div class="rank"><span th:text="${iterStat.index + 1}"></span></div>
                         <div class="player">
                             <div class="player-pf">
-                                <img src="/images/selfie-pf.jpg" alt="">
+                                <img th:src="@{'/images/profiles/' + ${leaderboard.user.pfPicture}}" alt="">
                             </div>
                             <div class="player-name" th:text="${leaderboard.user.username}">Player Name</div>
                         </div>
@@ -116,7 +118,7 @@
                     <div class="rank" th:text="${userRank == -1 ? N/A : userRank}">N/A</div>
                     <div class="player">
                         <div class="player-pf">
-                            <img src="/images/selfie-pf.jpg" alt="">
+                            <img th:src="@{'/images/profiles/' + ${userLeaderboard.user.pfPicture}}" alt="Profile Pic">
                         </div>
                         <div class="player-name" th:text="${userLeaderboard.user.username}">Player Name</div>
                     </div>

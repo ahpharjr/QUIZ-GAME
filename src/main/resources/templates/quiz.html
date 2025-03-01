@@ -37,9 +37,9 @@
             </div>
         </a>
         <div class="profile-box">
-            <span class="pf-lvl">Lvl - 01</span>
+            <span class="pf-lvl" th:text="'Lvl - ' + ${#numbers.formatInteger(user.level, 2)}">Lvl - 01</span>
             <div >
-                <img class="profile" id="profile" src="/images/space man.jpg" alt="Logo">
+                <img class="profile" id="profile" th:src="@{'/images/profiles/' + ${user.pfPicture}}" alt="Logo">
             </div>
         </div>
     </div>

@@ -56,6 +56,10 @@ public class QuizController {
 
     @GetMapping("/{topicId}/quiz")
     public String quiz(@PathVariable("topicId") Long topicId, Model model, Principal principal, HttpSession session) {
+        String email = principal.getName();
+        Users user = userRepository.findByEmail(email);
+        model.addAttribute("user", user);
+        
         Quiz quiz = quizRepository.findQuizIdByTopic_TopicId(topicId);
         if (quiz == null) {
             return "error"; // Handle case where no quiz exists
