@@ -93,6 +93,8 @@ public class AuthenticationController {
         user.setUserXp(0);
         user.setLevel(1);
         user.setCreatedDate(new Date());
+        user.setCurrentQuizSet(1);
+        user.setCurrentPhase(1);
 
         String profilePicture = userService.getProfileImage(user.getUserId());
         user.setPfPicture(profilePicture);

@@ -39,14 +39,12 @@ public class Users {
     private int quizSet;
     private int highestScore;
     private String pfPicture;
-
-    // @Column(nullable = false)
-    // private String pfPicture = "profile1.jpg";  // Default profile picture
-
     private Date createdDate;
-    
     private boolean enabled = false;
     private String verificationToken;
+    
+    private int currentQuizSet; 
+    private int currentPhase;
     
     @Enumerated(EnumType.STRING)
     private AuthProvider authProvider;
@@ -217,4 +215,21 @@ public class Users {
         this.authProvider = authProvider;
     }
 
+    public int getCurrentQuizSet() {
+        return currentQuizSet;
+    }
+
+    public void setCurrentQuizSet(int currentQuizSet) {
+        this.currentQuizSet = currentQuizSet;
+    }
+
+    public int getCurrentPhase() {
+        return currentPhase;
+    }
+
+    public void setCurrentPhase(int currentPhase) {
+        this.currentPhase = currentPhase;
+    }
+
+    
 }

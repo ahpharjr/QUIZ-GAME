@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.EDTECH.QUIZ.GAME.models.Leaderboard;
 import com.EDTECH.QUIZ.GAME.models.Phase;
@@ -84,6 +85,29 @@ public class QuizSetController {
         }
 
         return "quiz_set";
+    }
+
+    @GetMapping("/leaderboard/{phaseId}")
+    @ResponseBody
+    public List<Map<String, Object>> getLeaderboard(@PathVariable Long phaseId) {
+        Phase phase = phaseRepository.findById(phaseId).orElse(null);
+        if (phase == null) {
+            return new ArrayList<>(); // Return an empty list if phase doesn't exist
+        }
+
+        List<Leaderboard> leaderboards = leaderboardRepository.findByPhaseOrderByPointDescTimeTakenAsc(phase);
+        List<Map<String, Object>> formattedLeaderboards = new ArrayList<>();
+
+        for (Leaderboard leaderboard : leaderboards) {
+            Map<String, Object> entry = new HashMap<>();
+            entry.put("username", leaderboard.getUser().getUsername());
+            entry.put("profilePic", "/images/profiles/" + leaderboard.getUser().getPfPicture());
+            entry.put("point", leaderboard.getPoint());
+            entry.put("timeTaken", userAnswerService.convertToHoursMinutesSeconds(leaderboard.getTimeTaken()));
+            formattedLeaderboards.add(entry);
+        }
+
+        return formattedLeaderboards;
     }
 
 }

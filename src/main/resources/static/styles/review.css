@@ -32,8 +32,10 @@
     border: 1px solid rgba(0, 225, 255, 0.711); 
     border-radius: 10px;
     margin-bottom: 10px;
+    font-size: .9rem;
     /* background-color: rgba(4, 77, 78, 0.151); */
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(30px);
+    filter: brightness(1.1);
     transition: 0.15s ease;
 }
 .wrong-border{

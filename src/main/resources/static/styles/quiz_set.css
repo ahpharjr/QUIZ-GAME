@@ -102,15 +102,16 @@
     display: flex;
     border: none;
     background: rgb(10, 80, 80);
+    box-shadow: 0 0 10px rgba(19, 116, 141, 0.8), 0 0 10px rgba(18, 114, 138, 0.6);
     color: white;
-    border: 1px solid white;
+    border: 1.5px solid white;
     letter-spacing: 1px;
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(19, 116, 141, 0.8), 0 0 10px rgba(18, 114, 138, 0.6);
     transition: all 0.3s ease-in-out;
     overflow: hidden;
     font-weight: 550;
     letter-spacing: 2px;
+    filter: brightness(1.2);
 }
 
 .start-btn::before {
@@ -133,7 +134,7 @@
 .start-btn:hover::before {
     left: 0;
     background: rgba(0, 255, 234, 0.4);
-  filter: blur(15px);
+    filter: blur(15px);
 }
 
   @media (min-width: 890px) and (max-width: 1200.99px) {

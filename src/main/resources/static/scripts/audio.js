@@ -68,12 +68,6 @@ var TimeOutNext = new Audio('/audios/TimeOutNext.mp3');
         }, 500); // Small delay to prevent conflicts
     }
 
-
-    //for the next questions after time out
-    // function clickTimeOut(){
-    //     TimeOutNext.play();
-    // }
-
     //audio for each phase and navigate to specific page 
     function handleClickAudio(className , url, dataId ){
         document.querySelectorAll(className).forEach(item => {

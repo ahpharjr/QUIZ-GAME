@@ -10,6 +10,67 @@
     <link rel="stylesheet" href="styles/profile.css">
     <link rel="stylesheet" href="/styles/game_zone.css">
     <title>Game Zone</title>
+
+    <style>
+        .locked {
+            opacity: 0.5;
+            /* pointer-events: none; */
+            cursor: pointer;
+            filter: grayscale(100%);
+        }
+        .locked:hover{
+            opacity: 0.5;
+            /* pointer-events: none; */
+            filter: grayscale(100%);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            /* display: flex;  */
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            width: 400px;
+            backdrop-filter: blur(20px);
+            border: 2px solid white;
+            filter: brightness(1.3);
+            font-size: .9rem;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+        }
+        .modal-content h3{
+            margin-bottom: 10px;
+        }
+        .modal-content button {
+            margin-top: 20px;
+            padding: 8px 25px;
+            border: none;
+            border-radius: 5px;
+            border: 1px solid white;
+            font-weight: 550;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .modal-content button:hover{
+            color: white;
+            background-color: #225668;
+            border: 1.5px solid white;
+            box-shadow: inset 5px 5px 5px #076b79, inset -5px -5px 5px #088191;
+            font-weight: 700;
+            transform: scale(1.05);
+        }
+
+    </style>
 </head>
 <body>
     <div class="background-image"></div>
@@ -61,26 +122,29 @@
             </div>
         </a>
 
-        <!-- <h2 class="content-title">Unlock Project Management Skills with Flashcards!</h2> -->
         <div class="phase-div swiper mySwiper">
             <div class="swiper-wrapper">
-                <div class="swiper-slide" th:each="phase : ${phases}">
-                    <!-- <a th:href="@{'/' + ${phase.phaseId} + '/quizset'}" id="phase-link" > -->
-                        <div class="phase-1 game-phase" th:data-phase-id="${phase.phaseId}">
-                            <div class="pic-box">
-                                <img src="images\Project+Initiation+Phase+2.webp" alt="spaceman">
-                                <!-- <img th:src="@{${pahse.image}}" th:alt="${phase.name}"> -->
-                            </div>
-                            <span class="phase-name" th:text="${phase.name}">Phase Name</span>
-                            <span class="phase-desc" th:text="${phase.desc}">Phase Description</span>   
+                <div class="swiper-slide" th:each="phase, iterStat : ${phases}">
+                    <div class="phase-1 game-phase"
+                            th:data-phase-id="${phase.phaseId}"
+                            th:classappend="${phase.phaseId > user.currentPhase} ? 'locked' : 'unlocked'" >
+                        <div class="pic-box">
+                            <img src="images/Project+Initiation+Phase+2.webp" alt="spaceman">
                         </div>
-                    <!-- </a> -->
+                        <span class="phase-name" th:text="${phase.name}">Phase Name</span>
+                        <span class="phase-desc" th:text="${phase.desc}">Phase Description</span>   
+                    </div>
                 </div>
             </div>
-            <!-- <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div> -->
             <div class="swiper-pagination"></div>
-        </div>
+        </div>  
+        <div id="quizLockModal" class="modal">
+            <div class="modal-content">
+                <h3>To unlock the next phase</h3>
+                <p>You must complete all quizes in the phase!</p>
+                <button onclick="closeModal()">OK</button>
+            </div>
+        </div>      
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -89,7 +153,49 @@
 
   <!-- Initialize Swiper -->
   <script>
-        handleClickAudio(".game-phase", "quizset", "data-phase-id");
+        clickPhase(".game-phase", "quizset", "data-phase-id");
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".game-phase").forEach(phase => {
+                if (phase.classList.contains("locked")) {
+                    phase.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        openModal();
+                    });
+                }
+            });
+        });
+
+        function openModal() {
+            document.getElementById("quizLockModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("quizLockModal").style.display = "none";
+        }
+
+        var audioClick = new Audio('/audios/click.mp3');
+        audioClick.playbackRate = 3;
+
+        //audio for each phase and navigate to specific page 
+        function clickPhase(className , url, dataId ){
+            document.querySelectorAll(className).forEach(item => {
+                if(item.classList.contains("unlocked")){
+                    item.addEventListener("click", function(event){
+                        event.preventDefault();
+                        audioClick.play();
+            
+                        let targetId = this.getAttribute(dataId); //Get the phase ID from the div
+                        let targetUrl = `/${targetId}/${url}`; //construct the URL
+            
+                        setTimeout(() => {
+                            window.location.href = targetUrl; 
+                        }, 130);
+                    });
+                }
+            });
+        }
+
 
         var swiper = new Swiper(".mySwiper", {
             slidesPerView: 4, // Default for screens greater than 1200px

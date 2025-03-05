@@ -116,32 +116,11 @@ public class UserPerformanceService {
         if (allQuizzesCompleted) {
             user.setUserXp(user.getUserXp() + 1000);
             user.markPhaseCompleted(phaseId); // Mark phase as completed
+            user.setCurrentPhase(user.getCurrentPhase()+1);
             userRepository.save(user);
             System.out.println("All quizzes completed in phase! Granting 1000 XP.");
         }
     }
-    
-
-    // public void checkAndGrantPhaseCompletionBonus(Users user, Quiz quiz) {
-    //     Phase currentPhase = quiz.getTopic().getPhase();
-    //     List<Quiz> quizzesInPhase = quizRepository.findByTopicPhase(currentPhase);
-    //     List<QuizAttempt> userAttemptsInPhase = quizAttemptRepository.findByUserAndQuizTopicPhase(user, currentPhase);
-
-    //     // Get the distinct quizzes the user has completed
-    //     Set<Long> completedQuizIds = userAttemptsInPhase.stream()
-    //             .map(attempt -> attempt.getQuiz().getQuizId())
-    //             .collect(Collectors.toSet());
-
-    //     // Compare with total quizzes in phase
-    //     boolean allQuizzesCompleted = quizzesInPhase.stream()
-    //             .allMatch(quizItem -> completedQuizIds.contains(quizItem.getQuizId()));
-
-    //     if (allQuizzesCompleted) {
-    //         user.setUserXp(user.getUserXp() + 1000);
-    //         System.out.println("All quizzes completed in phase! Granting 1000 XP");
-    //         userRepository.save(user);
-    //     }
-    // }
 
     public String formatTimeSpent(long timeSpent){
         long totalMinutes = timeSpent / 60000;

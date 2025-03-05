@@ -271,6 +271,16 @@ public class QuizController {
             userPhaseLeaderboard.setTimeTaken(updatedTimeTaken);
             leaderboardRepository.save(userPhaseLeaderboard);
         } 
+ 
+        int correctPercentage = userAnswerService.calculateCorrectAnswerPercentage();
+
+        System.out.println("user's current quizset >>>>>>>>>>.." + user.getCurrentQuizSet());
+        System.out.println("quiz id::::::::" + quizId);
+        if(correctPercentage >= 50 && user.getCurrentQuizSet() == quizId){
+            user.setCurrentQuizSet(user.getCurrentQuizSet() + 1);
+            userRepository.save(user);
+        }
+
         if (quizAttempts.size() == 1) {
 
             userPhaseLeaderboard.setPoint(currentPoints + lastAttemptPoints);

@@ -1,5 +1,6 @@
 package com.EDTECH.QUIZ.GAME.sevices;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -15,6 +16,9 @@ import java.util.Date;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     public CustomOAuth2UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -45,6 +49,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             user.setLevel(1);
             user.setPassword("");
             user.setCreatedDate(new Date());
+            user.setCurrentQuizSet(1);
+            user.setCurrentPhase(1);
+    
+            String profilePicture = userService.getProfileImage(user.getUserId());
+            user.setPfPicture(profilePicture);
             userRepository.save(user);
         }else{
             System.out.println("User: in the Oauth Service :  " + user.getUsername());

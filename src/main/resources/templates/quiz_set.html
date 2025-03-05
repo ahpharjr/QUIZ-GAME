@@ -10,6 +10,59 @@
     <link rel="stylesheet" href="/styles/quiz_set.css">
     <link rel="stylesheet" href="/styles/leaderboard.css">
     <title>Game Set</title>
+
+    <style>
+        .locked {
+            background-color: rgb(76, 76, 76);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            /* display: flex;  */
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            width: 400px;
+            backdrop-filter: blur(20px);
+            border: 2px solid white;
+            filter: brightness(1.3);
+            font-size: .9rem;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .modal-content h3{
+            margin-bottom: 10px;
+        }
+        .modal-content button {
+            margin-top: 20px;
+            padding: 8px 25px;
+            border: none;
+            border-radius: 5px;
+            border: 1px solid white;
+            font-weight: 550;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .modal-content button:hover{
+            color: white;
+            background-color: #225668;
+            border: 1.5px solid white;
+            box-shadow: inset 5px 5px 5px #076b79, inset -5px -5px 5px #088191;
+            font-weight: 700;
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
     <div class="background-image"></div>
@@ -73,7 +126,7 @@
                     <div class="point">Point</div>
                     <div class="time">Time Taken</div>
                 </div>
-                <div class="lb-body">
+                <div class="lb-body" id="leaderboard-body">
                     <div class="lb-row" th:each="leaderboard, iterStat : ${leaderboards}">
                         <div class="rank"><span th:text="${iterStat.index + 1}"></span></div>
                         <div class="player">
@@ -107,51 +160,80 @@
         </div>
 
         <div class="game-set-container">
-            <span class="game-set-title">Ready to boost your rank in Leaderboard</span>
+            <span class="game-set-title">Ready to boost your rank in Leaderboard?</span>
             <div class="game-set-box">
-                <div class="game-set"  th:each="topic : ${topics}">
+            
+                <div class="game-set" th:each="topic, iter : ${topics}">
                     <div class="topic-img">
                         <img src="/images/blog-images-agile3-removebg-preview.png" alt="topic img">
                     </div>
                     <span class="topic-name" th:text="${topic.name}">Project Charter</span>
-                    
-                    <button class="start-btn start-link" th:data-topic-id="${topic.topicId}">START</button>
 
-                </div>    
+                    <button class="start-btn start-link"
+                        th:data-topic-id="${topic.topicId}"
+                        th:classappend="${topic.topicId > user.currentQuizSet} ? 'locked' : 'unlocked'">
+                        START
+                    </button>
+                </div>
+                <div id="quizLockModal" class="modal">
+                    <div class="modal-content">
+                        <h3>To unlock the next quiz</h3>
+                        <p>You must complete the quiz with at least 50% correct!</p>
+                        <button onclick="closeModal()">OK</button>
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
 
     <script src="/scripts/profileScript.js"></script>
     <script src="/scripts/audio.js"></script>
     <script>
 
-        clickStartQuiz(".start-link", "quiz", "data-topic-id")
+        document.querySelectorAll(".start-btn").forEach(button => {
+            if (button.classList.contains("locked")) {
+                button.addEventListener("click", function(event) {
+                    event.preventDefault();
+                    openModal();
+                    // alert("You must complete the previous quiz set with at least 50% correct to unlock this quiz.");
+                });
+            }
+        });
+        clickStartQuiz(".start-link", "quiz", "data-topic-id");
 
             //audio for each phase and navigate to specific page 
         var audioClick = new Audio('/audios/click.mp3');
         audioClick.playbackRate = 3;
 
+        function openModal() {
+            document.getElementById("quizLockModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("quizLockModal").style.display = "none";
+        }
+
         function clickStartQuiz(className , url, dataId ){
             document.querySelectorAll(className).forEach(item => {
-                item.addEventListener("click", function(event){
-                    event.preventDefault();
-                    fetch('/quiz/clear-session', {
-                        method: "GET"
-                    }).then(response => response.json())  // Parse the JSON response
-                    .then(data => console.log(data.message))  // Log the "Session cleared" message
-                    .catch(error => console.error("Error clearing session:", error));
+                if (item.classList.contains("unlocked")){
+                    item.addEventListener("click", function(event){
+                        event.preventDefault();
+                        fetch('/quiz/clear-session', {
+                            method: "GET"
+                        }).then(response => response.json())  // Parse the JSON response
+                        .then(data => console.log(data.message))  // Log the "Session cleared" message
+                        .catch(error => console.error("Error clearing session:", error));
 
-                    audioClick.play();
-        
-                    let targetId = this.getAttribute(dataId); //Get the phase ID from the div
-                    let targetUrl = `/${targetId}/${url}`; //construct the URL
-        
-                    setTimeout(() => {
-                        window.location.href = targetUrl; 
-                    }, 130);
-                });
+                        audioClick.play();
+            
+                        let targetId = this.getAttribute(dataId); //Get the phase ID from the div
+                        let targetUrl = `/${targetId}/${url}`; //construct the URL
+            
+                        setTimeout(() => {
+                            window.location.href = targetUrl; 
+                        }, 130);
+                    });
+                }
             });
         }
         function navigateBack() {
@@ -163,6 +245,44 @@
                 window.location.href = "/gamezone";
             }
         }
+    
+        // function updateLeaderboard(phaseId) {
+        //     fetch(`/leaderboard/${phaseId}`)
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             let leaderboardBody = document.getElementById("leaderboard-body");
+        //             leaderboardBody.innerHTML = ""; // Clear existing leaderboard
+
+        //             data.forEach((entry, index) => {
+        //                 let row = document.createElement("div");
+        //                 row.classList.add("lb-row");
+
+        //                 row.innerHTML = `
+        //                     <div class="rank">${index + 1}</div>
+        //                     <div class="player">
+        //                         <div class="player-pf">
+        //                             <img src="${entry.profilePic}" alt="Profile Picture">
+        //                         </div>
+        //                         <div class="player-name">${entry.username}</div>
+        //                     </div>
+        //                     <div class="point">${entry.point}</div>
+        //                     <div class="time">${entry.timeTaken}</div>
+        //                 `;
+
+        //                 leaderboardBody.appendChild(row);
+        //             });
+        //         })
+        //         .catch(error => console.error("Error fetching leaderboard:", error));
+        // }
+
+        // // Refresh leaderboard every 10 seconds
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     let phaseId = new URL(window.location.href).pathname.split("/")[1]; // Extract phaseId from URL
+        //     updateLeaderboard(phaseId);
+        //     console.log('update leaderboard !!')
+        //     //setInterval(() => updateLeaderboard(phaseId), 10000);
+        // });
+
     </script>
 </body>
 </html>
