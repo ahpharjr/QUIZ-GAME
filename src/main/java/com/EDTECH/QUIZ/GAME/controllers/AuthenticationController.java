@@ -3,9 +3,12 @@ package com.EDTECH.QUIZ.GAME.controllers;
 import java.security.Principal;
 // import java.util.Arrays;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 // import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 // import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,7 +20,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 //import jakarta.servlet.http.Cookie;
 
@@ -25,6 +30,7 @@ import com.EDTECH.QUIZ.GAME.models.Users;
 import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 import com.EDTECH.QUIZ.GAME.sevices.CustomOAuth2User;
 import com.EDTECH.QUIZ.GAME.sevices.EmailService;
+import com.EDTECH.QUIZ.GAME.sevices.OtpService;
 import com.EDTECH.QUIZ.GAME.sevices.UserPerformanceService;
 import com.EDTECH.QUIZ.GAME.sevices.UserService;
 
@@ -47,12 +53,150 @@ public class AuthenticationController {
     private EmailService emailService;
 
     @Autowired
+    private OtpService otpService;
+
+    @Autowired
     private UserPerformanceService userPerformanceService;
+
+    
+    //  @PostMapping("/send-otp")
+    // public ResponseEntity<String> sendOtp(@RequestParam String email) {
+    //     System.out.println("This is the send otp method");
+    //     if (userRepository.findByEmail(email) == null) {
+    //         return ResponseEntity.badRequest().body("Email is not registered.");
+    //     }
+    //     String otp = otpService.generateOtp(email);
+    //     emailService.sendOtpEmail(email, otp);
+    //     return ResponseEntity.ok("OTP has been sent to your email.");
+    // }
+
+    // @GetMapping("/send-otp")
+    // public String showForgotPasswordForm() {
+    //     System.out.println("This is inside the getmapping of send otp");
+    //     return "login";
+    // }
+
+    // @PostMapping("/verify-otp")
+    // public ResponseEntity<String> verifyOtp(@RequestParam String email, @RequestParam String otp) {
+    //     System.out.println("This is the verify otp method");
+
+    //     if (otpService.isValidOtp(email, otp)) {
+    //         otpService.clearOtp(email);
+    //         return ResponseEntity.ok("OTP Verified. You can now reset your password.");
+    //     }
+    //     return ResponseEntity.badRequest().body("Invalid OTP. Please try again.");
+    // }
 
     @GetMapping("/")
     public String landing() {
         return "landing";
     }
+
+    @GetMapping("/forgot-password")
+    public String showForgotPasswordForm(Model model) {
+        System.out.println("THis is the GET method for Forgot Password"); // Debugging log
+        model.addAttribute("user", new Users());
+        return "forgot_password";  // Ensure this matches your Thymeleaf template name
+    }
+
+    @PostMapping("/forgot-password")
+    public String forgotPassword(@ModelAttribute("user") Users user, Model model) {
+       System.out.println("This is in the post method if forgot password . ");
+        String value = user.getEmail();
+        String userEmail = value.split(",")[0]; 
+       Users existingUser = userRepository.findByEmail(userEmail);
+        System.out.println("This is the email of the user " + user.getEmail());
+        System.out.println("===========================");
+        System.out.println("This is th user find by email " + existingUser);
+        System.out.println("===========================");
+        if (existingUser == null) {
+            model.addAttribute("error", "Email is not registered.");
+            return "forgot_password";
+        }  
+        System.out.println("This is the email of the user " + userEmail);
+        String otp = otpService.generateOtp(userEmail);
+        System.out.println("+++++++++++++++++++");
+        System.out.println("This is after the otp generation " + otp);
+        emailService.sendOtpEmail(userEmail, otp);
+        System.out.println("+++++++++++++++++++");
+        System.out.println("This is after the email sent  ");
+        model.addAttribute("email", userEmail);
+        // model.addAttribute("user", existingUser);
+        return "/forgot_password";
+    }
+
+    @PostMapping("/verify-otp")
+    public String  verifyOtp(Model model,
+            @RequestParam("email") String email,
+            @RequestParam("otp1") String otp1,
+            @RequestParam("otp2") String otp2,
+            @RequestParam("otp3") String otp3,
+            @RequestParam("otp4") String otp4,
+            @RequestParam("otp5") String otp5,
+            @RequestParam("otp6") String otp6) {
+        
+        String otp = otp1 + otp2 + otp3 + otp4 + otp5 + otp6; 
+        
+        System.out.println("This is inside of verify otp post mapping method");
+        System.out.println("===========================");
+        System.out.println("This is the email of the user inside the verify otp " + email);
+        if (email == null || otp.isEmpty()) {
+            model.addAttribute("error", "Email and OTP are required.");
+            return "/forgot-password";
+        }
+
+        boolean isValid = otpService.verifyOtp(email, otp);
+        if (!isValid) {
+            model.addAttribute("error", "OPT is Incorrect.");
+            return "/forgot-password";
+        }
+        model.addAttribute("email", email);
+        return "redirect:/reset-password/" + email;
+    }
+
+    @GetMapping("/reset-password/{email}")
+    public String showResetPasswordForm(Model model, @PathVariable String email) {
+        if (email == null) {
+            model.addAttribute("error", "Email is required.");
+            return "redirect:/forgot-password";
+        }
+        System.out.println("This is the email of the user inside get method of reset PW " + email);
+        // model.addAttribute("user", userRepository.findByEmail(email));
+        model.addAttribute("email", email);
+
+        return "reset_password";
+    }
+
+    @PostMapping("/reset-password")
+    public String resetPassword(
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestParam("confirmPassword") String confirmPassword,
+            Model model) {
+
+        if (password.isEmpty() || confirmPassword.isEmpty()) {
+            model.addAttribute("error", "Password and Confirm Password are required.");
+            return "reset_password";
+        }
+
+        if (!password.equals(confirmPassword)) {
+            model.addAttribute("error", "Passwords do not match.");
+            return "reset_password";
+        }
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("This is the email of the user " + email);
+        Users user = userRepository.findByEmail(email);
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("This is the email of the user " + user.getEmail());
+        user.setPassword(passwordEncoder.encode(password));
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("THis is before user save to the database. ");
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
+        userRepository.save(user);
+        System.out.println("This is the password of the user " + user.getPassword());
+        return "redirect:/login";
+    }
+    
 
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
@@ -111,7 +255,7 @@ public class AuthenticationController {
         // user.setEnabled(true);
         userRepository.save(user);
 
-        emailService.sendVerificationEmail(user.getEmail(), token);
+        // emailService.sendVerificationEmail(user.getEmail(), token);
 
         return "redirect:/login";
     }

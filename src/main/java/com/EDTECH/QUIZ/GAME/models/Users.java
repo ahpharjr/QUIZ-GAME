@@ -41,6 +41,7 @@ public class Users {
     private String pfPicture;
     private Date createdDate;
     private boolean enabled = false;
+    private String otp;
     private String verificationToken;
     
     private int currentQuizSet; 
@@ -229,6 +230,14 @@ public class Users {
 
     public void setCurrentPhase(int currentPhase) {
         this.currentPhase = currentPhase;
+    }
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
     }
 
     
