@@ -176,12 +176,18 @@ public class AuthenticationController {
 
         if (password.isEmpty() || confirmPassword.isEmpty()) {
             model.addAttribute("error", "Password and Confirm Password are required.");
-            return "reset_password";
+            model.addAttribute("email", email);
+
+            return "redirect:/reset-password/"+email;
         }
 
         if (!password.equals(confirmPassword)) {
+            System.out.println("This is the check points for the password equal.");
             model.addAttribute("error", "Passwords do not match.");
+            model.addAttribute("email", email);
+            System.out.println("This is before redirect.");
             return "reset_password";
+            //return "redirect:/reset-password/"+email;
         }
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
         System.out.println("This is the email of the user " + email);
