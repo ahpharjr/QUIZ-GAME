@@ -34,6 +34,10 @@ import com.EDTECH.QUIZ.GAME.sevices.OtpService;
 import com.EDTECH.QUIZ.GAME.sevices.UserPerformanceService;
 import com.EDTECH.QUIZ.GAME.sevices.UserService;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletResponse;
+
 //import jakarta.servlet.http.HttpServletResponse;
 
 
@@ -172,6 +176,7 @@ public class AuthenticationController {
             @RequestParam("email") String email,
             @RequestParam("password") String password,
             @RequestParam("confirmPassword") String confirmPassword,
+            HttpServletResponse response,
             Model model) {
 
         if (password.isEmpty() || confirmPassword.isEmpty()) {
@@ -200,6 +205,13 @@ public class AuthenticationController {
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
         userRepository.save(user);
         System.out.println("This is the password of the user " + user.getPassword());
+
+        Cookie jwtCookie = new Cookie("JWT_TOKEN", null);
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge(0);
+        response.addCookie(jwtCookie);
+
         return "redirect:/login";
     }
     
