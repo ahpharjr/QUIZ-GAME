@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 //import jakarta.servlet.http.Cookie;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.EDTECH.QUIZ.GAME.models.Users;
 import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
@@ -62,34 +63,6 @@ public class AuthenticationController {
     @Autowired
     private UserPerformanceService userPerformanceService;
 
-    
-    //  @PostMapping("/send-otp")
-    // public ResponseEntity<String> sendOtp(@RequestParam String email) {
-    //     System.out.println("This is the send otp method");
-    //     if (userRepository.findByEmail(email) == null) {
-    //         return ResponseEntity.badRequest().body("Email is not registered.");
-    //     }
-    //     String otp = otpService.generateOtp(email);
-    //     emailService.sendOtpEmail(email, otp);
-    //     return ResponseEntity.ok("OTP has been sent to your email.");
-    // }
-
-    // @GetMapping("/send-otp")
-    // public String showForgotPasswordForm() {
-    //     System.out.println("This is inside the getmapping of send otp");
-    //     return "login";
-    // }
-
-    // @PostMapping("/verify-otp")
-    // public ResponseEntity<String> verifyOtp(@RequestParam String email, @RequestParam String otp) {
-    //     System.out.println("This is the verify otp method");
-
-    //     if (otpService.isValidOtp(email, otp)) {
-    //         otpService.clearOtp(email);
-    //         return ResponseEntity.ok("OTP Verified. You can now reset your password.");
-    //     }
-    //     return ResponseEntity.badRequest().body("Invalid OTP. Please try again.");
-    // }
 
     @GetMapping("/")
     public String landing() {
@@ -302,7 +275,7 @@ public class AuthenticationController {
 
 
     @GetMapping("/login")
-    public String showLoginForm(Model model) {
+    public String showLoginForm( Model model) {
 
         System.out.println("This is the login page");
         System.out.println("==============================");
@@ -323,11 +296,12 @@ public class AuthenticationController {
             if(principal instanceof UserDetails){
                 System.out.println("This is redirect to home page and the principal is in Userdetails" );
                 Users currentUser = userRepository.findByUsername(((UserDetails) principal).getUsername());
+
                 if(currentUser.isEnabled()){
                     if(userRepository.findByEmail(currentUser.getEmail()) != null) {
                         System.out.println("This is the check point for the email.");
                         model.addAttribute("error", "Your email is already registered. Please use another email."); 
-                        return "/register";
+                        return "login";
                     }
                 }else{
                     System.out.println("User is not enabled");
@@ -336,9 +310,17 @@ public class AuthenticationController {
                 return "redirect:/home";
             }
         }
+
+
         
         return "login";
         
+    }
+
+    @PostMapping("/login")
+    @ResponseBody
+    public ResponseEntity<?> loginError(){
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("/home")
@@ -475,62 +457,7 @@ public class AuthenticationController {
         return "redirect:/home"; 
     }
 
-    // @GetMapping("/profile")
-    // public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-    //     Users currentUser = userRepository.findByEmail(userDetails.getUsername());
-        
-    //     if (currentUser == null) {
-    //         return "redirect:/login";  
-    //     }
-    
-    //     model.addAttribute("user", currentUser);
-    //     model.addAttribute("profile", userService.getProfileImage(currentUser.getUserId())); 
 
-    //     return "update_profile";  
-    // } 
-    
-    // @PostMapping("/edit")
-    // public String editProfile(@ModelAttribute("user") Users user, Principal principal, Model model) {
-
-    //     String email = principal.getName();
-    //     Users existingUser = userRepository.findByEmail(email);
-
-    //     if(userRepository.findByUsername(user.getUsername()) != null) {
-    //         model.addAttribute("error", "Username is already taken. Please choose another.");
-    //         return "update_profile";
-    //     }
-
-    //     existingUser.setUsername(user.getUsername());
-    //     existingUser.setPfPicture(user.getPfPicture()); // Save selected profile picture
-    //     System.out.println("This is the profile picture >>>>>>>>>>>>>>>>>>" + user.getPfPicture());
-    //     userRepository.save(existingUser);
-
-    //     model.addAttribute("user", existingUser);  
-    //     //model.addAttribute("profile", userService.getProfileImage(existingUser.getUserId())); 
-
-    //     return "redirect:/home"; 
-    // }
-
-    // @GetMapping("/resend-verification")
-    // public String resendVerificationEmail(@RequestParam("email") String email, Model model) {
-    //     User user = userRepository.findByEmail(email);
-
-    //     if (user == null || user.isEnabled()) {
-    //         model.addAttribute("error", "Email is invalid or already verified.");
-    //         return "login";
-    //     }
-
-    //     // Generate new verification token
-    //     String token = UUID.randomUUID().toString();
-    //     user.setVerificationToken(token);
-    //     userRepository.save(user);
-
-    //     // Resend email
-    //     emailService.sendVerificationEmail(user.getEmail(), token);
-
-    //     model.addAttribute("message", "A new verification email has been sent.");
-    //     return "login";
-    // }
 
 
 }

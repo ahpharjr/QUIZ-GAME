@@ -18,6 +18,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -91,7 +92,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             path.startsWith("/styles/") ||
             path.startsWith("/images/") ||
             path.startsWith("/icons/") ||
-            path.startsWith("/oauth2/");  // Allow OAuth login
+            path.startsWith("/oauth2/") ||
+            path.startsWith("/reset-password/") ||
+            path.startsWith("/verify-token") || 
+            path.startsWith("/forgot-password");  // Allow OAuth login
     }
 
 }

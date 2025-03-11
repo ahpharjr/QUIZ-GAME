@@ -21,7 +21,7 @@ public class CustomLogoutHandler implements LogoutSuccessHandler {
         jwtCookie.setHttpOnly(true);
         // jwtCookie.setSecure(true);
         jwtCookie.setPath("/");
-        jwtCookie.setMaxAge(0); // Expire immediately
+        jwtCookie.setMaxAge(0); 
 
         response.addCookie(jwtCookie);
         response.sendRedirect("/login?logout");

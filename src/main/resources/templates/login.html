@@ -10,39 +10,31 @@
     <title>Login</title>
     <style>
         .error-popup {
-            width: 300px;
+            display: none;
             position: fixed;
-            top: 20%;
             left: 50%;
-            transform: translateX(-50%);
-            background: #f44336;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            background: rgba(255, 0, 0, 1.0);
             color: white;
             padding: 20px;
-            padding-button: 10px;
-            border-radius: 5px;
-            display: none; /* Hidden by default */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
             z-index: 1000;
         }
-
-        .error-popup p {
-            margin: 0;
-            font-size: 14px;
+    
+        .error-content {
+            position: relative;
         }
-        
-        .error-popup button {
-            width: 100px;
-            margin-left: 35%;
-            border-radius: 5px;
-            margin-top: 10px;
-            background-color: #333;
-            color: white;
-            border: none;
+    
+        .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            font-size: 18px;
             cursor: pointer;
-            height: 35px;
-        }
-        
-        .error-popup button:hover {
-            background-color: #555;
         }
     </style>
 </head>
@@ -61,12 +53,20 @@
     </div>
     <div class="login-box">
         <h2>Log in</h2>
-        <div id="error-popup" class="error-popup" style="display:none;">
-            <p id="error-message"></p>
-            <button onclick="closeErrorPopup()">Close</button>
+
+        
+        <div id="errorPopup" class="error-popup" th:if="${param.error != null and param.submitted != null}">
+            <div class="error-content">
+                <span class="close-btn" onclick="closePopup()">&times;</span>
+                <p th:text="${param.error}"></p>
+            </div>
         </div>
+
         <!-- Form for Login -->
         <form th:action="@{/login}" method="POST">
+            
+            <input type="hidden" name="submitted" value="true">
+
             <div class="input-box">
                 <img class="email-icon" src="/icons/icons8-email-50.png" alt="email-icon">
                 <input id="username" type="text" name="username" placeholder="Enter your username" required>
@@ -110,21 +110,28 @@
             });
         });
         /*]]>*/
-
+/*
         document.addEventListener("DOMContentLoaded", function() {
             console.log("DOM fully loaded and parsed");
-            var errorMessage = /*[[${error}]]*/ null;  
-            if (errorMessage) {
+            var errorMessage = [[${error}]];  
+            if (errorMessage && errorMessage !== "null") {
                 document.getElementById('error-message').textContent = errorMessage;
                 document.getElementById('error-popup').style.display = 'block';
             }
             console.log("Error message: " + errorMessage);
 
-        });
+        }); */
     
-        function closeErrorPopup() {
-            document.getElementById('error-popup').style.display = 'none';
+        function closePopup() {
+            document.getElementById("errorPopup").style.display = "none";
         }
+    
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has("error") && urlParams.has("submitted")) {
+                document.getElementById("errorPopup").style.display = "block";
+            }
+        };
 
     </script>
 </body>
