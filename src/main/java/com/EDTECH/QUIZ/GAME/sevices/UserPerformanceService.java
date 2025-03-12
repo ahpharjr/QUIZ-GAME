@@ -7,12 +7,16 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.EDTECH.QUIZ.GAME.models.Leaderboard;
 import com.EDTECH.QUIZ.GAME.models.Phase;
 import com.EDTECH.QUIZ.GAME.models.Quiz;
 import com.EDTECH.QUIZ.GAME.models.QuizAttempt;
+import com.EDTECH.QUIZ.GAME.models.UserAchievement;
 import com.EDTECH.QUIZ.GAME.models.Users;
+import com.EDTECH.QUIZ.GAME.repositories.LeaderboardRepository;
 import com.EDTECH.QUIZ.GAME.repositories.QuizAttemptRepository;
 import com.EDTECH.QUIZ.GAME.repositories.QuizRepository;
+import com.EDTECH.QUIZ.GAME.repositories.UserAchievementRepository;
 import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 
 @Service
@@ -26,6 +30,12 @@ public class UserPerformanceService {
 
     @Autowired
     private QuizRepository quizRepository;
+
+    @Autowired
+    private UserAchievementRepository userAchievementRepository;
+
+    @Autowired
+    private LeaderboardRepository leaderboardRepository;
 
     public void updateHighestScore(Users user){
         List<QuizAttempt> quizAttempts = quizAttemptRepository.findByUser(user);
@@ -119,7 +129,73 @@ public class UserPerformanceService {
             user.setCurrentPhase(user.getCurrentPhase()+1);
             userRepository.save(user);
             System.out.println("All quizzes completed in phase! Granting 1000 XP.");
+
+            //Update UserAchievement
+            UserAchievement achievement = userAchievementRepository.findByUser(user).orElse(new UserAchievement());
+
+            achievement.setUser(user);
+
+            //Unlock the respective phase achievement
+            switch(phaseId.intValue()){
+                case 1: achievement.setAchievePhase1(true); break;
+                case 2: achievement.setAchievePhase2(true); break;
+                case 3: achievement.setAchievePhase3(true); break;
+                case 4: achievement.setAchievePhase4(true); break;
+            }
+            
+            userAchievementRepository.save(achievement);
+
         }
+    }
+
+    public UserAchievement createUserAchievement(Users user){
+        UserAchievement newAchievement = new UserAchievement();
+
+        newAchievement.setUser(user);
+        newAchievement.setAchievePhase1(false);
+        newAchievement.setAchievePhase2(false);
+        newAchievement.setAchievePhase3(false);
+        newAchievement.setAchievePhase4(false);
+        newAchievement.setAchieveFirstAchiever(false);
+        newAchievement.setAchieveRisingStar(false);
+        newAchievement.setAchieveRookieQuizzer(false);
+        newAchievement.setAchieveGenius(false);
+
+        newAchievement.setDisplayedFirstAchiever(false);
+        newAchievement.setDisplayedGenius(false);
+        newAchievement.setDisplayedPhase1(false);
+        newAchievement.setDisplayedPhase2(false);
+        newAchievement.setDisplayedPhase3(false);
+        newAchievement.setDisplayedPhase4(false);
+        newAchievement.setAchieveRisingStar(false);
+        newAchievement.setDisplayedRookieQuizzer(false);
+
+        return userAchievementRepository.save(newAchievement);
+    }
+
+    public void updateAchievement(Users user){
+
+        UserAchievement achievement = userAchievementRepository.findByUser(user).orElse(null);
+        int expPoints = user.getUserXp();
+
+        if(expPoints >= 2000 && expPoints < 5000){
+            achievement.setAchieveRisingStar(true);
+        }else if(expPoints >= 5000 && expPoints < 9000){
+            achievement.setAchieveRookieQuizzer(true);
+        }else if(expPoints >= 9000){
+            achievement.setAchieveGenius(true);
+        }else{
+            System.out.println("Something was wrong in update achievement.");
+        }
+
+            // Find the user with the highest leaderboard score
+        Leaderboard topLeaderboard = leaderboardRepository.findTopByOrderByPointDesc();
+        
+        if (topLeaderboard != null && topLeaderboard.getUser().getUserId() == user.getUserId()) {
+            achievement.setAchieveFirstAchiever(true);
+        }
+
+        userAchievementRepository.save(achievement);
     }
 
     public String formatTimeSpent(long timeSpent){

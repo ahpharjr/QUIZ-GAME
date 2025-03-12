@@ -11,5 +11,7 @@ public interface LeaderboardRepository extends JpaRepository<Leaderboard, Long> 
 
     List<Leaderboard> findByPhaseOrderByPointDescTimeTakenAsc(Phase phase);
     Leaderboard findByUserAndPhase(Users user, Phase phase);
+    Leaderboard findTopByOrderByPointDesc();
+    
 }
 

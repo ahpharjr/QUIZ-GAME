@@ -251,6 +251,8 @@
 
 .overlay-box {
     /* background: rgb(5, 55, 55); */
+    width: 400px;
+    height: 144px;
     padding: 40px 20px 30px 20px;
     border-radius: 8px;
     text-align: center;
