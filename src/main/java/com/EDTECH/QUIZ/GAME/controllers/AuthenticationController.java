@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,12 +20,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+//import jakarta.servlet.http.Cookie;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.EDTECH.QUIZ.GAME.models.Users;
 import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 import com.EDTECH.QUIZ.GAME.sevices.CustomOAuth2User;
 import com.EDTECH.QUIZ.GAME.sevices.EmailService;
 import com.EDTECH.QUIZ.GAME.sevices.OtpService;
 import com.EDTECH.QUIZ.GAME.sevices.UserService;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class AuthenticationController {
@@ -132,16 +141,23 @@ public class AuthenticationController {
             @RequestParam("email") String email,
             @RequestParam("password") String password,
             @RequestParam("confirmPassword") String confirmPassword,
+            HttpServletResponse response,
             Model model) {
 
         if (password.isEmpty() || confirmPassword.isEmpty()) {
             model.addAttribute("error", "Password and Confirm Password are required.");
-            return "reset_password";
+            model.addAttribute("email", email);
+
+            return "redirect:/reset-password/"+email;
         }
 
         if (!password.equals(confirmPassword)) {
+            System.out.println("This is the check points for the password equal.");
             model.addAttribute("error", "Passwords do not match.");
+            model.addAttribute("email", email);
+            System.out.println("This is before redirect.");
             return "reset_password";
+            //return "redirect:/reset-password/"+email;
         }
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
         System.out.println("This is the email of the user " + email);
@@ -154,6 +170,13 @@ public class AuthenticationController {
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
         userRepository.save(user);
         System.out.println("This is the password of the user " + user.getPassword());
+
+        Cookie jwtCookie = new Cookie("JWT_TOKEN", null);
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge(0);
+        response.addCookie(jwtCookie);
+
         return "redirect:/login";
     }
     
@@ -244,7 +267,7 @@ public class AuthenticationController {
 
 
     @GetMapping("/login")
-    public String showLoginForm(Model model) {
+    public String showLoginForm( Model model) {
 
         System.out.println("This is the login page");
         System.out.println("==============================");
@@ -265,11 +288,12 @@ public class AuthenticationController {
             if(principal instanceof UserDetails){
                 System.out.println("This is redirect to home page and the principal is in Userdetails" );
                 Users currentUser = userRepository.findByUsername(((UserDetails) principal).getUsername());
+
                 if(currentUser.isEnabled()){
                     if(userRepository.findByEmail(currentUser.getEmail()) != null) {
                         System.out.println("This is the check point for the email.");
                         model.addAttribute("error", "Your email is already registered. Please use another email."); 
-                        return "/register";
+                        return "login";
                     }
                 }else{
                     System.out.println("User is not enabled");
@@ -278,11 +302,16 @@ public class AuthenticationController {
                 return "redirect:/home";
             }
         }
-        
+
         return "login";
         
     }
 
+    @PostMapping("/login")
+    @ResponseBody
+    public ResponseEntity<?> loginError(){
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
 
     @GetMapping("/profile")
     public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {

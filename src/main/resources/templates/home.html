@@ -371,37 +371,53 @@
 
             <div class="achievement-1">
                 <div class="achieve-box" >
-                    <img class="phase1-logo" src="/images/phase1-achievement.png" alt="Phase 1">
+                    <img class="phase1-logo" 
+                         th:classappend="${userAchievement.achievePhase1} ? 'unlocked' : 'locked'"
+                         src="/images/phase1-achievement.png" alt="Phase 1">
                     <span>Phase 1</span>
                 </div>
-                <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/phase2-achievement.png" alt="Phase 2">
+                <div class="achieve-box" >
+                    <img class="achieve-logo" 
+                         th:classappend="${userAchievement.achievePhase2} ? 'unlocked' : 'locked'"
+                         src="/images/phase2-achievement.png" alt="Phase 2">
                     <span>Phase 2</span>
                 </div>
-                <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/phase3-achievement.png" alt="Phase 3">
+                <div class="achieve-box" >
+                    <img class="achieve-logo" 
+                         th:classappend="${userAchievement.achievePhase3} ? 'unlocked' : 'locked'"
+                         src="/images/phase3-achievement.png" alt="Phase 3">
                     <span>Phase 3</span>
                 </div>
-                <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/phase4-achievement.png" alt="Phase 4">
+                <div class="achieve-box" >
+                    <img class="achieve-logo" 
+                         th:classappend="${userAchievement.achievePhase4} ? 'unlocked' : 'locked'"
+                         src="/images/phase4-achievement.png" alt="Phase 4">
                     <span>Phase 4</span>
                 </div>
             </div>
             <div class="achievement-1">
                 <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/1st-Achiever.png" alt="First-Achiever">
+                    <img class="achieve-logo" 
+                         th:classappend="${userAchievement.achieveFirstAchiever} ? 'unlocked' : 'locked'"
+                         src="/images/1st-Achiever.png" alt="First-Achiever">
                     <span>1st Achiever</span>
                 </div>
                 <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/rising-star-achievement.png" alt="Rising Star">
+                    <img class="achieve-logo" 
+                         th:classappend="${userAchievement.achieveRisingStar} ? 'unlocked' : 'locked'"
+                         src="/images/rising-star-achievement.png" alt="Rising Star">
                     <span>Rising Star</span>
                 </div>
                 <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/rookie-quizzer-achievement.png" alt="Rookie Quizzer">
+                    <img class="achieve-logo" 
+                         th:classappend="${userAchievement.achieveRookieQuizzer} ? 'unlocked' : 'locked'"
+                         src="/images/rookie-quizzer-achievement.png" alt="Rookie Quizzer">
                     <span>Rookie Quizzer</span>
                 </div>
                 <div class="achieve-box">
-                    <img class="achieve-logo" src="/images/ultimate-genius-achievement.png" alt="Ultimate Genius">
+                    <img class="achieve-logo" 
+                         th:classappend="${userAchievement.achieveGenius} ? 'unlocked' : 'locked'"
+                         src="/images/ultimate-genius-achievement.png" alt="Ultimate Genius">
                     <span>Genius</span>
                 </div>
             </div>

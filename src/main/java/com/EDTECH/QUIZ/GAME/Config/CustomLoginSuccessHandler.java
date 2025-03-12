@@ -19,34 +19,11 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-// @Component
-// public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
-
-//     @Autowired
-//     private UserRepository userRepository;
-
-//     @Override
-//     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-//             throws IOException, ServletException {
-//         String username = authentication.getName();
-//         // String email = authentication.getEmail();
-//         Users user = userRepository.findByUsername(username);
-
-//         if (user != null) {
-
-//             response.sendRedirect("/home");
-//         } else {
-//             response.sendRedirect("/login?error");
-//         }
-//     }
-
-
-// }
 @Component
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
-    private JwtService jwtService;  // Use JwtService
+    private JwtService jwtService;  
 
     @Autowired
     private UserDetailsService userDetailsService; 
@@ -76,4 +53,5 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
         response.sendRedirect("/home");
     }
+    
 }

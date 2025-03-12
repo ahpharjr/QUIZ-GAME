@@ -24,17 +24,20 @@ public class SecurityConfig {
     private final CustomLoginSuccessHandler customLoginSuccessHandler;
     private final CustomUserDetailsService customUserDetailsService;
     private final CustomLoginOauthSuccessHandler customLoginOauthSuccessHandler;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     public SecurityConfig(CustomLoginOauthSuccessHandler customLoginOauthSuccessHandler, 
                           CustomLoginSuccessHandler customLoginSuccessHandler, 
                           CustomUserDetailsService customUserDetailsService,
                           JwtAuthenticationFilter jwtAuthenticationFilter,
-                          CustomOAuth2UserService customOAuth2UserService) {
+                          CustomOAuth2UserService customOAuth2UserService,
+                          CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
         this.customLoginOauthSuccessHandler = customLoginOauthSuccessHandler;
         this.customLoginSuccessHandler = customLoginSuccessHandler;
         this.customUserDetailsService = customUserDetailsService;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.customOAuth2UserService = customOAuth2UserService;
+        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
     }
 
     // Password encoder bean
@@ -56,9 +59,8 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless before adding filter
         .formLogin(form -> form
             .loginPage("/login")
-            // .usernameParameter("username")
-            // .passwordParameter("password")
             .successHandler(customLoginSuccessHandler)
+            .failureHandler(customAuthenticationFailureHandler)
             .permitAll()
         )
         .oauth2Login( oauth2 -> oauth2
