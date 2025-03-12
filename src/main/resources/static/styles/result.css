@@ -93,3 +93,13 @@
     background: rgba(0, 255, 234, 0.4);
     filter: blur(15px);
 }
+
+.correct{
+    color: rgb(28, 255, 28);
+    font-weight: 600;
+}
+
+.wrong{
+    color: rgb(255, 31, 31);
+    font-weight: 600;
+}

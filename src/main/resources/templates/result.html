@@ -68,7 +68,7 @@
                         <span>Total Questions: 
                             <span th:text="${totalQuestions}"></span>
                         </span>
-                        <span>Correct: 
+                        <span class="correct">Correct: 
                             <span th:text="${correctAnswers}"></span>
                         </span>
                         <a th:href="@{/{quizAttemptId}/review(quizAttemptId=${quizAttempt.quizAttemptId})}">
@@ -79,7 +79,7 @@
                         <span>Time Taken: 
                             <span th:text="${lastAttemptTime}"></span>
                         </span>
-                        <span>Wrong: 
+                        <span class="wrong">Wrong: 
                             <span th:text="${incorrectAnswers}"></span>
                         </span>
                         <a th:href= "@{/{phaseId}/quizset(phaseId=${phaseId})}">
