@@ -251,6 +251,7 @@ public class AuthenticationController {
         return "redirect:/login";
     }
 
+    
     @GetMapping("/verify-email")
     public String verifyEmail(@RequestParam("token") String token, Model model) {
         Users user = userRepository.findByVerificationToken(token);
