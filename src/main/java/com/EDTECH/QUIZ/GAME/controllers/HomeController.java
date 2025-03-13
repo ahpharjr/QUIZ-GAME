@@ -44,6 +44,13 @@ public class HomeController {
                 currentUser = userRepository.findByEmail(((CustomOAuth2User) principal).getEmail());
             } else if (principal instanceof UserDetails) {
                 currentUser = userRepository.findByEmail(((UserDetails) principal).getUsername());
+                
+            }
+
+            if( currentUser != null && currentUser.isEnabled() == false){
+                System.out.println("This is the check point for the email.");
+                model.addAttribute("error", "Your email is already registered. Please use another email."); 
+                return "login";
             }
 
             if (currentUser != null) {

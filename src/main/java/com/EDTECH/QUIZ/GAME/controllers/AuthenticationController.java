@@ -284,6 +284,15 @@ public class AuthenticationController {
                 System.out.println("This is redirect to home page and the principal is in OAuthUser" );
                 Users currentUser = userRepository.findByEmail(((CustomOAuth2User) principal).getEmail());
                 model.addAttribute("profile", userService.getProfileImage(currentUser.getUserId())); 
+                if(currentUser.isEnabled()){
+                    if(userRepository.findByEmail(currentUser.getEmail()) != null) {
+                        System.out.println("This is the check point for the email.");
+                        model.addAttribute("error", "Your email is already registered. Please use another email."); 
+                        return "login";
+                    }
+                }else{
+                    System.out.println("User is not enabled");
+                }
                 return "redirect:/home";
             }
             if(principal instanceof UserDetails){
@@ -308,11 +317,7 @@ public class AuthenticationController {
         
     }
 
-    @PostMapping("/login")
-    @ResponseBody
-    public ResponseEntity<?> loginError(){
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-    }
+
 
     @GetMapping("/profile")
     public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
