@@ -165,7 +165,7 @@
             
                 <div class="game-set" th:each="topic, iter : ${topics}">
                     <div class="topic-img">
-                        <img src="/images/blog-images-agile3-removebg-preview.png" alt="topic img">
+                        <img th:src="${topic.image}" alt="topic img">
                     </div>
                     <span class="topic-name" th:text="${topic.name}">Project Charter</span>
 

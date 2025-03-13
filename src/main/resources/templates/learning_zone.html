@@ -67,8 +67,8 @@
                 <div class="swiper-slide" th:each="phase : ${phases}">
                     <div class="phase-1 click-select-phase" th:data-phase-id="${phase.phaseId}">
                         <div class="pic-box">
-                            <img src="images\Project+Initiation+Phase+2.webp" alt="spaceman">
-                            <!-- <img th:src="@{${pahse.image}}" th:alt="${phase.name}"> -->
+                            <!-- <img src="images\Project+Initiation+Phase+2.webp" alt="spaceman"> -->
+                            <img th:src="${phase.image}" th:alt="${phase.name}">
                         </div>
                         <span class="phase-name" th:text="${phase.name}">Phase Name</span>
                         <span class="phase-desc" th:text="${phase.desc}">Phase Description</span>

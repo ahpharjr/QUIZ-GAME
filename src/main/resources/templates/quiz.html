@@ -71,7 +71,7 @@
                 th:text="${currentQuestionIndex} + ' / '+ ${questionCount}"></div>
             <div class="question-box" id="question-box">
                 <div class="Q-img" id="question-image">
-                    <img src="/images/project-management (1).png" alt="Question image">
+                    <img id="Qimage" th:src="${currentQuestion.image}" alt="Question image">
                 </div>
                 <span 
                     class="question" 
@@ -240,6 +240,8 @@
                 // Update question and answers
                 document.getElementById("question-text").textContent = question.question;
                 document.getElementById("question-text").dataset.id = question.questionId;
+                document.getElementById("Qimage").src = question.image;
+                
                 const answersContainer = document.getElementById("answers");
                 answersContainer.innerHTML = "";   
 
