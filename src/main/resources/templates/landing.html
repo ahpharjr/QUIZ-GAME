@@ -80,20 +80,20 @@
             right: screen3 ? "50%" : (screen4 ? "50%" : ""), 
             scale: screen1 ? 1.4 : (screen2 ? 1.2 : (screen3 ? 1.1 :(screen4 ? 1 : 1.6))), 
             duration: 2,
-            ease: "power2.out",
+            ease: "power1.out",
         });
 
         tl.set(".content-box", { visibility: "visible" }) // Set visibility before animation
         .fromTo(
             ".content-box",
             { opacity: 0, x: 50 }, // Start slightly shifted
-            { opacity: 1, x: 0, duration: 1.5, ease: "power2.out" }
+            { opacity: 1, x: 0, duration: 0.3, ease: "power1.out" }
         );
 
         tl.fromTo(
             ".login-btns", 
             { opacity: 0}, // Start slightly shifted
-            { opacity: 1, duration: 0.5, ease: "power2.out" }
+            { opacity: 1, duration: 0.01, ease: "power1.out" }
         )
 
 

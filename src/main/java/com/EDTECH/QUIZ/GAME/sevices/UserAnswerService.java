@@ -37,7 +37,7 @@ public class UserAnswerService {
     }
 
     public int calculatePoints() {
-        int basePointsPerCorrectAnswer = 10; // Default points per correct answer
+        int basePointsPerCorrectAnswer = 80; // Default points per correct answer
     
         return userAnswers.stream()
             .filter(UserAnswer::isCorrect) // Consider only correct answers
@@ -51,9 +51,10 @@ public class UserAnswerService {
     
     //Give time based score
     private int getTimeBonus(Long answerTime) {
-        if (answerTime <= 5000) return 5;
-        else if (answerTime <= 10000) return 3;
-        else if (answerTime <= 20000) return 1;
+        if (answerTime <= 5000) return 20;
+        else if (answerTime <= 10000) return 15;
+        else if (answerTime <= 20000) return 10;
+        else if (answerTime <= 25000) return 5;
         else return 0;
     }
     

@@ -85,7 +85,7 @@
             <img class="fav-icon" src="/icons/icons8-star-50 (1).png" alt="star">
         </div>
     </a>
-    <div class="container">
+    <div class="container" style="visibility: hidden;">
         <div class="collection">
             <div class="topic-name-box">
                 <span class="topic-name" id="topic-name">Topic Name</span>
@@ -100,7 +100,7 @@
         </div>
     </div>
 
-    <div class="flashcard-set-box">
+    <div class="flashcard-set-box" >
         <div class="set-title"
                 th:each="topic, iterStat : ${topics}"
                 th:attr="data-topic-id=${topic.topicId}, data-topic-name=${topic.name}">
@@ -114,6 +114,12 @@
     <script src="/scripts/flashcardScript.js"></script>
     <script src="/scripts/searchScript.js"></script>
     <script>
+        const container = document.querySelector(".container");
+
+        setTimeout(()=> {
+            container.style.visibility = "visible";
+        }, 50);
+
         function addPopstateListener() {
             window.onpopstate = function (event) {
                 console.log("Back navigation detected");

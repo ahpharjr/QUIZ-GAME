@@ -1,16 +1,12 @@
 package com.EDTECH.QUIZ.GAME.controllers;
 
 import java.security.Principal;
-// import java.util.Arrays;
 import java.util.Date;
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-// import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
-// import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,8 +18,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+
 //import jakarta.servlet.http.Cookie;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -32,15 +28,11 @@ import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 import com.EDTECH.QUIZ.GAME.sevices.CustomOAuth2User;
 import com.EDTECH.QUIZ.GAME.sevices.EmailService;
 import com.EDTECH.QUIZ.GAME.sevices.OtpService;
-import com.EDTECH.QUIZ.GAME.sevices.UserPerformanceService;
 import com.EDTECH.QUIZ.GAME.sevices.UserService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletResponse;
-
-//import jakarta.servlet.http.HttpServletResponse;
-
 
 @Controller
 public class AuthenticationController {
@@ -60,10 +52,6 @@ public class AuthenticationController {
     @Autowired
     private OtpService otpService;
 
-    @Autowired
-    private UserPerformanceService userPerformanceService;
-
-
     @GetMapping("/")
     public String landing() {
         return "landing";
@@ -73,7 +61,7 @@ public class AuthenticationController {
     public String showForgotPasswordForm(Model model) {
         System.out.println("THis is the GET method for Forgot Password"); // Debugging log
         model.addAttribute("user", new Users());
-        return "forgot_password";  // Ensure this matches your Thymeleaf template name
+        return "forgot_password";  
     }
 
     @PostMapping("/forgot-password")
@@ -118,16 +106,20 @@ public class AuthenticationController {
         System.out.println("===========================");
         System.out.println("This is the email of the user inside the verify otp " + email);
         if (email == null || otp.isEmpty()) {
+            System.out.println("if email==null >>>>>>>>>>>>>>>>>>>>>>");
             model.addAttribute("error", "Email and OTP are required.");
             return "/forgot-password";
         }
 
         boolean isValid = otpService.verifyOtp(email, otp);
         if (!isValid) {
+            System.out.println("!isvalid?>>>>>>>>>>>>>>>>>>>>>>.");
             model.addAttribute("error", "OPT is Incorrect.");
             return "/forgot-password";
         }
+        System.out.println("Before add email to model:::::::::::::::::::;;;;;");
         model.addAttribute("email", email);
+        System.out.println("after add email to model:::::::::::::::::;;");
         return "redirect:/reset-password/" + email;
     }
 
@@ -312,8 +304,6 @@ public class AuthenticationController {
             }
         }
 
-
-        
         return "login";
         
     }
@@ -324,87 +314,6 @@ public class AuthenticationController {
         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
-    @GetMapping("/home")
-        public String home(Model model) {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            System.out.println("This is the home page");
-            System.out.println("==============================");
-            System.out.println("authentication check point " + authentication);
-
-            if (authentication != null) {
-                Object principal = authentication.getPrincipal();
-                Users currentUser = null;
-
-                if (principal instanceof CustomOAuth2User) {
-                    System.out.println("This is the Custom Oauth2 User");
-                    System.out.println("========================================");
-                    System.out.println("This is the email value to find in the databse => " + ((CustomOAuth2User) principal).getEmail());
-                    System.out.println("========================================");
-                    currentUser = userRepository.findByEmail(((CustomOAuth2User) principal).getEmail());
-                } else if (principal instanceof UserDetails) {
-                    System.out.println("This is the User Details User");
-                    System.out.println("========================================");
-                    System.out.println("This is the email value to find in the databse => " + ((UserDetails) principal).getUsername());
-                    System.out.println("========================================");
-                    currentUser = userRepository.findByEmail(((UserDetails) principal).getUsername());
-                    if (!currentUser.isEnabled()) {
-                        model.addAttribute("error", "Please Verify your email to continue");
-                        return "/login";
-                    }
-                }else{
-                    System.out.println("This is the else statement");
-                    System.out.println(" The User is nether of the Type.");
-                }
-
-                if (currentUser != null) {
-                    int userXp = currentUser.getUserXp();
-                    int level = 1;
-                    int xpStart = 0;
-                    int xpEnd = 1200;
-
-                    if (userXp >= 1200 && userXp < 3200) {
-                        level = 2;
-                        xpStart = 1200;
-                        xpEnd = 3200;
-                        currentUser.setLevel(level);
-                        userRepository.save(currentUser);
-                    } else if (userXp >= 3200 && userXp < 6200) {
-                        level = 3;
-                        xpStart = 3200;
-                        xpEnd = 6200;
-                        currentUser.setLevel(level);
-                        userRepository.save(currentUser);
-                    } else if(userXp >= 6200 && userXp < 10000) {
-                        level = 4;
-                        xpStart = 6200;
-                        xpEnd = 10000;
-                        currentUser.setLevel(level);
-                        userRepository.save(currentUser);
-                    } else if(userXp >= 10000) {
-                        level = 5;
-                        xpStart = 10000;
-                        xpEnd = 10000;
-                        currentUser.setLevel(level);
-                        userRepository.save(currentUser);
-                    }
-
-                    int progressPercentage = (int) (((double) (userXp - xpStart) / (xpEnd - xpStart)) * 100);
-                    String formatTimeSpent = userPerformanceService.formatTimeSpent(currentUser.getTimeSpent());
-
-                    model.addAttribute("formatTimeSpent", formatTimeSpent);
-                    model.addAttribute("user", currentUser);
-                    model.addAttribute("xpStart", xpStart);
-                    model.addAttribute("xpEnd", xpEnd);
-                    model.addAttribute("progressPercentage", progressPercentage);
-
-                    //model.addAttribute("profile", userService.getProfileImage(currentUser.getUserId())); 
-
-                }
-            }
-
-            return "home";
-        }  
-    
     @GetMapping("/profile")
     public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         Users currentUser = userRepository.findByEmail(userDetails.getUsername());
@@ -458,7 +367,26 @@ public class AuthenticationController {
         return "redirect:/home"; 
     }
 
+    // @GetMapping("/resend-verification")
+    // public String resendVerificationEmail(@RequestParam("email") String email, Model model) {
+    //     User user = userRepository.findByEmail(email);
 
+    //     if (user == null || user.isEnabled()) {
+    //         model.addAttribute("error", "Email is invalid or already verified.");
+    //         return "login";
+    //     }
+
+    //     // Generate new verification token
+    //     String token = UUID.randomUUID().toString();
+    //     user.setVerificationToken(token);
+    //     userRepository.save(user);
+
+    //     // Resend email
+    //     emailService.sendVerificationEmail(user.getEmail(), token);
+
+    //     model.addAttribute("message", "A new verification email has been sent.");
+    //     return "login";
+    // }
 
 
 }

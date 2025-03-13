@@ -39,7 +39,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
         if( requestURI.startsWith("/styles/") || requestURI.startsWith("/images/") || 
             requestURI.startsWith("/register") || requestURI.startsWith("/login") || 
-            requestURI.startsWith("/oauth2/")){
+            requestURI.startsWith("/oauth2/") || requestURI.startsWith("/forgot-password")||
+            requestURI.startsWith("/verify-otp") || requestURI.startsWith("/reset-password/")){
             filterChain.doFilter(request, response);
             return ;
         }
