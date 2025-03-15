@@ -1,22 +1,46 @@
 package com.EDTECH.QUIZ.GAME.controllers;
 
 import java.security.Principal;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired; // Import HttpSession
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import jakarta.servlet.http.HttpSession; // Import HttpSession
-
-import com.EDTECH.QUIZ.GAME.models.*;
-import com.EDTECH.QUIZ.GAME.repositories.*;
+import com.EDTECH.QUIZ.GAME.models.Answer;
+import com.EDTECH.QUIZ.GAME.models.Leaderboard;
+import com.EDTECH.QUIZ.GAME.models.Phase;
+import com.EDTECH.QUIZ.GAME.models.Question;
+import com.EDTECH.QUIZ.GAME.models.Quiz;
+import com.EDTECH.QUIZ.GAME.models.QuizAttempt;
+import com.EDTECH.QUIZ.GAME.models.QuizLeaderboard;
+import com.EDTECH.QUIZ.GAME.models.UserAnswer;
+import com.EDTECH.QUIZ.GAME.models.Users;
+import com.EDTECH.QUIZ.GAME.repositories.AnswerRepository;
+import com.EDTECH.QUIZ.GAME.repositories.LeaderboardRepository;
+import com.EDTECH.QUIZ.GAME.repositories.PhaseRepository;
+import com.EDTECH.QUIZ.GAME.repositories.QuestionRepository;
+import com.EDTECH.QUIZ.GAME.repositories.QuizAttemptRepository;
+import com.EDTECH.QUIZ.GAME.repositories.QuizLeaderboardRepository;
+import com.EDTECH.QUIZ.GAME.repositories.QuizRepository;
+import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 import com.EDTECH.QUIZ.GAME.sevices.QuizAttemptService;
 import com.EDTECH.QUIZ.GAME.sevices.UserAnswerService;
 import com.EDTECH.QUIZ.GAME.sevices.UserPerformanceService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class QuizController {
@@ -110,6 +134,7 @@ public class QuizController {
         model.addAttribute("quizId", quizId);
         model.addAttribute("questions", selectedQuestions);
         model.addAttribute("currentQuestion", selectedQuestions.get(currentQuestionIndex));
+        model.addAttribute("question", selectedQuestions.get(currentQuestionIndex));
         model.addAttribute("questionCount", questionCount);
 
         List<Answer> answers = answerRepository.findByQuestion_QuestionId(selectedQuestions.get(currentQuestionIndex).getQuestionId());

@@ -129,7 +129,7 @@
                             th:data-phase-id="${phase.phaseId}"
                             th:classappend="${phase.phaseId > user.currentPhase} ? 'locked' : 'unlocked'" >
                         <div class="pic-box">
-                            <img src="images/Project+Initiation+Phase+2.webp" alt="spaceman">
+                            <img th:src="${phase.image}" th:alt="${phase.name}">
                         </div>
                         <span class="phase-name" th:text="${phase.name}">Phase Name</span>
                         <span class="phase-desc" th:text="${phase.desc}">Phase Description</span>   
