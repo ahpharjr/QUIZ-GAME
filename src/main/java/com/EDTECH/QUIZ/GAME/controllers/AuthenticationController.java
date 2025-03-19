@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,8 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-//import jakarta.servlet.http.Cookie;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.EDTECH.QUIZ.GAME.models.Users;
 import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
@@ -31,7 +28,6 @@ import com.EDTECH.QUIZ.GAME.sevices.OtpService;
 import com.EDTECH.QUIZ.GAME.sevices.UserService;
 
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
@@ -190,7 +186,7 @@ public class AuthenticationController {
 
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute("user") Users user, Model model) {
+    public String registerUser(@ModelAttribute("user") Users user, Model model, RedirectAttributes redirectAttributes) {
 
         if(userRepository.findByUsername(user.getUsername()) != null) {
             System.out.println("This is the post mapping of register Due to Username");
@@ -238,12 +234,21 @@ public class AuthenticationController {
         // user.setEnabled(true);
         userRepository.save(user);
 
-        // emailService.sendVerificationEmail(user.getEmail(), token);
+        // Store user email in flash attributes to be used on verification page
+        // redirectAttributes.addFlashAttribute("userEmail", user.getEmail());
 
-        return "redirect:/login";
+        //return "redirect:/login"; 
+        return "redirect:/email-verification";
     }
 
-    
+    @GetMapping("/email-verification")
+    public String emailVerification( Model model) {
+
+        model.addAttribute("user", new Users());
+        
+        return "verify_email";
+    }
+
     @GetMapping("/verify-email")
     public String verifyEmail(@RequestParam("token") String token, Model model) {
         Users user = userRepository.findByVerificationToken(token);
@@ -266,6 +271,32 @@ public class AuthenticationController {
         return "redirect:/login";
     }
 
+    @PostMapping("/resend-verification")
+    public String resendVerificationEmail(@RequestParam("email") String email, RedirectAttributes redirectAttributes) {
+        Users user = userRepository.findByEmail(email);
+
+        System.out.println("This is the email of the user in verification email::::::::::::::::::;; " + email);
+        
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("error", "No account found with this email.");
+            return "redirect:/email-verification";
+        }
+
+        if (user.isEnabled()) {
+            redirectAttributes.addFlashAttribute("error", "Your email is already verified. Please log in.");
+            return "redirect:/email-verification";
+        }
+
+        // Generate a new token and resend the email
+        String newToken = UUID.randomUUID().toString();
+        user.setVerificationToken(newToken);
+        userRepository.save(user);
+
+        emailService.sendVerificationEmail(user.getEmail(), newToken);
+        redirectAttributes.addFlashAttribute("success", "A new verification link has been sent.");
+
+        return "redirect:/email-verification";
+    }
 
     @GetMapping("/login")
     public String showLoginForm( Model model) {
@@ -316,8 +347,6 @@ public class AuthenticationController {
         return "login";
         
     }
-
-
 
     @GetMapping("/profile")
     public String profile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
@@ -371,27 +400,6 @@ public class AuthenticationController {
 
         return "redirect:/home"; 
     }
-
-    // @GetMapping("/resend-verification")
-    // public String resendVerificationEmail(@RequestParam("email") String email, Model model) {
-    //     User user = userRepository.findByEmail(email);
-
-    //     if (user == null || user.isEnabled()) {
-    //         model.addAttribute("error", "Email is invalid or already verified.");
-    //         return "login";
-    //     }
-
-    //     // Generate new verification token
-    //     String token = UUID.randomUUID().toString();
-    //     user.setVerificationToken(token);
-    //     userRepository.save(user);
-
-    //     // Resend email
-    //     emailService.sendVerificationEmail(user.getEmail(), token);
-
-    //     model.addAttribute("message", "A new verification email has been sent.");
-    //     return "login";
-    // }
 
 
 }
