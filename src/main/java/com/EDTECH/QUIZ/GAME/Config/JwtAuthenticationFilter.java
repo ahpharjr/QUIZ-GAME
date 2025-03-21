@@ -95,7 +95,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             path.startsWith("/images/") ||
             path.startsWith("/icons/") ||
             path.startsWith("/oauth2/") ||
-            path.startsWith("/reset-password/") ||
+            path.startsWith("/reset-password") ||
             path.startsWith("/verify-token") || 
             path.startsWith("/forgot-password");  // Allow OAuth login
     }

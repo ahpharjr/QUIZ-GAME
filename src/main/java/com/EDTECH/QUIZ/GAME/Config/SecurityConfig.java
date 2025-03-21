@@ -55,7 +55,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/", "/register",
              "/login", "/forgot-password", "/verify-otp" , 
-             "/reset-password/**", "/verify-email", "/styles/**", 
+             "/reset-password/**", "/reset-password", "/verify-email", "/styles/**", 
              "/images/**", "/icons/**", "/oauth2/**", "/email-verification", "/resend-verification").permitAll()
             .anyRequest().authenticated()
         )
