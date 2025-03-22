@@ -62,7 +62,12 @@
                 <span class="player-rank">Your Rank: 
                     <span th:text="${userRank == -1 ? N/A : userRank}">N/A</span>
                 </span>
-                <span class="congrat-text">Congratulations, you get <span th:text="${quizAttempt.totalPoints}"></span> points!</span>
+                <span class="congrat-text" 
+                    th:text="${correctAnswers < 5} ? 
+                            'You scored only ' + ${quizAttempt.totalPoints} + ' points, try again!' : 
+                            'Congratulations! You scored ' + ${quizAttempt.totalPoints} + ' points!'">
+                </span>
+                <!-- <span class="congrat-text">Congratulations, you get <span th:text="${quizAttempt.totalPoints}"></span> points!</span> -->
                 <div class="score-info">
                     <div class="score-info-left">
                         <span>Total Questions: 
