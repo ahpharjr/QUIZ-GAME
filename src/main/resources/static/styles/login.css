@@ -78,13 +78,15 @@ body{
     margin-bottom: 20px;
 }
 .remember-forget a,
-.sign-up-text a{
+.sign-up-text a,
+.back-login a{
     text-decoration: none;
     color: rgb(165, 255, 249);
     
 }
 .remember-forget a:hover,
-.sign-up-text a:hover{
+.sign-up-text a:hover,
+.back-login a:hover{
     text-decoration: underline;
 }
 .sign-up-text{
@@ -106,6 +108,33 @@ body{
     border: 1.5px solid white;
     box-shadow: inset 5px 5px 5px #076b79, inset -5px -5px 5px #088191;
     font-weight: 700;
+}
+.google-btn{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    transition: 0.3s;
+    cursor: pointer;
+    border: 1px solid white;
+    background-color: transparent;
+    font-weight: 550;
+}
+.google-btn a{
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+}
+.google-btn img{
+    width: 25px;
+    margin-right: 10px;
+}
+.or{
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
 @media (max-width: 391px){

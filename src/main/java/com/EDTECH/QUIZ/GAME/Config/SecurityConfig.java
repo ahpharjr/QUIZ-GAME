@@ -53,7 +53,10 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     http
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/", "/register", "/login", "/forgot-password", "/verify-otp" , "/reset-password/**", "/verify-email", "/styles/**", "/images/**", "/icons/**", "/oauth2/**").permitAll()
+            .requestMatchers("/", "/register",
+             "/login", "/forgot-password", "/verify-otp" , 
+             "/reset-password/**", "/reset-password", "/verify-email", "/styles/**", 
+             "/images/**", "/icons/**", "/oauth2/**", "/email-verification", "/resend-verification").permitAll()
             .anyRequest().authenticated()
         )
 

@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import com.EDTECH.QUIZ.GAME.models.Users;
 import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 @Service

@@ -68,8 +68,7 @@
                 <div th:if="${firstSearchCard != null}" class="flashcard" th:attr="data-card-id=${firstSearchCard.cardId}" onclick="flipCard(this)">
                     <div class="flashcard-face front">
                         <div class="content-pic">
-                            <img class="pic" src="images\initiation-phase.gif" alt="Image">
-                            <!-- <img class="pic" th:src="@{/images/} + ${flashcard.image}" alt="image"> -->
+                            <img class="pic" th:src="${firstSearchCard.image}" alt="Image">
                             <div class="star">
                                 <img class="star-icon" src="/icons/icons8-star-50 (2).png" alt="star">
                                 <span class="tooltip">Add to Collection</span>

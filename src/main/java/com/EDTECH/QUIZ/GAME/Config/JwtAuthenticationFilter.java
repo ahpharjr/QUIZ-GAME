@@ -40,7 +40,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if( requestURI.startsWith("/styles/") || requestURI.startsWith("/images/") || 
             requestURI.startsWith("/register") || requestURI.startsWith("/login") || 
             requestURI.startsWith("/oauth2/") || requestURI.startsWith("/forgot-password")||
-            requestURI.startsWith("/verify-otp") || requestURI.startsWith("/reset-password/")){
+            requestURI.startsWith("/verify-otp") || requestURI.startsWith("/reset-password/")||
+            requestURI.startsWith("/email-verification") || requestURI.startsWith("/resend-verification")){
             filterChain.doFilter(request, response);
             return ;
         }
@@ -94,7 +95,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             path.startsWith("/images/") ||
             path.startsWith("/icons/") ||
             path.startsWith("/oauth2/") ||
-            path.startsWith("/reset-password/") ||
+            path.startsWith("/reset-password") ||
             path.startsWith("/verify-token") || 
             path.startsWith("/forgot-password");  // Allow OAuth login
     }

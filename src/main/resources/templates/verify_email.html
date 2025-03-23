@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Verify Your Email</title>
+    <link rel="shortcut icon" type="x-icon" th:href="@{/icons/titlelogo.png}">
+    <link rel="stylesheet" href="/styles/header.css">
+    <link rel="stylesheet" href="/styles/login.css">
+    <link rel="stylesheet" href="/styles/general.css">
+
+    <style>
+    
+        .input-box input{
+            box-sizing: border-box;
+        }
+        .ask-resend-email{
+            margin: 12px 0;
+            font-size: .8rem;
+            text-decoration: underline;
+            cursor: pointer;
+            color: rgb(129, 194, 255);
+            font-weight: 600;
+        }
+        form{
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="background-image"></div>
+    <div class="header">
+        <div class="logo-box">
+            <a th:href="@{/}">
+                <img class="logo" src="/icons/quizlogo99.svg" alt="Logo">
+            </a>
+            <div class="logo-name">
+                <span class="quiz">QUIZ</span>
+                <span class="game">GAME</span>
+            </div>
+        </div>
+    </div>
+    <div class="login-box">
+        <h2>Please check your email</h2>
+        <p>We've sent a verification link to your email. Click the link to activate your account.</p>
+
+        <p class="ask-resend-email" onclick="showForm()">Did not receive a verification link?</p>
+        <form th:action="@{/resend-verification}" th:object="${user}" method="post">
+            <div class="input-box">
+                <img class="email-icon" th:src="@{/icons/icons8-email-50.png}" alt="email-icon">
+                <input id="email" type="email" th:field="*{email}" placeholder="Enter email" required>
+            </div>
+        
+            <button class="sign-in-btn" type="submit">Resend verification email</button>
+        </form>
+        <a th:href="@{/login}"><button class="sign-in-btn">Go to Login</button></a>
+        
+        <p th:if="${error}" th:text="${error}" style="color: rgb(255, 59, 59); "></p>
+        <p th:if="${success}" th:text="${success}" style="color: rgb(53, 226, 53);"></p>
+
+    </div>
+
+    <script>
+        function showForm(){
+            document.querySelector('form').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

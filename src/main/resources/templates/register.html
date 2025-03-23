@@ -18,7 +18,7 @@
             background: #f44336;
             color: white;
             padding: 20px;
-            padding-button: 10px;
+            padding-bottom: 10px;
             border-radius: 5px;
             display: none; /* Hidden by default */
             z-index: 1000;
@@ -70,15 +70,15 @@
         <form th:action="@{/register}" th:object="${user}" method="POST">
             <div class="input-box">
                 <img class="email-icon" th:src="@{/icons/icons8-user-24.png}" alt="user-icon">
-                <input id="username" type="text" th:field="*{username}" placeholder="Enter username">
+                <input id="username" type="text" th:field="*{username}" placeholder="Enter username" required>
             </div>
             <div class="input-box">
                 <img class="email-icon" th:src="@{/icons/icons8-email-50.png}" alt="email-icon">
-                <input id="email" type="email" th:field="*{email}" placeholder="Enter email">
+                <input id="email" type="email" th:field="*{email}" placeholder="Enter email" required>
             </div>
             <div class="input-box">
                 <img class="lock-icon" th:src="@{/icons/icons8-lock-50.png}" alt="lock-icon">
-                <input id="password" type="password" th:field="*{password}" placeholder="Create password">
+                <input id="password" type="password" th:field="*{password}" placeholder="Create password" required>
             </div>
             <button class="sign-in-btn" type="submit">Register</button>
         </form>
