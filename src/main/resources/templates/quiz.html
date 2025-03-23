@@ -287,7 +287,7 @@
 
 </script>
 <script>
-    let timeLeft = 33; // Time in seconds for each question
+    let timeLeft = 32; // Time in seconds for each question
     let timerInterval;
     const timerElement = document.getElementById("timer");
     const nextMessageElement = document.getElementById("next-message");
@@ -360,7 +360,7 @@
             }
 
             updateQuestionUI(data);
-            startTimer(10);
+            startTimer(32);
             clickAnswerAudio(".click-answer");
         })
         .catch(error => console.error("Error fetching next question:", error));
@@ -417,12 +417,12 @@ function updateQuestionUI(data) {
     }
 
     // Start timer when page loads
-    document.addEventListener("DOMContentLoaded", () => startTimer(12));
+    document.addEventListener("DOMContentLoaded", () => startTimer(32));
 
     // Reset timer when user clicks "Next"
     document.getElementById("next-btn").addEventListener("click", () => {
         if (isAnswerSelected) { 
-            startTimer(10); // Restart the timer only if an answer was selected
+            startTimer(30); // Restart the timer only if an answer was selected
             isAnswerSelected = false; // Reset flag for the next question
         }
     });
