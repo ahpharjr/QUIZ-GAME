@@ -68,10 +68,20 @@
             <div class="title-box">
                 <h2 class="title">Card Collection</h2>
             </div>
+
+            <div th:if="${ collections == 0 }">
+                <div class="no-item-wrapper">
+                <p> You haven't add anything to the collection. </p>
+                    <img class="NoItemFound" th:src="@{/images/folder.png}" alt="Empty Folder" />
+                </div>
+            </div> 
+
+
             <div class="swiper mySwiper">
                 <div class="swiper-wrapper" id="flashcards-container">
                 </div>
             </div>
+
             <!-- <div class="swiper-button-next"></div>
             <div class="swiper-button-prev"></div> -->
             <div class="swiper-pagination"></div>

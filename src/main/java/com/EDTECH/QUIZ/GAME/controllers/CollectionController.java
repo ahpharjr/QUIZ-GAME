@@ -37,6 +37,7 @@ public class CollectionController {
         if (principal != null) {
             Users user = userRepository.findByEmail(principal.getName());
             model.addAttribute("user", user);
+            model.addAttribute("collections", user.getCollections().size());
         }
 
         return "card_collection";
