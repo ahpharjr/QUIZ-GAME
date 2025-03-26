@@ -62,10 +62,10 @@
     <div class="login-box">
         <h2>Register</h2>
 
-        <div id="error-popup" class="error-popup" style="display:none;">
+        <!-- <div id="error-popup" class="error-popup" style="display:none;">
             <p id="error-message"></p>
             <button onclick="closeErrorPopup()">Close</button>
-        </div>
+        </div> -->
         
         <form th:action="@{/register}" th:object="${user}" method="POST">
             <div class="input-box">
@@ -83,7 +83,7 @@
             <button class="sign-in-btn" type="submit">Register</button>
         </form>
 
-        <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+        <p th:if="${error}" th:text="${error}" style="color: red; margin-bottom: 10px; font-weight: 600;"></p>
         <p th:if="${message}" th:text="${message}" style="color: green;"></p>
 
         <span class="sign-up-text">Already had an account? <a th:href="@{/login}">Sign in here</a></span>
@@ -103,20 +103,20 @@
         });
 
         
-        document.addEventListener("DOMContentLoaded", function() {
-            console.log("DOM fully loaded and parsed");
-            var errorMessage = /*[[${error}]]*/ null;  
-            if (errorMessage) {
-                document.getElementById('error-message').textContent = errorMessage;
-                document.getElementById('error-popup').style.display = 'block';
-            }
-            console.log("Error message: " + errorMessage);
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     console.log("DOM fully loaded and parsed");
+        //     var errorMessage = /*[[${error}]]*/ null;  
+        //     if (errorMessage) {
+        //         document.getElementById('error-message').textContent = errorMessage;
+        //         document.getElementById('error-popup').style.display = 'block';
+        //     }
+        //     console.log("Error message: " + errorMessage);
 
-        });
+        // });
     
-        function closeErrorPopup() {
-            document.getElementById('error-popup').style.display = 'none';
-        }
+        // function closeErrorPopup() {
+        //     document.getElementById('error-popup').style.display = 'none';
+        // }
 
     </script>
 </body>

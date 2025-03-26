@@ -33,7 +33,7 @@ body{
     cursor: pointer;
     border: 1.5px solid #203a43;
     transition: 0.1s ease-in;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 500;
 }
 .login-btn:hover, .signup-btn:hover,
