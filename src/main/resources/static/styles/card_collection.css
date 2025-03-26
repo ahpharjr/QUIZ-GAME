@@ -44,13 +44,20 @@
     border-radius: 50%;
     transition: 0.15s;
 }
-
+.no-item-box{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}
 .no-item-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 60vh;
-    width: 100%;
+    /* min-height: 60vh;
+    width: 200px; */
     text-align: center;
     flex-direction: column;
     color: white;
