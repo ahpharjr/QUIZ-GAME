@@ -33,7 +33,7 @@ public class QuizSetController {
     private LeaderboardRepository leaderboardRepository;
 
     @Autowired 
-    private UserRepository userRepository;   
+    private UserRepository userRepository;
 
     @Autowired
     private UserAnswerService userAnswerService;
