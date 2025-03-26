@@ -67,12 +67,12 @@
             <input type="hidden" name="submitted" value="true">
 
             <div class="input-box">
-                <img class="email-icon" src="/icons/icons8-email-50.png" alt="email-icon">
-                <input id="username" type="text" name="username" placeholder="Enter your username" required>
+                <img class="email-icon" src="/icons/icons8-user-24.png" alt="email-icon">
+                <input id="username" type="text" name="username" placeholder="Enter username" required>
             </div>
             <div class="input-box">
                 <img class="lock-icon" th:src="@{/icons/icons8-lock-50.png}" alt="lock-icon">
-                <input id="password" type="password" name="password" placeholder="Create password" required>
+                <input id="password" type="password" name="password" placeholder="Enter password" required>
                 <span class="toggle-password" id="toggle-password">
                     <i class="fas fa-eye"></i>
                 </span>
@@ -92,7 +92,7 @@
         <button class="google-btn">
             <img src="/icons/icons8-google-94.png" alt="google icon">
             <a th:href="@{/oauth2/authorization/google}" > 
-                Continue with Google 
+                Sign up with Google 
             </a>
         </button>
 
@@ -113,18 +113,6 @@
                 }
             });
         });
-        /*]]>*/
-/*
-        document.addEventListener("DOMContentLoaded", function() {
-            console.log("DOM fully loaded and parsed");
-            var errorMessage = [[${error}]];  
-            if (errorMessage && errorMessage !== "null") {
-                document.getElementById('error-message').textContent = errorMessage;
-                document.getElementById('error-popup').style.display = 'block';
-            }
-            console.log("Error message: " + errorMessage);
-
-        }); */
     
         function closePopup() {
             document.getElementById("errorPopup").style.display = "none";

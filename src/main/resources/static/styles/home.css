@@ -82,7 +82,7 @@
 }
 .name{
     font-size: 1.3rem;
-    font-weight: 600;
+    font-weight: 550;
     position: relative;
     margin-bottom: 5px;
 }
@@ -236,10 +236,6 @@
 .learning-zone-box{
     margin-right: 30px;
 }
-/* .learning-zone-box:hover, 
-.game-zone-box:hover{
-    box-shadow: inset 0px -5px 10px rgb(68, 133, 160);
-} */
 .game-img{
     /* height: 60px; */
     width: 70px;
@@ -252,7 +248,7 @@
 .desc-text{
     margin-top: 5px;
     font-size: 0.7rem;
-    color: rgb(132, 132, 132);
+    color: rgb(216, 216, 216);
     text-align: center;
     max-width: 250px;
 }
@@ -267,10 +263,11 @@
     background: rgb(5, 55, 55);
     color: white;
     border: 1px solid white; */
-    border: 1px solid rgb(224, 224, 224);
-    background: linear-gradient(90deg, rgb(16, 98, 118), rgb(18, 203, 187));
+    background-color: #225668;
+    border: 1.5px solid white;
+    box-shadow: inset 5px 5px 5px #076b79, inset -5px -5px 5px #088191;
     color: white;
-    box-shadow: 0 0 10px rgba(19, 116, 141, 0.8), 0 0 10px rgba(18, 114, 138, 0.6);
+    filter: brightness(1.2);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -279,8 +276,11 @@
     transition: all 0.3s ease-in-out;
     overflow: hidden;
 }
+.btn:hover{
+    transform: scale(1.05);
+}
 
-.btn::before {
+/* .btn::before {
     content: '';
     position: absolute;
     top: 0;
@@ -301,7 +301,7 @@
     left: 0;
     background: rgba(0, 255, 234, 0.4);
     filter: blur(15px);
-}
+} */
 
 @media (min-width: 890px) and (max-width: 1130.999px) {
 
@@ -453,14 +453,15 @@
         width: 120px;
         border-radius: 5px;
         border: none;
-        color: white;
-        border: 1px solid white;
+        background-color: #225668;
+        border: 1.5px solid white;
+        box-shadow: inset 5px 5px 5px #076b79, inset -5px -5px 5px #088191;
+        color: white; 
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 1px;
         cursor: pointer;
         position: relative;
-        box-shadow: 0 0 10px rgba(19, 116, 141, 0.8), 0 0 10px rgba(18, 114, 138, 0.6);
         transition: all 0.3s ease-in-out;
         overflow: hidden;
     }
