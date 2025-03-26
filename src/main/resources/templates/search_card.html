@@ -63,7 +63,10 @@
             <h2>Search Result</h2>
             <div class="card-container">
                 <div th:if="${firstSearchCard == null}">
+                    <div class="no-item-wrapper">
                     <p>No results found for "<span th:text="${keyword}"></span>".</p>
+                        <img class="NoItemFound" th:src="@{/images/NosearchItem.png}" alt="No items found" />
+                    </div>
                 </div>
                 <div th:if="${firstSearchCard != null}" class="flashcard" th:attr="data-card-id=${firstSearchCard.cardId}" onclick="flipCard(this)">
                     <div class="flashcard-face front">

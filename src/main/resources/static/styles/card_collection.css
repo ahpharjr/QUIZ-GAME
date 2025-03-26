@@ -44,3 +44,47 @@
     border-radius: 50%;
     transition: 0.15s;
 }
+
+.no-item-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    width: 100%;
+    text-align: center;
+    flex-direction: column;
+    color: white;
+}
+
+.NoItemFound {
+    width: 40%;
+    height: auto;
+    opacity: 0.7;
+    /* animation: fadeInScale 1s ease-in-out; */
+}
+
+/* @keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+} */
+
+
+@media (max-width: 768px) {
+    .NoItemFound {
+        max-width: 70%;
+        animation: fadeInScale 0.9s ease-in-out;
+    }
+}
+
+@media (max-width: 480px) {
+    .NoItemFound {
+        max-width: 60%;
+        animation: fadeInScale 1s ease-in-out;
+    }
+}

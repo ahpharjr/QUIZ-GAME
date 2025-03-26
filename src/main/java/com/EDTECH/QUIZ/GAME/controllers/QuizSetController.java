@@ -47,15 +47,28 @@ public class QuizSetController {
         List<Leaderboard> leaderboards = leaderboardRepository.findByPhaseOrderByPointDescTimeTakenAsc(phase);
 
         // Create a list to store leaderboard data with formatted time
+        
         List<Map<String, Object>> formattedLeaderboards = new ArrayList<>();
 
-        for (Leaderboard leaderboard : leaderboards) { 
+        int limit = Math.min(leaderboards.size(), 30);
+        
+        for (int i = 0; i < limit; i++) {
             Map<String, Object> entry = new HashMap<>();
-            entry.put("user", leaderboard.getUser());
-            entry.put("point", leaderboard.getPoint());
-            entry.put("timeTaken", userAnswerService.convertToHoursMinutesSeconds(leaderboard.getTimeTaken()));
+            entry.put("user", leaderboards.get(i).getUser());
+            entry.put("point", leaderboards.get(i).getPoint());
+            entry.put("timeTaken", userAnswerService.convertToHoursMinutesSeconds(leaderboards.get(i).getTimeTaken()));
             formattedLeaderboards.add(entry);
         }
+        
+        
+        // for (Leaderboard leaderboard : leaderboards) { 
+        //     Map<String, Object> entry = new HashMap<>();
+        //     entry.put("user", leaderboard.getUser());
+        //     entry.put("point", leaderboard.getPoint());
+        //     entry.put("timeTaken", userAnswerService.convertToHoursMinutesSeconds(leaderboard.getTimeTaken()));
+        //     formattedLeaderboards.add(entry);
+        // }
+
 
         model.addAttribute("leaderboards", formattedLeaderboards);
 
