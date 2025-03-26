@@ -69,10 +69,10 @@
                 <h2 class="title">Card Collection</h2>
             </div>
 
-            <div th:if="${ collections == 0 }">
+            <div class="no-item-box" th:if="${ collections == 0 }">
                 <div class="no-item-wrapper">
-                <p> You haven't add anything to the collection. </p>
                     <img class="NoItemFound" th:src="@{/images/folder.png}" alt="Empty Folder" />
+                    <p> You haven't add anything to the collection. </p>
                 </div>
             </div> 
 
