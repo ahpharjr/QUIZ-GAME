@@ -25,9 +25,9 @@ public class UserService {
     }
 
     private static final String[] PROFILE_IMAGES = {
-        "profile1.jpg", "profile2.jpg", "profile3.jpg", "profile4.jpg", "profile5.jpg",
-        "profile6.jpg", "profile7.jpg", "profile8.jpg", "profile9.jpg", "profile10.jpg",
-        "profile11.jpg", "profile12.jpg", "profile13.jpg", "profile14.jpg", "profile15.jpg"
+        "profile1.png", "profile2.png", "profile3.png", "profile4.png", "profile5.png",
+        "profile6.png", "profile7.png", "profile8.png", "profile9.png", "profile10.png",
+        "profile11.png", "profile12.png", "profile13.png", "profile14.png", "profile15.png", "profile16.png", "profile17.png","profile18.png", "profile19.png", "profile20.png"
     };
 
     public String getProfileImage(int userId) {
