@@ -80,6 +80,18 @@
 .bottom-box a{
     text-decoration: none;
 }
+/* .sign-out-btn{
+    margin-top: 18px;
+    padding: 8px 25px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    font-size: .8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+} */
 .sign-out-btn{
     margin-top: 18px;
     padding: 8px 25px;
@@ -95,7 +107,7 @@
     transition: 0.2s;
 }
 .sign-out-btn:hover{
-    transform: scale(1.01);
+    transform: scale(1.03);
 }
 .sign-out-btn:active{
     transform: scale(0.95);

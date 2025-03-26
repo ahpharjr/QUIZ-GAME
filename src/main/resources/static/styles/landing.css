@@ -34,6 +34,7 @@ body{
     border: 1.5px solid #203a43;
     transition: 0.1s ease-in;
     font-size: 1rem;
+    font-weight: 500;
 }
 .login-btn:hover, .signup-btn:hover,
 .explore-btn:hover{
@@ -190,7 +191,7 @@ body{
     justify-content: center;
     border-radius: 5px;
     border: none;
-    font-weight: 600;
+    font-weight: 500;
     border: 1.5px solid #ffffff;
     cursor: pointer;
     margin-top: 20px;
@@ -201,8 +202,15 @@ body{
 .explore-btn img{
     margin-left: 5px;
     width: 1.3rem;
-    padding-top: 5px;
-
+}
+.white-arr{
+    display: none;
+}
+.explore-btn:hover .white-arr{
+    display: inline-block;
+}
+.explore-btn:hover .black-arr{
+    display: none;
 }
 
 /* Responsive Breakpoints */
