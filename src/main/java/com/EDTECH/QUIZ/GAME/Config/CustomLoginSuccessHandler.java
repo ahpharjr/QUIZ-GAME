@@ -43,8 +43,10 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         System.out.println("JWT Token: " + jwtToken);
         Cookie jwtCookie = new Cookie("JWT_TOKEN", jwtToken);
         jwtCookie.setHttpOnly(true);
+        jwtCookie.setSecure(false); // ✅ false in localhost (true for HTTPS)
+        jwtCookie.setAttribute("SameSite", "Lax"); // ✅ Works with Google redirects
         jwtCookie.setPath("/");
-        jwtCookie.setMaxAge(60 * 60 * 24);
+        jwtCookie.setMaxAge(60 * 60 * 24 * 7);
         System.out.println("++++++++++++++++++++  Token Before the cookie in added ==============");
         System.out.println("JWT Token: " + jwtToken);
         response.addCookie(jwtCookie);

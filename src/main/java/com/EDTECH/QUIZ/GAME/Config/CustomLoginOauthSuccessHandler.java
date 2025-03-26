@@ -47,13 +47,18 @@ public class CustomLoginOauthSuccessHandler implements AuthenticationSuccessHand
         System.out.println("JWT Token: " + jwtToken);
         Cookie jwtCookie = new Cookie("JWT_TOKEN", jwtToken);
         
-        jwtCookie.setSecure(true); // Ensure HTTPS
+         // Ensure HTTPS
         jwtCookie.setHttpOnly(true);
         jwtCookie.setPath("/");
-        jwtCookie.setMaxAge(60 * 60 * 24);
+        jwtCookie.setMaxAge(60 * 60 * 24 * 7);
         jwtCookie.setAttribute("SameSite", "Strict"); // Prevent CSRF
         System.out.println("++++++++++++++++++++  Token Before the cookie in added ==============");
         System.out.println("JWT Token: " + jwtToken);
+        
+        jwtCookie.setSecure(false); // ✅ false in localhost (true for HTTPS)
+        jwtCookie.setAttribute("SameSite", "Lax"); // ✅ Works with Google redirects
+
+        //Cookies is added to the response
         response.addCookie(jwtCookie);
         
         SecurityContextHolder.getContext().setAuthentication(authentication);
