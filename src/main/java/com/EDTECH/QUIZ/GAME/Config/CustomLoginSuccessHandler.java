@@ -38,7 +38,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
         System.out.println("++++++++++++++++++++  Load By Username for the Register user  ==============");
         System.out.println(userDetails.getUsername());
-        String jwtToken = jwtService.generateToken(userDetails); // Correct JWT generation
+        String jwtToken = jwtService.generateToken(userDetails); 
         System.out.println("++++++++++++++++++++  Token taken from user details  ==============");
         System.out.println("JWT Token: " + jwtToken);
         Cookie jwtCookie = new Cookie("JWT_TOKEN", jwtToken);
