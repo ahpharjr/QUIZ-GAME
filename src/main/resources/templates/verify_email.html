@@ -25,6 +25,23 @@
         }
 
     </style>
+        <style>
+            .loading-spinner {
+                display: none;
+                width: 16px;
+                height: 16px;
+                border: 3px solid rgba(255, 255, 255, 0.3);
+                border-top: 3px solid white;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin-left: 8px;
+            }
+        
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        </style>
 </head>
 <body>
     <div class="background-image"></div>
@@ -44,13 +61,16 @@
         <p>We've sent a verification link to your email. Click the link to activate your account.</p>
 
         <p class="ask-resend-email" onclick="showForm()">Did not receive a verification link?</p>
-        <form th:action="@{/resend-verification}" th:object="${user}" method="post">
+        <form th:action="@{/resend-verification}" th:object="${user}" method="post" onsubmit="showLoading(event)">
             <div class="input-box">
                 <img class="email-icon" th:src="@{/icons/icons8-email-50.png}" alt="email-icon">
                 <input id="email" type="email" th:field="*{email}" placeholder="Enter email" required>
             </div>
         
-            <button class="sign-in-btn" type="submit">Resend verification email</button>
+            <button class="sign-in-btn" type="submit">
+                Resend verification email
+                <span id="loading-spinner" class="loading-spinner"></span>
+            </button>
         </form>
         <a th:href="@{/login}"><button class="sign-in-btn">Go to Login</button></a>
         
@@ -62,6 +82,14 @@
     <script>
         function showForm(){
             document.querySelector('form').style.display = 'block';
+        }
+
+        function showLoading(event) {
+            // Show loading spinner
+            document.getElementById('loading-spinner').style.display = 'inline-block';
+
+            // Disable button to prevent multiple submissions
+            event.target.querySelector('button').disabled = true;
         }
     </script>
 </body>

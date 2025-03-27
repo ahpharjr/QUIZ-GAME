@@ -45,6 +45,23 @@
             background-color: #555;
         }
     </style>
+    <style>
+        .loading-spinner {
+            display: none;
+            width: 16px;
+            height: 16px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 8px;
+        }
+    
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
     <div class="background-image"></div>
@@ -67,7 +84,7 @@
             <button onclick="closeErrorPopup()">Close</button>
         </div> -->
         
-        <form th:action="@{/register}" th:object="${user}" method="POST">
+        <form th:action="@{/register}" th:object="${user}" method="POST" onsubmit="showLoading(event)">
             <div class="input-box">
                 <img class="email-icon" th:src="@{/icons/icons8-user-24.png}" alt="user-icon">
                 <input id="username" type="text" th:field="*{username}" placeholder="Enter username" required>
@@ -80,7 +97,10 @@
                 <img class="lock-icon" th:src="@{/icons/icons8-lock-50.png}" alt="lock-icon">
                 <input id="password" type="password" th:field="*{password}" placeholder="Create password" required>
             </div>
-            <button class="sign-in-btn" type="submit">Register</button>
+            <button class="sign-in-btn" type="submit">
+                Register
+                <span id="loading-spinner" class="loading-spinner"></span>
+            </button>
         </form>
 
         <p th:if="${error}" th:text="${error}" style="color: red; margin-bottom: 10px; font-weight: 600;"></p>
@@ -102,7 +122,14 @@
             });
         });
 
-        
+        function showLoading(event) {
+            // Show loading spinner
+            document.getElementById('loading-spinner').style.display = 'inline-block';
+
+            // Disable button to prevent multiple submissions
+            event.target.querySelector('button').disabled = true;
+        }
+
         // document.addEventListener("DOMContentLoaded", function() {
         //     console.log("DOM fully loaded and parsed");
         //     var errorMessage = /*[[${error}]]*/ null;  
