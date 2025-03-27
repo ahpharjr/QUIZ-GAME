@@ -138,40 +138,6 @@ public class AuthenticationController {
         return ResponseEntity.ok(response);
     }
 
-    // @PostMapping("/verify-otp")
-    // public String  verifyOtp(Model model,
-    //         @RequestParam("email") String email,
-    //         @RequestParam("otp1") String otp1,
-    //         @RequestParam("otp2") String otp2,
-    //         @RequestParam("otp3") String otp3,
-    //         @RequestParam("otp4") String otp4,
-    //         @RequestParam("otp5") String otp5,
-    //         @RequestParam("otp6") String otp6) {
-        
-    //     String otp = otp1 + otp2 + otp3 + otp4 + otp5 + otp6; 
-        
-    //     System.out.println("This is inside of verify otp post mapping method");
-    //     System.out.println("===========================");
-    //     System.out.println("This is the email of the user inside the verify otp " + email);
-    //     if (email == null || otp.isEmpty()) {
-    //         System.out.println("if email==null >>>>>>>>>>>>>>>>>>>>>>");
-    //         model.addAttribute("error", "Email and OTP are required.");
-    //         return "/forgot-password";
-    //     }
-
-    //     boolean isValid = otpService.verifyOtp(email, otp);
-    //     if (!isValid) {
-    //         System.out.println("!isvalid?>>>>>>>>>>>>>>>>>>>>>>.");
-    //         model.addAttribute("invalidOTP", "OPT is Incorrect.");
-    //         model.addAttribute("user", new Users());
-    //         return "forgot_password";
-    //     }
-
-    //     System.out.println("Before add email to model:::::::::::::::::::;;;;;");
-    //     model.addAttribute("email", email);
-    //     System.out.println("after add email to model:::::::::::::::::;;");
-    //     return "redirect:/reset-password/" + email;
-    // }
 
     @GetMapping("/reset-password/{email}")
     public String showResetPasswordForm(Model model, @PathVariable String email) {
@@ -185,52 +151,6 @@ public class AuthenticationController {
         return "reset_password";
     }
 
-    // @PostMapping("/reset-password")
-    // public String resetPassword(
-    //         @RequestParam("email") String email,
-    //         @RequestParam("password") String password,
-    //         @RequestParam("confirmPassword") String confirmPassword,
-    //         HttpServletResponse response,
-    //         Model model) {
-
-            
-    //     System.out.println("This is inside the post mapping of reset password******************************");
-
-    //     if (password.isEmpty() || confirmPassword.isEmpty()) {
-    //         model.addAttribute("error", "Password and Confirm Password are required.");
-    //         model.addAttribute("email", email);
-
-    //         return "redirect:/reset-password/"+email;
-    //     }
-
-    //     if (!password.equals(confirmPassword)) {
-    //         System.out.println("This is the check points for the password equal.");
-    //         model.addAttribute("error", "Passwords do not match.");
-    //         model.addAttribute("email", email);
-    //         System.out.println("This is before redirect.");
-    //         // return "reset_password";
-    //         return "redirect:/reset-password/"+email;
-    //     }
-    //     System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
-    //     System.out.println("This is the email of the user " + email);
-    //     Users user = userRepository.findByEmail(email);
-    //     System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
-    //     System.out.println("This is the email of the user " + user.getEmail());
-    //     user.setPassword(passwordEncoder.encode(password));
-    //     System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
-    //     System.out.println("THis is before user save to the database. ");
-    //     System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
-    //     userRepository.save(user);
-    //     System.out.println("This is the password of the user " + user.getPassword());
-
-    //     Cookie jwtCookie = new Cookie("JWT_TOKEN", null);
-    //     jwtCookie.setHttpOnly(true);
-    //     jwtCookie.setPath("/");
-    //     jwtCookie.setMaxAge(0);
-    //     response.addCookie(jwtCookie);
-
-    //     return "redirect:/login";
-    // }
     
     @PostMapping("/reset-password")
     public String resetPassword(
@@ -315,12 +235,16 @@ public class AuthenticationController {
 
         System.out.println("User registered:>>>>>>>> " + user.getEmail() + " | Sending verification email...");
 
-        emailService.sendVerificationEmail(user.getEmail(), token);
+        try {
 
-        System.out.println("Email sent process completed for:?>>>>>>> " + user.getEmail());
+            emailService.sendVerificationEmail(user.getEmail(), token);
+            userRepository.save(user); 
 
-        // user.setEnabled(true);
-        userRepository.save(user);
+        } catch (Exception e) {
+            model.addAttribute("error", "Failed to send verification email. Please try again.");
+            return "register";
+        }
+        
 
         // Store user email in flash attributes to be used on verification page
         // redirectAttributes.addFlashAttribute("userEmail", user.getEmail());
