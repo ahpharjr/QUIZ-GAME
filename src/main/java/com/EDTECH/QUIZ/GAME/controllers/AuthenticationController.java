@@ -1,6 +1,7 @@
 package com.EDTECH.QUIZ.GAME.controllers;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.EDTECH.QUIZ.GAME.models.*;
 import com.EDTECH.QUIZ.GAME.models.Users;
+import com.EDTECH.QUIZ.GAME.repositories.*;
 import com.EDTECH.QUIZ.GAME.repositories.UserRepository;
 import com.EDTECH.QUIZ.GAME.sevices.CustomOAuth2User;
 import com.EDTECH.QUIZ.GAME.sevices.EmailService;
@@ -50,6 +53,9 @@ public class AuthenticationController {
 
     @Autowired
     private OtpService otpService;
+
+    @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
 
     @GetMapping("/")
     public String landing() {
@@ -134,55 +140,156 @@ public class AuthenticationController {
             return ResponseEntity.ok(response);
         }
 
+        PasswordResetToken existingtoken = passwordResetTokenRepository.findByUser(user);
+            String token = UUID.randomUUID().toString();
+
+        if (existingtoken != null) {
+            existingtoken.setToken(token);
+            existingtoken.setExpiryDate(LocalDateTime.now().plusMinutes(15));
+            passwordResetTokenRepository.save(existingtoken);
+        } else{
+            PasswordResetToken resetToken = new PasswordResetToken(token, user);
+            passwordResetTokenRepository.save(resetToken);
+        }
+
         response.put("success", "true");
+        response.put("resetUrl", "/reset-password?token=" + token);
+        
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/reset-password")
+    public String showResetPasswordForm(Model model, @RequestParam("token") String token) {
 
-    @GetMapping("/reset-password/{email}")
-    public String showResetPasswordForm(Model model, @PathVariable String email) {
-        if (email == null) {
-            model.addAttribute("error", "Email is required.");
+        PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token);
+        if (resetToken == null || resetToken.isExpired()) {
+            model.addAttribute("error", "Invalid or expired reset token.");
             return "redirect:/forgot-password";
         }
-        System.out.println("This is the email of the user inside get method of reset PW " + email);
-        model.addAttribute("email", email);
 
+        Users user = resetToken.getUser();
+
+        model.addAttribute("userName", user.getUsername());
+        model.addAttribute("userEmail", user.getEmail());
+        model.addAttribute("token", token);
         return "reset_password";
     }
 
-    
     @PostMapping("/reset-password")
     public String resetPassword(
-            @RequestParam("email") String email,
+            @RequestParam("token") String token,
             @RequestParam("password") String password,
             @RequestParam("confirmPassword") String confirmPassword,
-            HttpServletResponse response,
-            RedirectAttributes redirectAttributes) {  // Use RedirectAttributes
+            RedirectAttributes redirectAttributes) {
+
+        PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token);
+        
+        if (resetToken == null || resetToken.isExpired()) {
+            redirectAttributes.addFlashAttribute("error", "Invalid or expired reset token.");
+            return "redirect:/forgot-password";
+        }
+
+        Users user = resetToken.getUser();
 
         if (password.isEmpty() || confirmPassword.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Password and Confirm Password are required.");
-            return "redirect:/reset-password/" + email;
+            redirectAttributes.addFlashAttribute("error", "Password fields cannot be empty.");
+            return "redirect:/reset-password?token=" + token;
         }
 
         if (!password.equals(confirmPassword)) {
             redirectAttributes.addFlashAttribute("error", "Passwords do not match.");
-            return "redirect:/reset-password/" + email;
+            return "redirect:/reset-password?token=" + token;
         }
 
-        Users user = userRepository.findByEmail(email);
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
 
-        // Clear JWT cookie
-        Cookie jwtCookie = new Cookie("JWT_TOKEN", null);
-        jwtCookie.setHttpOnly(true);
-        jwtCookie.setPath("/");
-        jwtCookie.setMaxAge(0);
-        response.addCookie(jwtCookie);
+        // Delete token after use
+        passwordResetTokenRepository.delete(resetToken);
 
         return "redirect:/login";
     }
+
+
+    // @PostMapping("/verify-otp")
+    // public String  verifyOtp(Model model,
+    //         @RequestParam("email") String email,
+    //         @RequestParam("otp1") String otp1,
+    //         @RequestParam("otp2") String otp2,
+    //         @RequestParam("otp3") String otp3,
+    //         @RequestParam("otp4") String otp4,
+    //         @RequestParam("otp5") String otp5,
+    //         @RequestParam("otp6") String otp6) {
+        
+    //     String otp = otp1 + otp2 + otp3 + otp4 + otp5 + otp6; 
+        
+    //     System.out.println("This is inside of verify otp post mapping method");
+    //     System.out.println("===========================");
+    //     System.out.println("This is the email of the user inside the verify otp " + email);
+    //     if (email == null || otp.isEmpty()) {
+    //         System.out.println("if email==null >>>>>>>>>>>>>>>>>>>>>>");
+    //         model.addAttribute("error", "Email and OTP are required.");
+    //         return "/forgot-password";
+    //     }
+
+    //     boolean isValid = otpService.verifyOtp(email, otp);
+    //     if (!isValid) {
+    //         System.out.println("!isvalid?>>>>>>>>>>>>>>>>>>>>>>.");
+    //         model.addAttribute("invalidOTP", "OPT is Incorrect.");
+    //         model.addAttribute("user", new Users());
+    //         return "forgot_password";
+    //     }
+
+    //     System.out.println("Before add email to model:::::::::::::::::::;;;;;");
+    //     model.addAttribute("email", email);
+    //     System.out.println("after add email to model:::::::::::::::::;;");
+    //     return "redirect:/reset-password/" + email;
+    // }
+
+    // @GetMapping("/reset-password/{email}")
+    // public String showResetPasswordForm(Model model, @PathVariable String email) {
+    //     if (email == null) {
+    //         model.addAttribute("error", "Email is required.");
+    //         return "redirect:/forgot-password";
+    //     }
+    //     System.out.println("This is the email of the user inside get method of reset PW " + email);
+    //     model.addAttribute("email", email);
+
+    //     return "reset_password";
+    // }
+
+    
+    // @PostMapping("/reset-password")
+    // public String resetPassword(
+    //         @RequestParam("email") String email,
+    //         @RequestParam("password") String password,
+    //         @RequestParam("confirmPassword") String confirmPassword,
+    //         HttpServletResponse response,
+    //         RedirectAttributes redirectAttributes) {  // Use RedirectAttributes
+
+    //     if (password.isEmpty() || confirmPassword.isEmpty()) {
+    //         redirectAttributes.addFlashAttribute("error", "Password and Confirm Password are required.");
+    //         return "redirect:/reset-password/" + email;
+    //     }
+
+    //     if (!password.equals(confirmPassword)) {
+    //         redirectAttributes.addFlashAttribute("error", "Passwords do not match.");
+    //         return "redirect:/reset-password/" + email;
+    //     }
+
+    //     Users user = userRepository.findByEmail(email);
+    //     user.setPassword(passwordEncoder.encode(password));
+    //     userRepository.save(user);
+
+    //     // Clear JWT cookie
+    //     Cookie jwtCookie = new Cookie("JWT_TOKEN", null);
+    //     jwtCookie.setHttpOnly(true);
+    //     jwtCookie.setPath("/");
+    //     jwtCookie.setMaxAge(0);
+    //     response.addCookie(jwtCookie);
+
+    //     return "redirect:/login";
+    // }
 
 
     @GetMapping("/register")

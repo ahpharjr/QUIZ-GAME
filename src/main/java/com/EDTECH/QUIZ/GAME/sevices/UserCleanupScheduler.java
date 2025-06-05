@@ -27,5 +27,4 @@ public class UserCleanupScheduler {
         System.out.println("Univerfied users older than 16 minutes deleted.");
     }
 
-
 }

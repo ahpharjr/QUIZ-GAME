@@ -35,7 +35,7 @@ public class SearchController {
         Flashcard firstSearchCard = null;
 
         if (!keyword.isEmpty()) {
-            // Fetch the first matching keyword from the suggestions
+
             List<String> suggestions = flashcardRepository.findKeywordsByFlexibleSearch(keyword);
             if (!suggestions.isEmpty()) {
                 keyword = suggestions.get(0); // Use the first suggestion as the keyword

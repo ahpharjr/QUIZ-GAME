@@ -91,9 +91,7 @@ public class UserPerformanceService {
         QuizAttempt latestAttempt = quizAttempts.get(quizAttempts.size() - 1);
         int lastBonusXp = latestAttempt.getBonusXp();
         int currentXp = user.getUserXp();
-        System.out.println("Last Bonus Xp:J::::::::::::>>>>>>>> " + lastBonusXp);
-        System.out.println("Current Xp:J::::::::::::>>>>>>>> " + currentXp);
-
+        
         if (quizAttempts.size() > 1 && lastBonusXp > highestPreviousBonusXp){
             int updateBonusXp = currentXp + lastBonusXp - highestPreviousBonusXp;
             System.out.println("Update Bonus Xp:J::::::::::::>>>>>>>> " + updateBonusXp);

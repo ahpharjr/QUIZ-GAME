@@ -75,5 +75,15 @@ public class Flashcard {
         this.collections = collections;
     }
 
+    public Flashcard() {
+    }
+
+    public Flashcard(String keyword, String definition, String image, Topic topic) {
+        this.keyword = keyword;
+        this.definition = definition;
+        this.image = image;
+        this.topic = topic;
+    }
+
 
 }
